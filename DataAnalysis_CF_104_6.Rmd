@@ -12,25 +12,25 @@ output:
     toc_float: true
     includes:
         after_body: Utilities/footer.html
-version: "2.0"
+version: "3.0"
 ---
 
 ```{r, echo=FALSE}
-# knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(error = TRUE)
 ```
 
-
-```{r setup and load the related libraries}
+```{r setup, include=FALSE}
 ## set chunk options
-# knitr::opts_chunk$set(echo = FALSE)
-# knitr::opts_chunk$set(include = TRUE)
-# knitr::opts_chunk$set(warning = FALSE)
-# knitr::opts_chunk$set(fig.width=7, fig.asp =0.618) 
-# knitr::opts_chunk$set(comment = "#") # (NA, to remove all hashes)
+knitr::opts_chunk$set(echo = TRUE)
+```
 
+# Preparation
+```{r load the related libraries, message=FALSE}
 ## load libraries
 library(tidyverse)
 library(ez)
+library(lme4)
+library(lmerTest)
 
 
 # set up the theme for plot and rainclound plot
@@ -59,56 +59,48 @@ source("geom_flat_violin.R")
     
 ```
 
-This is a R markdown file to analyze the data for the <b>composite face task (complete design)</b> without <b>catch trials</b>. (Experiment number is 104_6) 
+This R markdown file analyzed the data for the <b>composite face task (complete design)</b> without <b>catch trials</b>. (Experiment number is 104_6) 
 
 ```{r input all the information about the data set}
 ###### Optional ######
 ## the filename of the raw data file 
-raw.file <- "104_106_n-20_2017-05-04-1446.csv"
-if (raw.file == "") {
-  raw.file <- file.choose()
-}
+fn.raw <- "104_106_n-20_2017-05-04-1446.csv"
 
 ## input the filename of the output file (.csv)
-output.name <- ""
+output.name <- "E1_104_106"
 
 ```
 
-The raw data was loaded from the file named `r raw.file`. 
-
-# Tidying up the data
-```{r read the raw data file and set the name for output file}
+```{r save CSV, include = FALSE}
 # do you want save the data into *.csv files
 # saveCSV = TRUE
 saveCSV = FALSE
 
-# read data file
-raw.data <- read.csv(raw.file)
-raw.filename <- basename(raw.file)
-raw.dir <- dirname(raw.file)
-
-# get the filename of the output
-if (output.name == "") {
-  output.name <- strsplit(raw.filename, ".csv")
-}
+# bn.raw <- basename(fn.raw)
+dir.raw <- dirname(fn.raw)
 
 # set the filenames for R and SPSS data format
-output.d.R <- paste(raw.dir, "/", output.name, "_d_R.csv", sep = "")
-output.d.SPSS <- paste(raw.dir, "/", output.name, "_d_SPSS.csv", sep = "")
-output.rt.R <- paste(raw.dir, "/", output.name, "_rt_R.csv", sep = "")
-output.rt.SPSS <- paste(raw.dir, "/", output.name, "_rt_SPSS.csv", sep = "")
+output.d.R <- file.path(dir.raw, paste0(output.name, "_d_R.csv"))
+output.d.SPSS <- file.path(dir.raw, paste0(output.name, "_d_SPSS.csv"))
+output.rt.R <- file.path(dir.raw, paste0(output.name, "_rt_R.csv"))
+output.rt.SPSS <- file.path(dir.raw, paste0(output.name, "_rt_SPSS.csv"))
 
+```
+
+The raw data was loaded from the file named `r fn.raw`. 
+
+# Tidying up the data
+```{r read the raw data file and set the name for output file, message = FALSE}
+# read data file
+df.raw <- read_csv(fn.raw)
+str(df.raw)
 ```
 
 
 ```{r calculate the Z value for RT and clean data}
-# expLevel.old <- unique(rawData$Experiment)  # "104_CF_CFS" "106_CF_Mono"
-# expLevel.new <- (c("CFS", "monocular"))
-
-
 # clean and rename the levels of independent variables
-raw.clean <- {
-  raw.data %>%
+df.clean <- {
+  df.raw %>%
     tbl_df() %>%  # change into table data frame format
     mutate(
       Participant = as.factor(Participant),
@@ -121,10 +113,11 @@ raw.clean <- {
       RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
       RT.Within3Z = ifelse(RT.Z <= 3 & RT.Z >= -3, 1, ifelse(RT.Z < -3 | RT.Z > 3, 0, NaN))
       ) %>%  # if the Z values are between -3 and 3, will be marked as 1. 
+      mutate(Stimuli = paste(StudyUpper, StudyLower, TargetUpper, TargetLower, sep = "-")) %>%
     ungroup()  # ungroup the data
 }
 
-raw.clean
+df.clean
 
 ```
 
@@ -133,7 +126,7 @@ raw.clean
 ```{r calculate the sensitivity d for R analysis}
 # calculate the d'
 individual.d.R <- { # get the hit and correct rejection rates
-  raw.clean %>%
+  df.clean %>%
     group_by(Experiment, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
     summarize(Accuracy = mean(isCorrect), Count = n()) %>% # get accuracy and count for each condition (hit and correct rejection)  
     mutate(Accuracy = ifelse(Accuracy == 1, 1 - 0.5/Count, Accuracy)) %>%  # set 1 equals to 1-0.5/n
@@ -224,7 +217,7 @@ knitr::kable(d.anova$ANOVA, digits = 4)
 
 
 ```{r include = FALSE}
-thisExp <- levels(raw.clean$Experiment)[1]
+thisExp <- unique(df.clean$Experiment)[1]
 ```
 
 ### Sensitivity d' for `r thisExp`: Congruency(2) $\times$ Alignment(2)
@@ -247,7 +240,7 @@ knitr::kable(d.anova.CFS$ANOVA, digits = 4)
 
 
 ```{r include = FALSE}
-thisExp <- levels(raw.clean$Experiment)[2]
+thisExp <- unique(df.clean$Experiment)[2]
 ```
 
 ### Sensitivity d' for `r thisExp`: Congruency(2) $\times$ Alignment(2)
@@ -292,10 +285,10 @@ d.ColuPlot
 
 
 
-# correct Response Times
+# Correct Response Times
 ```{r calculate the correct response times for R analysis}
 individual.rt.R <- {
-  raw.clean %>%
+  df.clean %>%
     filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
     filter(isCorrect == 1)  %>%  # only keep the correct correct
     group_by(Experiment, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
@@ -384,7 +377,7 @@ knitr::kable(rt.anova$ANOVA, digits = 4)
 
 
 ```{r include = FALSE}
-thisExp <- levels(raw.clean$Experiment)[1]
+thisExp <- unique(df.clean$Experiment)[1]
 ```
 
 ### Correct RT for `r thisExp`: Congruency(2) $\times$ Alignment(2)
@@ -406,8 +399,9 @@ knitr::kable(rt.anova.CFS$ANOVA, digits = 4)
 
 
 ```{r include = FALSE}
-thisExp = levels(raw.clean$Experiment)[2]
+thisExp = unique(df.clean$Experiment)[2]
 ```
+
 ### Correct RT for `r thisExp`: Congruency(2) $\times$ Alignment(2)
 ```{r ANOVA of Correct RT for CF with monocular}
 rt.anova.CFS <- {
@@ -449,32 +443,254 @@ rt.ColuPlot
 
 
 # Logit Mixed Model
-
-Create dummy coding:
-```{r create dummy coding}
-raw.clean <- {
-  raw.clean %>%
+```{r create dummy coding for julia, include = FALSE}
+# Create dummy coding
+df.clean <- {
+  df.clean %>%
     mutate(
       Experiment_D = ifelse(Experiment == "CFS", 0, ifelse(Experiment == "monocular", 1, NaN)),
-      Congruency_D = ifelse(Congruency == "congruent", 0, ifelse(Experiment == "incongruent", 1, NaN)),
+      Congruency_D = ifelse(Congruency == "congruent", 0, ifelse(Congruency == "incongruent", 1, NaN)),
       Alignment_D = ifelse(Alignment == "aligned", 0, ifelse(Alignment == "misaligned", 1, NaN)),
       Experiment_Congruency = Experiment_D * Congruency_D,
       Experiment_Alignment = Experiment_D * Alignment_D,
       Congruency_Alignment = Congruency_D * Alignment_D,
       Experiment_Congruency_Alignment = Experiment_Congruency * Alignment_D
-    )
-  
+    ) %>% 
+    filter(SameDifferent == "S")
 }
 
-write_csv(raw.clean, "104_106_contrast.csv")
- 
-  
-```
+write_csv(df.clean, "104_106_contrast.csv")
+save(df.clean, file = "df_clean.RData")
 
-
-```{r logit mixed full model}
+path.nesi <- "nesi_fit"
 
 ```
 
+## Full Logit Mixed Model
+```{r logit mixed model -- full}
+# build the full model
+# glmm.full <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+#                      
+#                      (1 + Experiment_D + Congruency_D + Alignment_D + 
+#                      Experiment_Congruency + Experiment_Alignment + Congruency_Alignment +
+#                      Experiment_Congruency_Alignment | Participant) +
+#                      
+#                      (1 + Experiment_D + Congruency_D + Alignment_D + 
+#                      Experiment_Congruency + Experiment_Alignment + Congruency_Alignment +
+#                      Experiment_Congruency_Alignment | Stimuli),
+#                    data = df.clean,
+#                    family = "binomial",
+#                    verbose = TRUE,
+#                    control=glmerControl(optCtrl=list(maxfun=1e6)))
+
+load(file.path(path.nesi, "S101_glmm_full.RData"))
+
+print(summary(glmm.full), corr=FALSE)
+```
 
 
+```{r rePCA for the full model}
+summary(rePCA(glmm.full))
+```
+
+## Reduced 1 Logit Mixed Model
+```{r reduced 1 logistic mixed model}
+# glmm.reduced1 <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+# 
+#                      (0 + Experiment_D + 
+#                      Experiment_Alignment + Congruency_Alignment +
+#                      Experiment_Congruency_Alignment | Participant) +
+# 
+#                      (1 + Congruency_D + Alignment_D +
+#                      Experiment_Congruency + Congruency_Alignment +
+#                      Experiment_Congruency_Alignment | Stimuli),
+#                    data = df.clean,
+#                    family = "binomial",
+#                    verbose = TRUE,
+#                    control=glmerControl(optCtrl=list(maxfun=1e6)))
+
+load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
+
+print(summary(glmm.reduced1), corr=FALSE)
+```
+
+
+```{r rePCA for reduced1 model}
+summary(rePCA(glmm.reduced1))
+```
+
+
+## Reduced 2 Logit Mixed Model
+```{r reduced 2 logistic mixed model}
+glmm.reduced2 <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
+                         (0 + Experiment_D +
+                            Experiment_Congruency_Alignment | Participant) +
+                         (1 + Congruency_D + Alignment_D +
+                            Congruency_Alignment +
+                            Experiment_Congruency_Alignment | Stimuli),
+                       data = df.clean,
+                       family = "binomial",
+                       # verbose = TRUE,
+                       control=glmerControl(optCtrl=list(maxfun=1e6)))
+
+# load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
+
+print(summary(glmm.reduced2), corr=FALSE)
+```
+
+
+```{r rePCA for reduced2 model}
+summary(rePCA(glmm.reduced2))
+```
+
+## Reduced 3 Logit Mixed Model
+```{r reduced 3 logistic mixed model}
+glmm.reduced3 <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
+                         (0 + Experiment_D | Participant) +
+                         (1 + Congruency_D + Alignment_D +
+                            Congruency_Alignment | Stimuli),
+                       data = df.clean,
+                       family = "binomial",
+                       # verbose = TRUE,
+                       control=glmerControl(optCtrl=list(maxfun=1e6)))
+
+# load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
+
+print(summary(glmm.reduced3), corr=FALSE)
+```
+
+
+```{r rePCA for reduced3 model}
+summary(rePCA(glmm.reduced3))
+```
+
+
+## Reduced 4 Logit Mixed Model
+```{r reduced 4 logistic mixed model}
+glmm.reduced4 <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
+                         (0 + Experiment_D | Participant) +
+                         (1 + Congruency_D + Alignment_D | Stimuli),
+                       data = df.clean,
+                       family = "binomial",
+                       # verbose = TRUE,
+                       control=glmerControl(optCtrl=list(maxfun=1e6)))
+
+# load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
+
+print(summary(glmm.reduced4), corr=FALSE)
+```
+
+
+```{r rePCA for reduced4 model}
+summary(rePCA(glmm.reduced4))
+```
+
+
+## Reduced 5 Logit Mixed Model
+```{r reduced 5 logistic mixed model}
+glmm.reduced5 <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
+                         (0 + Experiment_D | Participant) +
+                         (1 + Congruency_D | Stimuli),
+                       data = df.clean,
+                       family = "binomial",
+                       # verbose = TRUE,
+                       control=glmerControl(optCtrl=list(maxfun=1e6)))
+
+# load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
+
+print(summary(glmm.reduced5), corr=FALSE)
+```
+
+
+```{r rePCA for reduced5 model}
+summary(rePCA(glmm.reduced5))
+```
+
+
+```{r}
+# Fixed effect reduced 1 logist mixed model
+
+# glmm.freduced1 <- glmer(isCorrect ~ Experiment * Congruency + Experiment:Alignment + Congruency:Alignment + Experiment:Congruency:Alignment +
+#                          (0 + Experiment_D | Participant) +
+#                          (1 + Congruency_D | Stimuli),
+#                        data = df.clean,
+#                        family = "binomial",
+#                        # verbose = TRUE,
+#                        control=glmerControl(optCtrl=list(maxfun=1e6)))
+#   
+# print(summary(glmm.freduced1), corr=FALSE)
+# anova(glmm.reduced5, glmm.freduced1)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r logit mixed model -- zero correlation parameter }
+# build the full model
+glmm.zcp <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                     (1 + Experiment * Congruency * Alignment || Participant) +
+                     (1 + Experiment * Congruency * Alignment || Stimuli),
+                   data = df.clean,
+                   family = "binomial",
+                   verbose = TRUE,
+                   control=glmerControl(optCtrl=list(maxfun=1e6)))
+
+anova(glmm.full, glmm.zcp)
+```
+
+
+
+
+
+
+
+```{r save the theta for zcp model, include=FALSE}
+theta_bk$zcp <- glmm.zcp@theta
+```
+
+
+```{r logit mixed model -- step}
+# build the full model
+glmm.zcp.step <- step(glmm.zcp, reduce.fixed = FALSE)
+
+summary(glmm.zcp.step)
+```
+
+```{r}
+glmm.reduced <- get_model(glmm.zcp.step)
+
+anova(glmm.reduced, glmm.full)
+```
+
+```{r save the theta for reduced model, include=FALSE}
+theta_bk$reduced <- glmm.reduced@theta
+
+save(theta_bk, "theta_backup.RData")
+```
+
+
+
+# Versions of Packages Used
+```{r versions}
+sessionInfo()
+```
