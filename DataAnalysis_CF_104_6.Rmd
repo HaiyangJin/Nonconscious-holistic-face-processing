@@ -1,0 +1,480 @@
+---
+title: "Data Analysis for the Composite Face Task (104_6)"
+author: "[Haiyang Jin](https://haiyangjin.github.io/)"
+date:  "`r format(Sys.time(), '%d-%m-%Y')`"
+knit: ""
+output: 
+  html_document:
+    df_print: paged
+    number_sections: true
+    toc: true
+    toc_depth: 4
+    toc_float: true
+    includes:
+        after_body: Utilities/footer.html
+version: "2.0"
+---
+
+```{r, echo=FALSE}
+# knitr::opts_chunk$set(error = TRUE)
+```
+
+
+```{r setup and load the related libraries}
+## set chunk options
+# knitr::opts_chunk$set(echo = FALSE)
+# knitr::opts_chunk$set(include = TRUE)
+# knitr::opts_chunk$set(warning = FALSE)
+# knitr::opts_chunk$set(fig.width=7, fig.asp =0.618) 
+# knitr::opts_chunk$set(comment = "#") # (NA, to remove all hashes)
+
+## load libraries
+library(tidyverse)
+library(ez)
+
+
+# set up the theme for plot and rainclound plot
+plot_theme = theme(
+  text = element_text(size = 10),
+  axis.title = element_text(size = 16), 
+  axis.text = element_text(size = 14), # the size of the texts in plot
+  # axis.text.x = element_text(angle = 45, vjust = 0.5),
+  legend.title=element_text(size=16),
+  legend.text=element_text(size=16),
+  legend.position = "right",
+  legend.key.width = unit(1.2, "cm"),
+  plot.title = element_text(lineheight=.8, face="bold", size = 17),
+  panel.border = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),
+  axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+  axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid', arrow = arrow(length = unit(0.3, "cm"))),
+  # remove the facet background color
+  strip.text = element_text(face="bold", size=12, lineheight=5.0),
+  strip.background = element_rect(fill="white", colour="white", size=1),
+  strip.placement = "outside"
+)
+
+source("geom_flat_violin.R")
+    
+```
+
+This is a R markdown file to analyze the data for the <b>composite face task (complete design)</b> without <b>catch trials</b>. (Experiment number is 104_6) 
+
+```{r input all the information about the data set}
+###### Optional ######
+## the filename of the raw data file 
+raw.file <- "104_106_n-20_2017-05-04-1446.csv"
+if (raw.file == "") {
+  raw.file <- file.choose()
+}
+
+## input the filename of the output file (.csv)
+output.name <- ""
+
+```
+
+The raw data was loaded from the file named `r raw.file`. 
+
+# Tidying up the data
+```{r read the raw data file and set the name for output file}
+# do you want save the data into *.csv files
+# saveCSV = TRUE
+saveCSV = FALSE
+
+# read data file
+raw.data <- read.csv(raw.file)
+raw.filename <- basename(raw.file)
+raw.dir <- dirname(raw.file)
+
+# get the filename of the output
+if (output.name == "") {
+  output.name <- strsplit(raw.filename, ".csv")
+}
+
+# set the filenames for R and SPSS data format
+output.d.R <- paste(raw.dir, "/", output.name, "_d_R.csv", sep = "")
+output.d.SPSS <- paste(raw.dir, "/", output.name, "_d_SPSS.csv", sep = "")
+output.rt.R <- paste(raw.dir, "/", output.name, "_rt_R.csv", sep = "")
+output.rt.SPSS <- paste(raw.dir, "/", output.name, "_rt_SPSS.csv", sep = "")
+
+```
+
+
+```{r calculate the Z value for RT and clean data}
+# expLevel.old <- unique(rawData$Experiment)  # "104_CF_CFS" "106_CF_Mono"
+# expLevel.new <- (c("CFS", "monocular"))
+
+
+# clean and rename the levels of independent variables
+raw.clean <- {
+  raw.data %>%
+    tbl_df() %>%  # change into table data frame format
+    mutate(
+      Participant = as.factor(Participant),
+      Congruency = recode(Congruency, "C" = "congruent", "I" = "incongruent"), # rename the levels for Congruency
+      Alignment = recode(Alignment, "A" = "aligned", "M" = "misaligned"),
+      Experiment = recode(Experiment, "104_CF_CFS" = "CFS", "106_CF_Mono" = "monocular")
+      ) %>% # rename the levels for Alignment
+    group_by(Experiment, Participant, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
+    mutate(
+      RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
+      RT.Within3Z = ifelse(RT.Z <= 3 & RT.Z >= -3, 1, ifelse(RT.Z < -3 | RT.Z > 3, 0, NaN))
+      ) %>%  # if the Z values are between -3 and 3, will be marked as 1. 
+    ungroup()  # ungroup the data
+}
+
+raw.clean
+
+```
+
+
+# Sensitivity d'
+```{r calculate the sensitivity d for R analysis}
+# calculate the d'
+individual.d.R <- { # get the hit and correct rejection rates
+  raw.clean %>%
+    group_by(Experiment, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
+    summarize(Accuracy = mean(isCorrect), Count = n()) %>% # get accuracy and count for each condition (hit and correct rejection)  
+    mutate(Accuracy = ifelse(Accuracy == 1, 1 - 0.5/Count, Accuracy)) %>%  # set 1 equals to 1-0.5/n
+    spread(SameDifferent, Accuracy) %>%  # spread the Accuracy into two columns based on SameDifferent
+    mutate(FA = 1 - D,
+           Z.hit = qnorm(S),
+           Z.FA = qnorm(FA),
+           dprime = Z.hit - Z.FA) %>% # get the d prime
+    select(Experiment, Participant, Congruency, Alignment, dprime, Count)
+}
+
+# descriptive statistics of d for plotting
+sum.d.R <- {
+  individual.d.R %>% 
+    group_by(Experiment, Congruency, Alignment) %>% 
+    summarize(Mean = mean(dprime), N = n(), SD = sd(dprime), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(dprime), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# d for SPSS sytle analysis
+individual.d.SPSS <- {
+  individual.d.R %>%
+    ungroup() %>%  # ungroup the data.d.r 
+    mutate(Conditions = paste(Experiment, Congruency, Alignment, sep = ".")) %>% # combine all the levels together
+    select(Participant, dprime, Conditions, Count) %>% # delete the Independet Variables
+    spread(Conditions, dprime)
+}
+
+# save the d' for R analysis
+if (saveCSV) {
+  write.csv(individual.d.R, output.d.R, row.names = FALSE)
+  write.csv(individual.d.SPSS, output.d.SPSS, row.names = FALSE)
+}
+
+```
+
+
+## RainClound plot of sensitivity (d')
+```{r rainclound plot of sensitivity}
+knitr::kable(sum.d.R, digits = 4)
+
+d.RainPlot <- {
+  ggplot(data = individual.d.R, aes(y = dprime, x = Alignment, fill = Congruency)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = dprime, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = dprime), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = sum.d.R, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = sum.d.R, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Experiment, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Sensitivity d' for E104_106", x = "Experiment", y = "Sensitivity", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+&nbsp;
+
+```{r display the RainCloud plot for sensitivity (d)}
+d.RainPlot
+```
+
+
+## Repeated measure ANOVA for sensitivity (d')
+### Sensitivity d': Experiment(2) $\times$ Congruency(2) $\times$ Alignment(2)
+```{r repeated measure ANOVA for d}
+
+d.anova <- { 
+  ezANOVA(data = individual.d.R
+          , dv = dprime
+          , wid = Participant
+          , within = c(Experiment, Congruency, Alignment)
+          , detailed = TRUE
+          # , type = 3 # for this test, results for type II and III are the same
+          # , return_aov = TRUE
+  )
+}
+
+knitr::kable(d.anova$ANOVA, digits = 4)
+```
+
+
+```{r include = FALSE}
+thisExp <- levels(raw.clean$Experiment)[1]
+```
+
+### Sensitivity d' for `r thisExp`: Congruency(2) $\times$ Alignment(2)
+```{r ANOVA of sensitivity d for CF with CFS}
+d.anova.CFS <- {
+  individual.d.R %>%
+    filter(Experiment == thisExp) %>% 
+    ezANOVA(
+      dv = dprime,
+      wid = Participant,
+      within = .(Congruency, Alignment),
+      detailed = TRUE,
+      return_aov = TRUE
+    )  # run repeaed measures ANOVA 
+}
+
+knitr::kable(d.anova.CFS$ANOVA, digits = 4)
+
+```
+
+
+```{r include = FALSE}
+thisExp <- levels(raw.clean$Experiment)[2]
+```
+
+### Sensitivity d' for `r thisExp`: Congruency(2) $\times$ Alignment(2)
+```{r ANOVA of sensitivity d for CF with monocular}
+d.anova.CFS <- {
+  individual.d.R %>%
+    filter(Experiment == thisExp) %>% 
+    ezANOVA(
+      dv = dprime,
+      wid = Participant,
+      within = .(Congruency, Alignment),
+      detailed = TRUE,
+      return_aov = TRUE
+    )  # run repeaed measures ANOVA 
+}
+
+knitr::kable(d.anova.CFS$ANOVA, digits = 4)
+```
+
+
+## Line plot of sensitivity (d')
+```{r Plot of d}
+
+d.ColuPlot = {
+  ggplot(data = sum.d.R, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point() +
+    geom_line() +  # position = "dodge", alpha = .7
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Experiment, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(title = "Sensitivity for E104_106", x = "Experiment", y = "Sensitivity", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+d.ColuPlot
+```
+
+
+
+# correct Response Times
+```{r calculate the correct response times for R analysis}
+individual.rt.R <- {
+  raw.clean %>%
+    filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
+    filter(isCorrect == 1)  %>%  # only keep the correct correct
+    group_by(Experiment, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
+    summarize(RT = mean(reactionTime) * 1000 + 300, Count = n()) %>% # get RT and count for each condition
+    ungroup()
+}
+
+# descriptive statistics of RT for plotting
+sum.rt.R <- {
+  individual.rt.R %>% 
+    select(-Count) %>% 
+    group_by(Experiment, Congruency, Alignment) %>% 
+    summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# RT for SPSS sytle analysis
+individual.rt.SPSS <- {
+  individual.rt.R %>%
+    mutate(Conditions = paste(Experiment, Congruency, Alignment, sep = ".")) %>%
+    select(Participant, Conditions, RT) %>% 
+    spread(Conditions, RT)
+}
+
+# save the RT for R analysis
+if (saveCSV) {
+  write.csv(individual.rt.R, output.rt.R, row.names = FALSE)
+  write.csv(individual.rt.SPSS, output.rt.SPSS, row.names = FALSE)
+}
+
+```
+
+
+## RainClound plot of correct response times
+```{r rainclound plot of correct response times}
+knitr::kable(sum.rt.R, digits = 4)
+
+rt.RainPlot <- {
+  ggplot(data = individual.rt.R, aes(y = RT, x = Alignment, fill = Congruency)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = RT, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = sum.rt.R, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = sum.rt.R, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Experiment, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Correct Response Times for E104_106", x = "Alignment", y = "Response Times (ms)", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand = c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+
+&nbsp;
+
+```{r display the RainCloud plot for response times}
+rt.RainPlot
+```
+
+
+## Repeated measure ANOVA for response times
+### Correct RT: Experiment(2) $\times$ Congruency(2) $\times$ Alignment(2)
+```{r repeated measure ANOVA for response times}
+
+rt.anova <- { 
+  ezANOVA(data = individual.rt.R
+          , dv = RT
+          , wid = Participant
+          , within = c(Experiment, Congruency, Alignment)
+          , detailed = TRUE
+          # , type = 3 # for this test, results for type II and III are the same
+          # , return_aov = TRUE
+  )
+}
+
+knitr::kable(rt.anova$ANOVA, digits = 4)
+```
+
+
+
+```{r include = FALSE}
+thisExp <- levels(raw.clean$Experiment)[1]
+```
+
+### Correct RT for `r thisExp`: Congruency(2) $\times$ Alignment(2)
+```{r ANOVA of Correct RT for CF with CFS}
+rt.anova.CFS <- {
+  individual.rt.R %>%
+    filter(Experiment == thisExp) %>%
+    ezANOVA(
+      dv = RT,
+      wid = Participant,
+      within = .(Congruency, Alignment),
+      detailed = TRUE,
+      return_aov = TRUE
+    )  # run repeaed measures ANOVA 
+}
+
+knitr::kable(rt.anova.CFS$ANOVA, digits = 4)
+```
+
+
+```{r include = FALSE}
+thisExp = levels(raw.clean$Experiment)[2]
+```
+### Correct RT for `r thisExp`: Congruency(2) $\times$ Alignment(2)
+```{r ANOVA of Correct RT for CF with monocular}
+rt.anova.CFS <- {
+  individual.rt.R %>%
+    filter(Experiment == thisExp) %>%
+    ezANOVA(
+      dv = RT,
+      wid = Participant,
+      within = .(Congruency, Alignment),
+      detailed = TRUE,
+      return_aov = TRUE
+    )  # run repeaed measures ANOVA 
+}
+
+knitr::kable(rt.anova.CFS$ANOVA, digits = 4)
+```
+
+## Line plot of correct response times
+```{r Plot of correct response times}
+
+rt.ColuPlot = {
+  ggplot(data = sum.rt.R, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point() +
+    geom_line() +  # position = "dodge", alpha = .7
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Experiment, switch = "both") +
+    labs(title = "Correct Response Times for E104_106", x = "Experiment", y = "Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("*", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+rt.ColuPlot
+```
+
+
+# Logit Mixed Model
+
+Create dummy coding:
+```{r create dummy coding}
+raw.clean <- {
+  raw.clean %>%
+    mutate(
+      Experiment_D = ifelse(Experiment == "CFS", 0, ifelse(Experiment == "monocular", 1, NaN)),
+      Congruency_D = ifelse(Congruency == "congruent", 0, ifelse(Experiment == "incongruent", 1, NaN)),
+      Alignment_D = ifelse(Alignment == "aligned", 0, ifelse(Alignment == "misaligned", 1, NaN)),
+      Experiment_Congruency = Experiment_D * Congruency_D,
+      Experiment_Alignment = Experiment_D * Alignment_D,
+      Congruency_Alignment = Congruency_D * Alignment_D,
+      Experiment_Congruency_Alignment = Experiment_Congruency * Alignment_D
+    )
+  
+}
+
+write_csv(raw.clean, "104_106_contrast.csv")
+ 
+  
+```
+
+
+```{r logit mixed full model}
+
+```
+
+
+
