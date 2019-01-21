@@ -5,13 +5,15 @@ date:  "`r format(Sys.time(), '%d-%m-%Y')`"
 knit: ""
 output: 
   html_document:
-    df_print: paged
     number_sections: true
     toc: true
     toc_depth: 4
     toc_float: true
     includes:
         after_body: Utilities/footer.html
+output_dir: output/
+params:
+    output_dir: output/
 version: "4.0"
 ---
 
