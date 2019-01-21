@@ -15,11 +15,6 @@ output:
 version: "4.0"
 ---
 
-
-```{r, echo=FALSE}
-knitr::opts_chunk$set(error = TRUE)
-```
-
 ```{r setup, include=FALSE}
 ## set chunk options
 knitr::opts_chunk$set(echo = TRUE)
@@ -56,7 +51,7 @@ plot_theme = theme(
   strip.placement = "outside"
 )
 
-source("geom_flat_violin.R")
+source(file.path("R", "geom_flat_violin.R"))
     
 ```
 
@@ -65,7 +60,7 @@ This R markdown file analyzed the data for the <b>composite face task (complete 
 ```{r input all the information about the data set}
 ###### Optional ######
 ## the filename of the raw data file 
-fn.raw <- "104_106_n-20_2017-05-04-1446.csv"
+fn.raw <- file.path("data","104_106_n-20_2017-05-04-1446.csv")
 
 ## input the filename of the output file (.csv)
 output.name <- "E1_104_106"
@@ -76,19 +71,17 @@ output.name <- "E1_104_106"
 # do you want save the data into *.csv files
 # saveCSV = TRUE
 saveCSV = FALSE
-
-# bn.raw <- basename(fn.raw)
-dir.raw <- dirname(fn.raw)
+path.output <- file.path("output", ".")
 
 # set the filenames for R and SPSS data format
-output.d.R <- file.path(dir.raw, paste0(output.name, "_d_R.csv"))
-output.d.SPSS <- file.path(dir.raw, paste0(output.name, "_d_SPSS.csv"))
-output.rt.R <- file.path(dir.raw, paste0(output.name, "_rt_R.csv"))
-output.rt.SPSS <- file.path(dir.raw, paste0(output.name, "_rt_SPSS.csv"))
+output.d.R <- file.path(path.output, paste0(output.name, "_d_R.csv"))
+output.d.SPSS <- file.path(path.output, paste0(output.name, "_d_SPSS.csv"))
+output.rt.R <- file.path(path.output, paste0(output.name, "_rt_R.csv"))
+output.rt.SPSS <- file.path(path.output, paste0(output.name, "_rt_SPSS.csv"))
 
 ```
 
-The raw data was loaded from the file named `r fn.raw`. 
+The raw data was loaded from the file named `r basename(fn.raw)` in the `r dirname(fn.raw)`/ folder. 
 
 # Tidying up the data
 ```{r read the raw data file and set the name for output file, message = FALSE}
@@ -105,6 +98,9 @@ df.clean <- {
     tbl_df() %>%  # change into table data frame format
     mutate(
       Participant = as.factor(Participant),
+      Congruency = as.factor(Congruency),
+      Alignment = as.factor(Alignment),
+      Experiment = as.factor(Experiment),
       Congruency = recode(Congruency, "C" = "congruent", "I" = "incongruent"), # rename the levels for Congruency
       Alignment = recode(Alignment, "A" = "aligned", "M" = "misaligned"),
       Experiment = recode(Experiment, "104_CF_CFS" = "CFS", "106_CF_Mono" = "monocular")
@@ -420,6 +416,7 @@ rt.anova.CFS <- {
 knitr::kable(rt.anova.CFS$ANOVA, digits = 4)
 ```
 
+
 ## Line plot of correct response times
 ```{r Plot of correct response times}
 
@@ -443,73 +440,56 @@ rt.ColuPlot
 ```
 
 
-# Logit Mixed Model
-```{r create dummy coding for julia, include = FALSE}
-# Create dummy coding
-df.clean <- {
-  df.clean %>%
-    mutate(
-      Experiment_D = ifelse(Experiment == "CFS", 0, ifelse(Experiment == "monocular", 1, NaN)),
-      Congruency_D = ifelse(Congruency == "congruent", 0, ifelse(Congruency == "incongruent", 1, NaN)),
-      Alignment_D = ifelse(Alignment == "aligned", 0, ifelse(Alignment == "misaligned", 1, NaN)),
-      Experiment_Congruency = Experiment_D * Congruency_D,
-      Experiment_Alignment = Experiment_D * Alignment_D,
-      Congruency_Alignment = Congruency_D * Alignment_D,
-      Experiment_Congruency_Alignment = Experiment_Congruency * Alignment_D,
-      CF_Con = ifelse(Congruency == "congruent", 1, ifelse(Congruency == "incongruent", -1, NaN)),
-      CF_Ali = ifelse(Alignment == "aligned", 1, ifelse(Alignment == "misaligned", -1, NaN)),
-      CF_contrast = CF_Con * CF_Ali
-    ) %>% 
-    filter(SameDifferent == "S")
+# Accuracy (Raw Responses)
+```{r output the data for running glmm in NeSI}
+path.nesi <- "NeSI"
+
+if (TRUE) {
+    fn.df <- "P101_104_106_clean"
+    # write_csv(df.clean, file.path(path.nesi, paste0(fn.df, ".csv")))
+    save(df.clean, file = file.path(path.nesi, paste0(fn.df, ".RData")))
 }
 
-fn.df <- "S101_104_106_clean"
-write_csv(df.clean, paste0(fn.df, ".csv"))
-save(df.clean, file = paste0(fn.df, ".RData"))
+```
 
-path.nesi <- "nesi_fit"
+## Logit Mixed Model for Accuracy
+
+### Logit Mixed Model for the CFS condition
+```{r logit mixed model -- cfs}
+# build the full model (run in NeSI)
+# glmm.cfs <- glmer(isCorrect ~ Congruency * Alignment +
+#                      (1 + Congruency * Alignment | Participant) +
+#                      (1 + Congruency * Alignment | Stimuli),
+#                    data = filter(df.clean, Experiment == "CFS"),
+#                    family = "binomial",
+#                    verbose = TRUE,
+#                    control=glmerControl(optCtrl=list(maxfun=1e6))
+#                    )
+
+load(file.path(path.nesi, "P101_glmm_cfs.RData"))
+
+print(summary(glmm.cfs), corr=FALSE)
 
 ```
 
-## Full Logit Mixed Model
-```{r logit mixed model -- full}
-# build the full model
-glmm.full <- glmer(isCorrect ~ Experiment * CF_contrast +
-                     (1 + Experiment * CF_contrast | Participant) +
-                     (1 + Experiment * CF_contrast | Stimuli),
-                   data = df.clean,
-                   family = "binomial",
-                   # verbose = TRUE,
-                   control=glmerControl(optCtrl=list(maxfun=1e6)))
 
-# load(file.path(path.nesi, "S101_glmm_full.RData"))
+### Logit Mixed Model for the monocular condition
+```{r logit mixed model -- monocular}
+# build the full model (run in NeSI)
+# glmm.mono <- glmer(isCorrect ~ Congruency * Alignment +
+#                      (1 + Congruency * Alignment | Participant) +
+#                      (1 + Congruency * Alignment | Stimuli),
+#                    data = filter(df.clean, Experiment == "monocular"),
+#                    family = "binomial",
+#                    verbose = TRUE,
+#                    control=glmerControl(optCtrl=list(maxfun=1e6))
+#                    )
 
-print(summary(glmm.full), corr=FALSE)
+load(file.path(path.nesi, "P101_glmm_mono.RData"))
+
+print(summary(glmm.mono), corr=FALSE)
 
 ```
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Versions of Packages Used
 ```{r versions}
