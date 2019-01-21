@@ -17,7 +17,7 @@
 # RStudio files
 .Rproj.user/
 
-# produced vignettes
+# produced output
 *.html
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
