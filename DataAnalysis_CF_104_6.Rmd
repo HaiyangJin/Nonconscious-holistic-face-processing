@@ -12,8 +12,9 @@ output:
     toc_float: true
     includes:
         after_body: Utilities/footer.html
-version: "3.0"
+version: "4.0"
 ---
+
 
 ```{r, echo=FALSE}
 knitr::opts_chunk$set(error = TRUE)
@@ -454,13 +455,17 @@ df.clean <- {
       Experiment_Congruency = Experiment_D * Congruency_D,
       Experiment_Alignment = Experiment_D * Alignment_D,
       Congruency_Alignment = Congruency_D * Alignment_D,
-      Experiment_Congruency_Alignment = Experiment_Congruency * Alignment_D
+      Experiment_Congruency_Alignment = Experiment_Congruency * Alignment_D,
+      CF_Con = ifelse(Congruency == "congruent", 1, ifelse(Congruency == "incongruent", -1, NaN)),
+      CF_Ali = ifelse(Alignment == "aligned", 1, ifelse(Alignment == "misaligned", -1, NaN)),
+      CF_contrast = CF_Con * CF_Ali
     ) %>% 
     filter(SameDifferent == "S")
 }
 
-write_csv(df.clean, "104_106_contrast.csv")
-save(df.clean, file = "df_clean.RData")
+fn.df <- "S101_104_106_clean"
+write_csv(df.clean, paste0(fn.df, ".csv"))
+save(df.clean, file = paste0(fn.df, ".RData"))
 
 path.nesi <- "nesi_fit"
 
@@ -469,193 +474,19 @@ path.nesi <- "nesi_fit"
 ## Full Logit Mixed Model
 ```{r logit mixed model -- full}
 # build the full model
-# glmm.full <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-#                      
-#                      (1 + Experiment_D + Congruency_D + Alignment_D + 
-#                      Experiment_Congruency + Experiment_Alignment + Congruency_Alignment +
-#                      Experiment_Congruency_Alignment | Participant) +
-#                      
-#                      (1 + Experiment_D + Congruency_D + Alignment_D + 
-#                      Experiment_Congruency + Experiment_Alignment + Congruency_Alignment +
-#                      Experiment_Congruency_Alignment | Stimuli),
-#                    data = df.clean,
-#                    family = "binomial",
-#                    verbose = TRUE,
-#                    control=glmerControl(optCtrl=list(maxfun=1e6)))
-
-load(file.path(path.nesi, "S101_glmm_full.RData"))
-
-print(summary(glmm.full), corr=FALSE)
-```
-
-
-```{r rePCA for the full model}
-summary(rePCA(glmm.full))
-```
-
-## Reduced 1 Logit Mixed Model
-```{r reduced 1 logistic mixed model}
-# glmm.reduced1 <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-# 
-#                      (0 + Experiment_D + 
-#                      Experiment_Alignment + Congruency_Alignment +
-#                      Experiment_Congruency_Alignment | Participant) +
-# 
-#                      (1 + Congruency_D + Alignment_D +
-#                      Experiment_Congruency + Congruency_Alignment +
-#                      Experiment_Congruency_Alignment | Stimuli),
-#                    data = df.clean,
-#                    family = "binomial",
-#                    verbose = TRUE,
-#                    control=glmerControl(optCtrl=list(maxfun=1e6)))
-
-load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
-
-print(summary(glmm.reduced1), corr=FALSE)
-```
-
-
-```{r rePCA for reduced1 model}
-summary(rePCA(glmm.reduced1))
-```
-
-
-## Reduced 2 Logit Mixed Model
-```{r reduced 2 logistic mixed model}
-glmm.reduced2 <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
-                         (0 + Experiment_D +
-                            Experiment_Congruency_Alignment | Participant) +
-                         (1 + Congruency_D + Alignment_D +
-                            Congruency_Alignment +
-                            Experiment_Congruency_Alignment | Stimuli),
-                       data = df.clean,
-                       family = "binomial",
-                       # verbose = TRUE,
-                       control=glmerControl(optCtrl=list(maxfun=1e6)))
-
-# load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
-
-print(summary(glmm.reduced2), corr=FALSE)
-```
-
-
-```{r rePCA for reduced2 model}
-summary(rePCA(glmm.reduced2))
-```
-
-## Reduced 3 Logit Mixed Model
-```{r reduced 3 logistic mixed model}
-glmm.reduced3 <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
-                         (0 + Experiment_D | Participant) +
-                         (1 + Congruency_D + Alignment_D +
-                            Congruency_Alignment | Stimuli),
-                       data = df.clean,
-                       family = "binomial",
-                       # verbose = TRUE,
-                       control=glmerControl(optCtrl=list(maxfun=1e6)))
-
-# load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
-
-print(summary(glmm.reduced3), corr=FALSE)
-```
-
-
-```{r rePCA for reduced3 model}
-summary(rePCA(glmm.reduced3))
-```
-
-
-## Reduced 4 Logit Mixed Model
-```{r reduced 4 logistic mixed model}
-glmm.reduced4 <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
-                         (0 + Experiment_D | Participant) +
-                         (1 + Congruency_D + Alignment_D | Stimuli),
-                       data = df.clean,
-                       family = "binomial",
-                       # verbose = TRUE,
-                       control=glmerControl(optCtrl=list(maxfun=1e6)))
-
-# load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
-
-print(summary(glmm.reduced4), corr=FALSE)
-```
-
-
-```{r rePCA for reduced4 model}
-summary(rePCA(glmm.reduced4))
-```
-
-
-## Reduced 5 Logit Mixed Model
-```{r reduced 5 logistic mixed model}
-glmm.reduced5 <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
-                         (0 + Experiment_D | Participant) +
-                         (1 + Congruency_D | Stimuli),
-                       data = df.clean,
-                       family = "binomial",
-                       # verbose = TRUE,
-                       control=glmerControl(optCtrl=list(maxfun=1e6)))
-
-# load(file.path(path.nesi, "S101_glmm_reduced1.RData"))
-
-print(summary(glmm.reduced5), corr=FALSE)
-```
-
-
-```{r rePCA for reduced5 model}
-summary(rePCA(glmm.reduced5))
-```
-
-
-```{r}
-# Fixed effect reduced 1 logist mixed model
-
-# glmm.freduced1 <- glmer(isCorrect ~ Experiment * Congruency + Experiment:Alignment + Congruency:Alignment + Experiment:Congruency:Alignment +
-#                          (0 + Experiment_D | Participant) +
-#                          (1 + Congruency_D | Stimuli),
-#                        data = df.clean,
-#                        family = "binomial",
-#                        # verbose = TRUE,
-#                        control=glmerControl(optCtrl=list(maxfun=1e6)))
-#   
-# print(summary(glmm.freduced1), corr=FALSE)
-# anova(glmm.reduced5, glmm.freduced1)
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r logit mixed model -- zero correlation parameter }
-# build the full model
-glmm.zcp <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-                     (1 + Experiment * Congruency * Alignment || Participant) +
-                     (1 + Experiment * Congruency * Alignment || Stimuli),
+glmm.full <- glmer(isCorrect ~ Experiment * CF_contrast +
+                     (1 + Experiment * CF_contrast | Participant) +
+                     (1 + Experiment * CF_contrast | Stimuli),
                    data = df.clean,
                    family = "binomial",
-                   verbose = TRUE,
+                   # verbose = TRUE,
                    control=glmerControl(optCtrl=list(maxfun=1e6)))
 
-anova(glmm.full, glmm.zcp)
+# load(file.path(path.nesi, "S101_glmm_full.RData"))
+
+print(summary(glmm.full), corr=FALSE)
+
+```
 ```
 
 
@@ -664,29 +495,19 @@ anova(glmm.full, glmm.zcp)
 
 
 
-```{r save the theta for zcp model, include=FALSE}
-theta_bk$zcp <- glmm.zcp@theta
-```
 
 
-```{r logit mixed model -- step}
-# build the full model
-glmm.zcp.step <- step(glmm.zcp, reduce.fixed = FALSE)
 
-summary(glmm.zcp.step)
-```
 
-```{r}
-glmm.reduced <- get_model(glmm.zcp.step)
 
-anova(glmm.reduced, glmm.full)
-```
 
-```{r save the theta for reduced model, include=FALSE}
-theta_bk$reduced <- glmm.reduced@theta
 
-save(theta_bk, "theta_backup.RData")
-```
+
+
+
+
+
+
 
 
 
@@ -694,3 +515,4 @@ save(theta_bk, "theta_backup.RData")
 ```{r versions}
 sessionInfo()
 ```
+

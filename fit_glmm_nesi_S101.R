@@ -1,4 +1,5 @@
 # The current R file is run in NeSI to get the results for several models and save them as .RData file
+message("Fitting model for DataAnalysis_CF_104_6_v4.0.Rmd...")
 
 #############################  Preparation  ##############################
 # set the working directory
@@ -49,14 +50,14 @@ message("")
 message(paste0(strrep("#", 80)))
 message("Fitting the reduced1 model...")
 glmm.reduced1 <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-                         
-                         (0 + Experiment_D + 
-                            Experiment_Alignment + Congruency_Alignment +
-                            Experiment_Congruency_Alignment | Participant) +
-                         
-                         (1 + Congruency_D + Alignment_D +
-                            Experiment_Congruency + Congruency_Alignment +
-                            Experiment_Congruency_Alignment | Stimuli),
+                           
+                           (0 + Experiment_D + 
+                                Experiment_Alignment + Congruency_Alignment +
+                                Experiment_Congruency_Alignment | Participant) +
+                           
+                           (1 + Congruency_D + Alignment_D +
+                                Experiment_Congruency + Congruency_Alignment +
+                                Experiment_Congruency_Alignment | Stimuli),
                        
                        data = df.clean,
                        family = "binomial",
@@ -74,13 +75,13 @@ message("")
 message(paste0(strrep("#", 80)))
 message("Fitting the reduced2 model...")
 glmm.reduced2 <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
-                         
-                         (0 + Experiment_D +
-                            Experiment_Congruency_Alignment | Participant) +
-                         
-                         (1 + Congruency_D + Alignment_D +
-                            Congruency_Alignment +
-                            Experiment_Congruency_Alignment | Stimuli),
+                           
+                           (0 + Experiment_D +
+                                Experiment_Congruency_Alignment | Participant) +
+                           
+                           (1 + Congruency_D + Alignment_D +
+                                Congruency_Alignment +
+                                Experiment_Congruency_Alignment | Stimuli),
                        
                        data = df.clean,
                        family = "binomial",
