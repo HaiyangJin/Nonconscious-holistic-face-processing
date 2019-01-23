@@ -36,15 +36,9 @@ glmm.max.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
                       control=glmerControl(optCtrl=list(maxfun=1e6))
 )
 
-
-
-message("")
-message("Stepping the maximum model...")
-glmm.max.acc.step <- step(glmm.max.acc, reduce.fixed = FALSE)
-
 # Save the maximum model
 print("Saving the glmm.max.acc ...")
-save(glmm.max.acc, glmm.max.acc.step, file = "E1046_glmm_max_acc.RData")
+save(glmm.max.acc, file = "E1046_glmm_max_acc.RData")
 
 
 
