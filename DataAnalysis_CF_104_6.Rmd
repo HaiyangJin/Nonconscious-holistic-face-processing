@@ -478,11 +478,11 @@ glmm.zcp.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
                           (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Stimuli),
                       data = df.clean,
                       family = "binomial",
-                      verbose = TRUE,
+                      # verbose = TRUE,
                       control=glmerControl(optCtrl=list(maxfun=1e6))
 )
 
-anova(glmm.zcp.acc)
+anova(glmm.zcp.acc, glmm.max.acc)
 
 ```
 
@@ -499,6 +499,7 @@ glmm.rdc.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
                       control=glmerControl(optCtrl=list(maxfun=1e6))
 )
 
+anova(glmm.rdc.acc, glmm.zcp.acc)
 ```
 
 
@@ -513,6 +514,8 @@ glmm.etd.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
                       verbose = TRUE,
                       control=glmerControl(optCtrl=list(maxfun=1e6))
 )
+
+anova(glmm.etd.acc, glmm.red.acc)
 ```
 
 
