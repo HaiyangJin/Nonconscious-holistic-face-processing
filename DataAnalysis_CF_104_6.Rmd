@@ -11,9 +11,6 @@ output:
     toc_float: true
     includes:
         after_body: Utilities/footer.html
-output_dir: output/
-params:
-    output_dir: output/
 version: "4.0"
 ---
 
@@ -29,31 +26,10 @@ library(tidyverse)
 library(ez)
 library(lme4)
 library(lmerTest)
-
-
-# set up the theme for plot and rainclound plot
-plot_theme = theme(
-  text = element_text(size = 10),
-  axis.title = element_text(size = 16), 
-  axis.text = element_text(size = 14), # the size of the texts in plot
-  # axis.text.x = element_text(angle = 45, vjust = 0.5),
-  legend.title=element_text(size=16),
-  legend.text=element_text(size=16),
-  legend.position = "right",
-  legend.key.width = unit(1.2, "cm"),
-  plot.title = element_text(lineheight=.8, face="bold", size = 17),
-  panel.border = element_blank(),
-  panel.grid.minor = element_blank(),
-  panel.grid.major = element_blank(),
-  axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
-  axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid', arrow = arrow(length = unit(0.3, "cm"))),
-  # remove the facet background color
-  strip.text = element_text(face="bold", size=12, lineheight=5.0),
-  strip.background = element_rect(fill="white", colour="white", size=1),
-  strip.placement = "outside"
-)
+library(emmeans)
 
 source(file.path("R", "geom_flat_violin.R"))
+source(file.path("R", "plot_theme.R"))
     
 ```
 
@@ -445,16 +421,114 @@ rt.ColuPlot
 # Accuracy (Raw Responses)
 ```{r output the data for running glmm in NeSI}
 path.nesi <- "NeSI"
-
-if (TRUE) {
-    fn.df <- "P101_104_106_clean"
-    # write_csv(df.clean, file.path(path.nesi, paste0(fn.df, ".csv")))
-    save(df.clean, file = file.path(path.nesi, paste0(fn.df, ".RData")))
-}
-
 ```
 
 ## Logit Mixed Model for Accuracy
+```{r add coding matrix}
+# construct the dummy coding
+df.clean <- {
+    df.clean %>% 
+        mutate(
+            Exp_D = ifelse(Experiment == "CFS", 0, ifelse(Experiment == "monocular", 1, NaN)),
+            Con_D = ifelse(Congruency == "congruent", 0, ifelse(Congruency == "incongruent", 1, NaN)),
+            Ali_D = ifelse(Alignment == "aligned", 0, ifelse(Alignment == "misaligned", 1, NaN)),
+            
+            Exp_Con = Exp_D * Con_D,
+            Exp_Ali = Exp_D * Ali_D,
+            Con_Ali = Con_D * Ali_D,
+            
+            Exp_Con_Ali = Exp_D * Con_D * Ali_D
+        )
+} 
+
+fn.df <- "P101_104_106_clean"
+# write_csv(df.clean, file.path(path.nesi, paste0(fn.df, ".csv")))
+# save(df.clean, file = file.path(path.nesi, paste0(fn.df, ".RData")))
+```
+
+
+### Maximum Model
+```{r maximum model for accuracy (glmm.max.acc)}
+# data filename for this model
+datafn.glmm.max.acc <- file.path(folder.nesi, "E1046_glmm_max_acc.RData")
+
+if (!file.exists(datafn.glmm.max.acc)) {
+    # fit the maximum model
+    glmm.max.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Participant) +
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Stimuli),
+                          data = df.clean,
+                          family = "binomial",
+                          verbose = TRUE,
+                          control=glmerControl(optCtrl=list(maxfun=1e6))
+    )
+} else {
+    load(datafn.glmm.max.acc)
+}
+
+print(summary(glmm.max.acc), corr = FALSE)
+```
+
+
+### Zero-correlation-parameter model
+```{r zcp model for accuracy (glmm.zcp.acc)}
+# fit the zcp model
+glmm.zcp.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Participant) +
+                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Stimuli),
+                      data = df.clean,
+                      family = "binomial",
+                      verbose = TRUE,
+                      control=glmerControl(optCtrl=list(maxfun=1e6))
+)
+
+anova(glmm.zcp.acc)
+
+```
+
+
+### Reduced model
+```{r reduced model for accuracy (glmm.rdc.acc)}
+# reduce the random effects
+glmm.rdc.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Participant) +
+                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Stimuli),
+                      data = df.clean,
+                      family = "binomial",
+                      verbose = TRUE,
+                      control=glmerControl(optCtrl=list(maxfun=1e6))
+)
+
+```
+
+
+### Extended model
+```{r extended model for accuracy (glmm.etd.acc)}
+# extend the reduced model with correlation parameters
+glmm.etd.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Participant) +
+                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Stimuli),
+                      data = df.clean,
+                      family = "binomial",
+                      verbose = TRUE,
+                      control=glmerControl(optCtrl=list(maxfun=1e6))
+)
+```
+
+
+### Optimal model
+```{r optimal model for accuracy (glmm.opt.acc)}
+
+```
+
+
+
+
+
+
+
+
+
 
 ### Logit Mixed Model for the CFS condition
 ```{r logit mixed model -- cfs}

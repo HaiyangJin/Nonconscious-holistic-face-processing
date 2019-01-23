@@ -22,6 +22,33 @@ load("P101_104_106_clean.RData")
 
 
 #############################  Fitting the glmm model for CFS ##############################
+# fit the model for CFS
+message("")
+message(paste0(strrep("#", 80)))
+message("Fitting the maximum model...")
+
+glmm.max.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Participant) +
+                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Stimuli),
+                      data = df.clean,
+                      family = "binomial",
+                      verbose = TRUE,
+                      control=glmerControl(optCtrl=list(maxfun=1e6))
+)
+
+
+
+message("")
+message("Stepping the maximum model...")
+glmm.max.acc.step <- step(glmm.max.acc, reduce.fixed = FALSE)
+
+# Save the maximum model
+print("Saving the glmm.max.acc ...")
+save(glmm.max.acc, glmm.max.acc.step, file = "E1046_glmm_max_acc.RData")
+
+
+
+#############################  Fitting the glmm model for CFS ##############################
 # # fit the model for CFS
 # message("")
 # message(paste0(strrep("#", 80)))
@@ -41,22 +68,22 @@ load("P101_104_106_clean.RData")
 
 
 #############################  Fitting the glmm model for monocular  ##############################
-# fit the model for monocular
-message("")
-message(paste0(strrep("#", 80)))
-message("Fitting the model for monocular...")
-glmm.mono <- glmer(isCorrect ~ Congruency * Alignment +
-                       (1 + Congruency * Alignment | Participant) +
-                       (1 + Congruency * Alignment | Stimuli),
-                   data = filter(df.clean, Experiment == "monocular"),
-                   family = "binomial",
-                   verbose = TRUE,
-                   control=glmerControl(optCtrl=list(maxfun=1e6))
-                   )
-
-# Save the glmm.mono
-print("Saving the glmm.mono ...")
-save(glmm.mono, file = "P101_glmm_mono.RData")
+# # fit the model for monocular
+# message("")
+# message(paste0(strrep("#", 80)))
+# message("Fitting the model for monocular...")
+# glmm.mono <- glmer(isCorrect ~ Congruency * Alignment +
+#                        (1 + Congruency * Alignment | Participant) +
+#                        (1 + Congruency * Alignment | Stimuli),
+#                    data = filter(df.clean, Experiment == "monocular"),
+#                    family = "binomial",
+#                    verbose = TRUE,
+#                    control=glmerControl(optCtrl=list(maxfun=1e6))
+#                    )
+# 
+# # Save the glmm.mono
+# print("Saving the glmm.mono ...")
+# save(glmm.mono, file = "P101_glmm_mono.RData")
 
 
 # versions of packages used
