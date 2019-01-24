@@ -43,6 +43,9 @@ fn.raw <- file.path("data","104_106_n-20_2017-05-04-1446.csv")
 ## input the filename of the output file (.csv)
 output.name <- "E1_104_106"
 
+folder.nesi <- "NeSI"
+folder.output <- "output"
+
 ```
 
 ```{r save CSV, include = FALSE}
@@ -419,9 +422,6 @@ rt.ColuPlot
 
 
 # Accuracy (Raw Responses)
-```{r output the data for running glmm in NeSI}
-path.nesi <- "NeSI"
-```
 
 ## Logit Mixed Model for Accuracy
 ```{r add coding matrix}
@@ -441,7 +441,7 @@ df.clean <- {
         )
 } 
 
-fn.df <- "P101_104_106_clean"
+# fn.df <- "P101_104_106_clean"
 # write_csv(df.clean, file.path(path.nesi, paste0(fn.df, ".csv")))
 # save(df.clean, file = file.path(path.nesi, paste0(fn.df, ".RData")))
 ```
@@ -472,34 +472,92 @@ print(summary(glmm.max.acc), corr = FALSE)
 
 ### Zero-correlation-parameter model
 ```{r zcp model for accuracy (glmm.zcp.acc)}
-# fit the zcp model
-glmm.zcp.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Participant) +
-                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Stimuli),
-                      data = df.clean,
-                      family = "binomial",
-                      # verbose = TRUE,
-                      control=glmerControl(optCtrl=list(maxfun=1e6))
-)
+# data filename for this model
+datafn.glmm.zcp.acc <- file.path(folder.output, "E1046_glmm_zcp_acc.RData")
+
+if (!file.exists(datafn.glmm.zcp.acc)) {
+    # fit the zcp model
+    glmm.zcp.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Participant) +
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Stimuli),
+                          data = df.clean,
+                          family = "binomial",
+                          # verbose = TRUE,
+                          control=glmerControl(optCtrl=list(maxfun=1e6)))
+    # save glmm.zcp.acc
+    save(glmm.zcp.acc, file = datafn.glmm.zcp.acc)
+    
+} else {
+    load(datafn.glmm.zcp.acc)
+}
 
 anova(glmm.zcp.acc, glmm.max.acc)
+```
+The results show that the zero-correlation-parameter model (`glmm.zcp.acc`) fits better than the maximum model (`glmm.max.acc`). Next, Principle Component Analysis (PCA) was conducted for the random effects in the zcp model.
 
+```{r rePCA for glmm.zcp.acc}
+summary(rePCA(glmm.zcp.acc))
+```
+Results of PCA show that the proportion of variances of four stimulus random effects and four participant random effects are less than 1%. These eight random effects (`Exp_Ali`, `Exp_D`, `Con_Ali`, and `Ali_D` for Stimuli; `Exp_Con`, `Ali_D`, `Con_D`, and `Exp_Ali` for Participant) were removed from the first reduced model.
+
+### Reduced model
+```{r reduced model 1 for accuracy (glmm.rdc1.acc)}
+# data filename for this model
+datafn.glmm.rdc1.acc <- file.path(folder.output, "E1046_glmm_rdc1_acc.RData")
+
+if (!file.exists(datafn.glmm.rdc1.acc)) {
+    # reduce the random effects
+    glmm.rdc1.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                               (1 + Exp_D + Con_Ali + Exp_Con_Ali || Participant) +
+                               (1 + Con_D + Exp_Con + Exp_Con_Ali || Stimuli),
+                           data = df.clean,
+                           family = "binomial",
+                           # verbose = TRUE,
+                           control=glmerControl(optCtrl=list(maxfun=1e6))
+    )
+    
+    # save glmm.rdc1.acc
+    save(glmm.rdc1.acc, file = datafn.glmm.rdc1.acc)
+    
+} else {
+    load(datafn.glmm.rdc1.acc)
+}
+
+anova(glmm.rdc1.acc, glmm.zcp.acc)
+```
+
+```{r rePCA for glmm.rdc1.acc}
+# PCA for random effects of glmm.rdc1.acc
+summary(rePCA(glmm.rdc1.acc))
+```
+PCA for the first reduced model show the variance proportions of two random effects are still less than 1%. Then they are removed in the second reduced model.
+
+```{r}
+print(summary(glmm.rdc1.acc), corr = FALSE)
 ```
 
 
-### Reduced model
-```{r reduced model for accuracy (glmm.rdc.acc)}
+```{r reduced model 2 for accuracy (glmm.rdc2.acc)}
 # reduce the random effects
-glmm.rdc.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Participant) +
-                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Stimuli),
+glmm.rdc2.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                          (1 + Exp_D + Con_Ali || Participant) +
+                          (1 + Con_D + Exp_Con_Ali || Stimuli),
                       data = df.clean,
-                      family = "binomial",
-                      verbose = TRUE,
-                      control=glmerControl(optCtrl=list(maxfun=1e6))
+                      family = "binomial"
+                      # verbose = TRUE
 )
 
-anova(glmm.rdc.acc, glmm.zcp.acc)
+anova(glmm.rdc2.acc, glmm.rdc1.acc)
+```
+
+
+```{r rePCA for glmm.rdc2.acc}
+# PCA for random effects of glmm.rdc2.acc
+summary(rePCA(glmm.rdc2.acc))
+```
+
+```{r}
+print(summary(glmm.rdc2.acc), corr = FALSE)
 ```
 
 
@@ -507,15 +565,15 @@ anova(glmm.rdc.acc, glmm.zcp.acc)
 ```{r extended model for accuracy (glmm.etd.acc)}
 # extend the reduced model with correlation parameters
 glmm.etd.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Participant) +
-                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Stimuli),
+                          (1 + Exp_D + Con_Ali | Participant) +
+                          (1 + Con_D + Exp_Con_Ali | Stimuli),
                       data = df.clean,
                       family = "binomial",
-                      verbose = TRUE,
-                      control=glmerControl(optCtrl=list(maxfun=1e6))
+                      # verbose = TRUE,
+                      control=glmerControl(optCtrl=list(maxfun=1e7))
 )
 
-anova(glmm.etd.acc, glmm.red.acc)
+anova(glmm.etd.acc, glmm.rdc2.acc)
 ```
 
 
