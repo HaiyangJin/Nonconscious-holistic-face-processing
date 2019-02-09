@@ -1,0 +1,6648 @@
+Fitting model for DataAnalysis_CF_104_6.Rmd...
+The corresponding *.out file is 2423063.out
+Setting the current working directory...
+
+Loading the libraries...
+── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 2.2.1     ✔ purrr   0.2.5
+✔ tibble  1.4.2     ✔ dplyr   0.7.8
+✔ tidyr   0.8.0     ✔ stringr 1.3.1
+✔ readr   1.1.1     ✔ forcats 0.3.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+Loading required package: Matrix
+
+Attaching package: ‘Matrix’
+
+The following object is masked from ‘package:tidyr’:
+
+    expand
+
+
+Attaching package: ‘lmerTest’
+
+The following object is masked from ‘package:lme4’:
+
+    lmer
+
+The following object is masked from ‘package:stats’:
+
+    step
+
+
+Loading the data file...
+
+################################################################################
+Fitting the maximum model...
+iteration: 1
+	f(x) = 10071.758085
+iteration: 2
+	f(x) = 10287.876558
+iteration: 3
+	f(x) = 10215.486905
+iteration: 4
+	f(x) = 10212.962285
+iteration: 5
+	f(x) = 10223.949319
+iteration: 6
+	f(x) = 10148.123364
+iteration: 7
+	f(x) = 10137.525064
+iteration: 8
+	f(x) = 10132.491481
+iteration: 9
+	f(x) = 10097.604883
+iteration: 10
+	f(x) = 10197.019785
+iteration: 11
+	f(x) = 10170.113879
+iteration: 12
+	f(x) = 10178.304679
+iteration: 13
+	f(x) = 10156.314562
+iteration: 14
+	f(x) = 10148.558435
+iteration: 15
+	f(x) = 10114.660494
+iteration: 16
+	f(x) = 10097.630365
+iteration: 17
+	f(x) = 10173.475487
+iteration: 18
+	f(x) = 10172.888973
+iteration: 19
+	f(x) = 10148.123364
+iteration: 20
+	f(x) = 10120.742513
+iteration: 21
+	f(x) = 10132.491481
+iteration: 22
+	f(x) = 10097.604883
+iteration: 23
+	f(x) = 10211.092241
+iteration: 24
+	f(x) = 10114.162948
+iteration: 25
+	f(x) = 10160.839335
+iteration: 26
+	f(x) = 10157.001767
+iteration: 27
+	f(x) = 10105.558095
+iteration: 28
+	f(x) = 10132.005158
+iteration: 29
+	f(x) = 10120.767574
+iteration: 30
+	f(x) = 10114.660494
+iteration: 31
+	f(x) = 10097.630365
+iteration: 32
+	f(x) = 10138.923848
+iteration: 33
+	f(x) = 10125.459856
+iteration: 34
+	f(x) = 10103.720730
+iteration: 35
+	f(x) = 10132.777963
+iteration: 36
+	f(x) = 10105.558095
+iteration: 37
+	f(x) = 10094.200700
+iteration: 38
+	f(x) = 10087.951936
+iteration: 39
+	f(x) = 10081.298026
+iteration: 40
+	f(x) = 10076.453538
+iteration: 41
+	f(x) = 10078.946843
+iteration: 42
+	f(x) = 10073.766228
+iteration: 43
+	f(x) = 10072.898504
+iteration: 44
+	f(x) = 10079.475645
+iteration: 45
+	f(x) = 10076.627065
+iteration: 46
+	f(x) = 10089.173625
+iteration: 47
+	f(x) = 10074.843147
+iteration: 48
+	f(x) = 10074.724326
+iteration: 49
+	f(x) = 10078.947412
+iteration: 50
+	f(x) = 10079.890276
+iteration: 51
+	f(x) = 10076.083076
+iteration: 52
+	f(x) = 10074.628694
+iteration: 53
+	f(x) = 10089.523873
+iteration: 54
+	f(x) = 10075.636220
+iteration: 55
+	f(x) = 10079.576274
+iteration: 56
+	f(x) = 10073.498191
+iteration: 57
+	f(x) = 10081.105644
+iteration: 58
+	f(x) = 10074.760791
+iteration: 59
+	f(x) = 10090.514232
+iteration: 60
+	f(x) = 10075.207337
+iteration: 61
+	f(x) = 10079.847299
+iteration: 62
+	f(x) = 10078.106203
+iteration: 63
+	f(x) = 10074.399564
+iteration: 64
+	f(x) = 10088.768427
+iteration: 65
+	f(x) = 10074.241899
+iteration: 66
+	f(x) = 10075.656722
+iteration: 67
+	f(x) = 10078.768593
+iteration: 68
+	f(x) = 10087.740210
+iteration: 69
+	f(x) = 10077.883941
+iteration: 70
+	f(x) = 10079.543481
+iteration: 71
+	f(x) = 10086.895585
+iteration: 72
+	f(x) = 10080.835247
+iteration: 73
+	f(x) = 10085.187534
+iteration: 74
+	f(x) = 9981.600571
+iteration: 75
+	f(x) = 10049.405503
+iteration: 76
+	f(x) = 10018.025005
+iteration: 77
+	f(x) = 10051.364728
+iteration: 78
+	f(x) = 10049.550476
+iteration: 79
+	f(x) = 10075.127972
+iteration: 80
+	f(x) = 10067.394614
+iteration: 81
+	f(x) = 10070.020181
+iteration: 82
+	f(x) = 10013.333642
+iteration: 83
+	f(x) = 10069.181158
+iteration: 84
+	f(x) = 10104.931013
+iteration: 85
+	f(x) = 10040.183618
+iteration: 86
+	f(x) = 10057.785004
+iteration: 87
+	f(x) = 10090.248739
+iteration: 88
+	f(x) = 10067.593032
+iteration: 89
+	f(x) = 10021.181151
+iteration: 90
+	f(x) = 10107.829749
+iteration: 91
+	f(x) = 10049.550476
+iteration: 92
+	f(x) = 10093.170051
+iteration: 93
+	f(x) = 10067.394614
+iteration: 94
+	f(x) = 10070.020181
+iteration: 95
+	f(x) = 10003.469988
+iteration: 96
+	f(x) = 10089.343288
+iteration: 97
+	f(x) = 10041.472417
+iteration: 98
+	f(x) = 10038.752196
+iteration: 99
+	f(x) = 10058.302589
+iteration: 100
+	f(x) = 10042.128174
+iteration: 101
+	f(x) = 10090.743170
+iteration: 102
+	f(x) = 10090.248739
+iteration: 103
+	f(x) = 10067.593032
+iteration: 104
+	f(x) = 10036.939936
+iteration: 105
+	f(x) = 10077.656477
+iteration: 106
+	f(x) = 10060.447794
+iteration: 107
+	f(x) = 10040.822949
+iteration: 108
+	f(x) = 10058.302589
+iteration: 109
+	f(x) = 10061.147775
+iteration: 110
+	f(x) = 10069.404031
+iteration: 111
+	f(x) = 10073.368414
+iteration: 112
+	f(x) = 10078.917346
+iteration: 113
+	f(x) = 10076.405563
+iteration: 114
+	f(x) = 10079.563279
+iteration: 115
+	f(x) = 10080.182999
+iteration: 116
+	f(x) = 10073.969381
+iteration: 117
+	f(x) = 10074.337148
+iteration: 118
+	f(x) = 10054.384931
+iteration: 119
+	f(x) = 10077.968192
+iteration: 120
+	f(x) = 10078.442024
+iteration: 121
+	f(x) = 10072.813710
+iteration: 122
+	f(x) = 10071.027286
+iteration: 123
+	f(x) = 10075.056257
+iteration: 124
+	f(x) = 10075.409533
+iteration: 125
+	f(x) = 10053.413106
+iteration: 126
+	f(x) = 10076.982887
+iteration: 127
+	f(x) = 10071.570412
+iteration: 128
+	f(x) = 10077.654357
+iteration: 129
+	f(x) = 10069.116135
+iteration: 130
+	f(x) = 10074.989276
+iteration: 131
+	f(x) = 10048.361544
+iteration: 132
+	f(x) = 10074.612619
+iteration: 133
+	f(x) = 10069.051946
+iteration: 134
+	f(x) = 10070.899255
+iteration: 135
+	f(x) = 10073.995421
+iteration: 136
+	f(x) = 10053.158072
+iteration: 137
+	f(x) = 10077.066839
+iteration: 138
+	f(x) = 10075.344462
+iteration: 139
+	f(x) = 10070.667739
+iteration: 140
+	f(x) = 10056.207870
+iteration: 141
+	f(x) = 10074.455987
+iteration: 142
+	f(x) = 10071.138588
+iteration: 143
+	f(x) = 10060.718261
+iteration: 144
+	f(x) = 10071.169245
+iteration: 145
+	f(x) = 10060.620793
+iteration: 146
+	f(x) = 9824.232426
+iteration: 147
+	f(x) = 9783.206845
+iteration: 148
+	f(x) = 9708.185615
+iteration: 149
+	f(x) = 9652.277746
+iteration: 150
+	f(x) = 9728.045581
+iteration: 151
+	f(x) = 9670.638012
+iteration: 152
+	f(x) = 9652.034532
+iteration: 153
+	f(x) = 9641.597583
+iteration: 154
+	f(x) = 9640.772071
+iteration: 155
+	f(x) = 9643.517805
+iteration: 156
+	f(x) = 9638.369987
+iteration: 157
+	f(x) = 9635.622849
+iteration: 158
+	f(x) = 9632.308849
+iteration: 159
+	f(x) = 9629.328971
+iteration: 160
+	f(x) = 9624.138537
+iteration: 161
+	f(x) = 9631.677780
+iteration: 162
+	f(x) = 9622.968633
+iteration: 163
+	f(x) = 9619.284673
+iteration: 164
+	f(x) = 9621.634493
+iteration: 165
+	f(x) = 9621.211171
+iteration: 166
+	f(x) = 9617.869365
+iteration: 167
+	f(x) = 9613.137174
+iteration: 168
+	f(x) = 9608.504454
+iteration: 169
+	f(x) = 9603.207320
+iteration: 170
+	f(x) = 9596.137108
+iteration: 171
+	f(x) = 9588.372109
+iteration: 172
+	f(x) = 9596.522007
+iteration: 173
+	f(x) = 9588.508426
+iteration: 174
+	f(x) = 9583.207882
+iteration: 175
+	f(x) = 9580.088224
+iteration: 176
+	f(x) = 9577.704656
+iteration: 177
+	f(x) = 9582.119714
+iteration: 178
+	f(x) = 9579.611151
+iteration: 179
+	f(x) = 9576.436508
+iteration: 180
+	f(x) = 9574.512797
+iteration: 181
+	f(x) = 9570.686137
+iteration: 182
+	f(x) = 9568.624527
+iteration: 183
+	f(x) = 9563.031518
+iteration: 184
+	f(x) = 9560.129437
+iteration: 185
+	f(x) = 9559.364764
+iteration: 186
+	f(x) = 9560.518830
+iteration: 187
+	f(x) = 9558.984051
+iteration: 188
+	f(x) = 9559.724175
+iteration: 189
+	f(x) = 9560.366148
+iteration: 190
+	f(x) = 9556.372396
+iteration: 191
+	f(x) = 9554.309831
+iteration: 192
+	f(x) = 9552.299101
+iteration: 193
+	f(x) = 9557.328594
+iteration: 194
+	f(x) = 9554.763782
+iteration: 195
+	f(x) = 9551.380240
+iteration: 196
+	f(x) = 9552.857484
+iteration: 197
+	f(x) = 9553.589008
+iteration: 198
+	f(x) = 9550.327958
+iteration: 199
+	f(x) = 9552.179055
+iteration: 200
+	f(x) = 9548.040843
+iteration: 201
+	f(x) = 9548.293793
+iteration: 202
+	f(x) = 9550.951336
+iteration: 203
+	f(x) = 9549.020708
+iteration: 204
+	f(x) = 9550.180745
+iteration: 205
+	f(x) = 9547.258103
+iteration: 206
+	f(x) = 9549.732814
+iteration: 207
+	f(x) = 9545.358112
+iteration: 208
+	f(x) = 9546.034213
+iteration: 209
+	f(x) = 9547.873327
+iteration: 210
+	f(x) = 9542.991107
+iteration: 211
+	f(x) = 9540.793093
+iteration: 212
+	f(x) = 9542.273814
+iteration: 213
+	f(x) = 9543.591758
+iteration: 214
+	f(x) = 9537.752083
+iteration: 215
+	f(x) = 9537.614924
+iteration: 216
+	f(x) = 9541.308962
+iteration: 217
+	f(x) = 9534.071311
+iteration: 218
+	f(x) = 9532.927319
+iteration: 219
+	f(x) = 9531.671166
+iteration: 220
+	f(x) = 9531.810060
+iteration: 221
+	f(x) = 9534.364772
+iteration: 222
+	f(x) = 9530.832338
+iteration: 223
+	f(x) = 9533.090900
+iteration: 224
+	f(x) = 9532.692498
+iteration: 225
+	f(x) = 9530.315139
+iteration: 226
+	f(x) = 9531.846614
+iteration: 227
+	f(x) = 9532.869040
+iteration: 228
+	f(x) = 9530.929829
+iteration: 229
+	f(x) = 9532.222363
+iteration: 230
+	f(x) = 9527.844756
+iteration: 231
+	f(x) = 9527.439990
+iteration: 232
+	f(x) = 9530.334371
+iteration: 233
+	f(x) = 9526.774237
+iteration: 234
+	f(x) = 9529.386052
+iteration: 235
+	f(x) = 9524.958691
+iteration: 236
+	f(x) = 9524.220570
+iteration: 237
+	f(x) = 9525.646453
+iteration: 238
+	f(x) = 9526.613450
+iteration: 239
+	f(x) = 9521.776294
+iteration: 240
+	f(x) = 9521.844719
+iteration: 241
+	f(x) = 9524.192124
+iteration: 242
+	f(x) = 9521.254544
+iteration: 243
+	f(x) = 9523.528408
+iteration: 244
+	f(x) = 9519.579306
+iteration: 245
+	f(x) = 9520.741264
+iteration: 246
+	f(x) = 9521.683509
+iteration: 247
+	f(x) = 9519.583421
+iteration: 248
+	f(x) = 9521.860879
+iteration: 249
+	f(x) = 9520.428553
+iteration: 250
+	f(x) = 9521.859011
+iteration: 251
+	f(x) = 9520.802690
+iteration: 252
+	f(x) = 9519.122464
+iteration: 253
+	f(x) = 9517.437002
+iteration: 254
+	f(x) = 9515.897485
+iteration: 255
+	f(x) = 9514.493046
+iteration: 256
+	f(x) = 9513.608068
+iteration: 257
+	f(x) = 9512.569969
+iteration: 258
+	f(x) = 9514.773421
+iteration: 259
+	f(x) = 9514.181896
+iteration: 260
+	f(x) = 9511.913390
+iteration: 261
+	f(x) = 9511.326621
+iteration: 262
+	f(x) = 9512.959294
+iteration: 263
+	f(x) = 9509.020550
+iteration: 264
+	f(x) = 9507.551938
+iteration: 265
+	f(x) = 9507.934674
+iteration: 266
+	f(x) = 9507.909749
+iteration: 267
+	f(x) = 9508.297413
+iteration: 268
+	f(x) = 9508.158085
+iteration: 269
+	f(x) = 9507.898115
+iteration: 270
+	f(x) = 9509.001333
+iteration: 271
+	f(x) = 9507.984214
+iteration: 272
+	f(x) = 9509.030368
+iteration: 273
+	f(x) = 9508.754979
+iteration: 274
+	f(x) = 9509.208244
+iteration: 275
+	f(x) = 9508.229991
+iteration: 276
+	f(x) = 9508.469246
+iteration: 277
+	f(x) = 9506.246030
+iteration: 278
+	f(x) = 9507.602042
+iteration: 279
+	f(x) = 9507.811653
+iteration: 280
+	f(x) = 9505.261541
+iteration: 281
+	f(x) = 9504.365731
+iteration: 282
+	f(x) = 9504.253259
+iteration: 283
+	f(x) = 9505.493245
+iteration: 284
+	f(x) = 9504.467051
+iteration: 285
+	f(x) = 9505.301264
+iteration: 286
+	f(x) = 9505.162050
+iteration: 287
+	f(x) = 9505.018969
+iteration: 288
+	f(x) = 9504.709433
+iteration: 289
+	f(x) = 9505.815843
+iteration: 290
+	f(x) = 9503.530341
+iteration: 291
+	f(x) = 9503.673227
+iteration: 292
+	f(x) = 9503.770218
+iteration: 293
+	f(x) = 9503.362547
+iteration: 294
+	f(x) = 9503.598983
+iteration: 295
+	f(x) = 9504.373443
+iteration: 296
+	f(x) = 9503.382387
+iteration: 297
+	f(x) = 9501.949830
+iteration: 298
+	f(x) = 9502.245438
+iteration: 299
+	f(x) = 9502.436169
+iteration: 300
+	f(x) = 9502.996383
+iteration: 301
+	f(x) = 9503.229128
+iteration: 302
+	f(x) = 9501.746220
+iteration: 303
+	f(x) = 9501.732929
+iteration: 304
+	f(x) = 9500.065346
+iteration: 305
+	f(x) = 9501.306809
+iteration: 306
+	f(x) = 9501.333895
+iteration: 307
+	f(x) = 9499.216593
+iteration: 308
+	f(x) = 9498.986205
+iteration: 309
+	f(x) = 9501.378142
+iteration: 310
+	f(x) = 9499.857213
+iteration: 311
+	f(x) = 9498.204979
+iteration: 312
+	f(x) = 9498.270535
+iteration: 313
+	f(x) = 9500.533001
+iteration: 314
+	f(x) = 9499.009609
+iteration: 315
+	f(x) = 9498.117606
+iteration: 316
+	f(x) = 9498.062060
+iteration: 317
+	f(x) = 9500.023902
+iteration: 318
+	f(x) = 9498.259557
+iteration: 319
+	f(x) = 9498.375531
+iteration: 320
+	f(x) = 9497.916953
+iteration: 321
+	f(x) = 9498.166374
+iteration: 322
+	f(x) = 9498.709167
+iteration: 323
+	f(x) = 9498.944164
+iteration: 324
+	f(x) = 9497.789095
+iteration: 325
+	f(x) = 9500.123348
+iteration: 326
+	f(x) = 9499.205959
+iteration: 327
+	f(x) = 9498.026251
+iteration: 328
+	f(x) = 9496.432902
+iteration: 329
+	f(x) = 9495.065408
+iteration: 330
+	f(x) = 9495.084559
+iteration: 331
+	f(x) = 9495.456232
+iteration: 332
+	f(x) = 9494.319228
+iteration: 333
+	f(x) = 9494.871087
+iteration: 334
+	f(x) = 9495.122498
+iteration: 335
+	f(x) = 9494.588435
+iteration: 336
+	f(x) = 9495.241837
+iteration: 337
+	f(x) = 9494.709011
+iteration: 338
+	f(x) = 9495.793755
+iteration: 339
+	f(x) = 9495.171385
+iteration: 340
+	f(x) = 9494.427757
+iteration: 341
+	f(x) = 9494.377649
+iteration: 342
+	f(x) = 9495.624658
+iteration: 343
+	f(x) = 9494.897497
+iteration: 344
+	f(x) = 9495.461563
+iteration: 345
+	f(x) = 9495.841439
+iteration: 346
+	f(x) = 9494.508370
+iteration: 347
+	f(x) = 9493.757141
+iteration: 348
+	f(x) = 9494.209467
+iteration: 349
+	f(x) = 9494.849423
+iteration: 350
+	f(x) = 9494.464607
+iteration: 351
+	f(x) = 9493.500971
+iteration: 352
+	f(x) = 9493.040627
+iteration: 353
+	f(x) = 9492.699637
+iteration: 354
+	f(x) = 9493.058068
+iteration: 355
+	f(x) = 9493.896379
+iteration: 356
+	f(x) = 9494.628118
+iteration: 357
+	f(x) = 9493.103179
+iteration: 358
+	f(x) = 9492.648771
+iteration: 359
+	f(x) = 9494.096836
+iteration: 360
+	f(x) = 9493.238715
+iteration: 361
+	f(x) = 9492.495828
+iteration: 362
+	f(x) = 9492.107720
+iteration: 363
+	f(x) = 9492.000518
+iteration: 364
+	f(x) = 9493.360209
+iteration: 365
+	f(x) = 9493.691685
+iteration: 366
+	f(x) = 9493.205108
+iteration: 367
+	f(x) = 9492.311720
+iteration: 368
+	f(x) = 9491.726126
+iteration: 369
+	f(x) = 9492.063045
+iteration: 370
+	f(x) = 9491.728871
+iteration: 371
+	f(x) = 9492.619879
+iteration: 372
+	f(x) = 9492.585458
+iteration: 373
+	f(x) = 9493.187302
+iteration: 374
+	f(x) = 9492.375274
+iteration: 375
+	f(x) = 9491.909509
+iteration: 376
+	f(x) = 9492.331611
+iteration: 377
+	f(x) = 9491.452133
+iteration: 378
+	f(x) = 9491.622709
+iteration: 379
+	f(x) = 9492.884141
+iteration: 380
+	f(x) = 9491.193089
+iteration: 381
+	f(x) = 9491.474715
+iteration: 382
+	f(x) = 9492.616736
+iteration: 383
+	f(x) = 9492.513534
+iteration: 384
+	f(x) = 9492.511088
+iteration: 385
+	f(x) = 9489.697189
+iteration: 386
+	f(x) = 9489.837431
+iteration: 387
+	f(x) = 9490.225857
+iteration: 388
+	f(x) = 9489.528680
+iteration: 389
+	f(x) = 9490.061791
+iteration: 390
+	f(x) = 9490.011714
+iteration: 391
+	f(x) = 9490.461162
+iteration: 392
+	f(x) = 9489.647227
+iteration: 393
+	f(x) = 9490.811112
+iteration: 394
+	f(x) = 9489.127970
+iteration: 395
+	f(x) = 9489.608816
+iteration: 396
+	f(x) = 9489.821792
+iteration: 397
+	f(x) = 9490.112308
+iteration: 398
+	f(x) = 9490.241391
+iteration: 399
+	f(x) = 9489.593849
+iteration: 400
+	f(x) = 9489.483221
+iteration: 401
+	f(x) = 9489.411803
+iteration: 402
+	f(x) = 9489.039182
+iteration: 403
+	f(x) = 9489.586762
+iteration: 404
+	f(x) = 9489.236864
+iteration: 405
+	f(x) = 9489.128351
+iteration: 406
+	f(x) = 9489.455210
+iteration: 407
+	f(x) = 9489.426927
+iteration: 408
+	f(x) = 9488.648361
+iteration: 409
+	f(x) = 9489.533739
+iteration: 410
+	f(x) = 9489.820368
+iteration: 411
+	f(x) = 9489.105476
+iteration: 412
+	f(x) = 9489.589259
+iteration: 413
+	f(x) = 9488.235461
+iteration: 414
+	f(x) = 9489.197812
+iteration: 415
+	f(x) = 9488.740218
+iteration: 416
+	f(x) = 9488.677497
+iteration: 417
+	f(x) = 9489.405676
+iteration: 418
+	f(x) = 9489.081423
+iteration: 419
+	f(x) = 9488.239401
+iteration: 420
+	f(x) = 9488.384740
+iteration: 421
+	f(x) = 9488.713525
+iteration: 422
+	f(x) = 9488.478837
+iteration: 423
+	f(x) = 9489.089414
+iteration: 424
+	f(x) = 9487.597203
+iteration: 425
+	f(x) = 9487.528282
+iteration: 426
+	f(x) = 9489.304776
+iteration: 427
+	f(x) = 9487.321535
+iteration: 428
+	f(x) = 9487.353090
+iteration: 429
+	f(x) = 9488.515764
+iteration: 430
+	f(x) = 9487.707939
+iteration: 431
+	f(x) = 9488.702599
+iteration: 432
+	f(x) = 9487.587420
+iteration: 433
+	f(x) = 9487.707438
+iteration: 434
+	f(x) = 9487.125695
+iteration: 435
+	f(x) = 9487.778197
+iteration: 436
+	f(x) = 9487.668637
+iteration: 437
+	f(x) = 9487.326168
+iteration: 438
+	f(x) = 9487.457243
+iteration: 439
+	f(x) = 9487.737754
+iteration: 440
+	f(x) = 9487.264029
+iteration: 441
+	f(x) = 9487.722184
+iteration: 442
+	f(x) = 9486.737571
+iteration: 443
+	f(x) = 9486.979257
+iteration: 444
+	f(x) = 9486.626990
+iteration: 445
+	f(x) = 9486.621415
+iteration: 446
+	f(x) = 9487.300742
+iteration: 447
+	f(x) = 9485.933757
+iteration: 448
+	f(x) = 9488.579219
+iteration: 449
+	f(x) = 9486.177152
+iteration: 450
+	f(x) = 9486.579120
+iteration: 451
+	f(x) = 9486.887638
+iteration: 452
+	f(x) = 9486.272022
+iteration: 453
+	f(x) = 9486.314938
+iteration: 454
+	f(x) = 9486.937173
+iteration: 455
+	f(x) = 9486.547340
+iteration: 456
+	f(x) = 9486.675449
+iteration: 457
+	f(x) = 9486.630916
+iteration: 458
+	f(x) = 9485.761600
+iteration: 459
+	f(x) = 9486.264554
+iteration: 460
+	f(x) = 9486.919459
+iteration: 461
+	f(x) = 9487.196775
+iteration: 462
+	f(x) = 9486.411606
+iteration: 463
+	f(x) = 9485.877124
+iteration: 464
+	f(x) = 9485.383051
+iteration: 465
+	f(x) = 9485.779641
+iteration: 466
+	f(x) = 9486.421955
+iteration: 467
+	f(x) = 9485.065998
+iteration: 468
+	f(x) = 9486.066651
+iteration: 469
+	f(x) = 9486.987225
+iteration: 470
+	f(x) = 9485.639981
+iteration: 471
+	f(x) = 9485.350904
+iteration: 472
+	f(x) = 9485.725469
+iteration: 473
+	f(x) = 9485.673780
+iteration: 474
+	f(x) = 9484.832210
+iteration: 475
+	f(x) = 9485.743807
+iteration: 476
+	f(x) = 9486.055663
+iteration: 477
+	f(x) = 9484.653774
+iteration: 478
+	f(x) = 9485.146828
+iteration: 479
+	f(x) = 9484.946459
+iteration: 480
+	f(x) = 9484.729722
+iteration: 481
+	f(x) = 9485.888165
+iteration: 482
+	f(x) = 9484.994925
+iteration: 483
+	f(x) = 9485.904285
+iteration: 484
+	f(x) = 9484.992328
+iteration: 485
+	f(x) = 9484.480484
+iteration: 486
+	f(x) = 9484.359903
+iteration: 487
+	f(x) = 9485.653859
+iteration: 488
+	f(x) = 9484.512277
+iteration: 489
+	f(x) = 9484.208241
+iteration: 490
+	f(x) = 9484.254592
+iteration: 491
+	f(x) = 9484.276423
+iteration: 492
+	f(x) = 9484.209755
+iteration: 493
+	f(x) = 9484.267657
+iteration: 494
+	f(x) = 9484.152954
+iteration: 495
+	f(x) = 9484.063608
+iteration: 496
+	f(x) = 9484.053350
+iteration: 497
+	f(x) = 9484.014237
+iteration: 498
+	f(x) = 9484.191912
+iteration: 499
+	f(x) = 9484.057006
+iteration: 500
+	f(x) = 9484.012100
+iteration: 501
+	f(x) = 9483.994620
+iteration: 502
+	f(x) = 9483.971457
+iteration: 503
+	f(x) = 9483.956380
+iteration: 504
+	f(x) = 9483.923897
+iteration: 505
+	f(x) = 9483.885499
+iteration: 506
+	f(x) = 9483.836155
+iteration: 507
+	f(x) = 9483.830131
+iteration: 508
+	f(x) = 9483.818925
+iteration: 509
+	f(x) = 9483.791179
+iteration: 510
+	f(x) = 9483.988873
+iteration: 511
+	f(x) = 9483.909941
+iteration: 512
+	f(x) = 9483.769228
+iteration: 513
+	f(x) = 9483.792075
+iteration: 514
+	f(x) = 9483.760623
+iteration: 515
+	f(x) = 9483.755065
+iteration: 516
+	f(x) = 9483.759448
+iteration: 517
+	f(x) = 9483.771273
+iteration: 518
+	f(x) = 9483.802351
+iteration: 519
+	f(x) = 9483.772628
+iteration: 520
+	f(x) = 9483.738019
+iteration: 521
+	f(x) = 9483.680964
+iteration: 522
+	f(x) = 9483.661397
+iteration: 523
+	f(x) = 9483.661073
+iteration: 524
+	f(x) = 9483.698743
+iteration: 525
+	f(x) = 9483.633313
+iteration: 526
+	f(x) = 9483.625548
+iteration: 527
+	f(x) = 9483.677245
+iteration: 528
+	f(x) = 9483.626305
+iteration: 529
+	f(x) = 9483.650039
+iteration: 530
+	f(x) = 9483.554305
+iteration: 531
+	f(x) = 9483.526080
+iteration: 532
+	f(x) = 9483.485646
+iteration: 533
+	f(x) = 9483.443896
+iteration: 534
+	f(x) = 9483.393169
+iteration: 535
+	f(x) = 9483.370618
+iteration: 536
+	f(x) = 9483.223507
+iteration: 537
+	f(x) = 9483.038768
+iteration: 538
+	f(x) = 9482.964317
+iteration: 539
+	f(x) = 9483.320152
+iteration: 540
+	f(x) = 9483.041001
+iteration: 541
+	f(x) = 9482.905969
+iteration: 542
+	f(x) = 9482.742613
+iteration: 543
+	f(x) = 9482.799712
+iteration: 544
+	f(x) = 9482.778628
+iteration: 545
+	f(x) = 9482.735440
+iteration: 546
+	f(x) = 9482.731677
+iteration: 547
+	f(x) = 9482.787045
+iteration: 548
+	f(x) = 9482.760021
+iteration: 549
+	f(x) = 9482.715146
+iteration: 550
+	f(x) = 9482.691679
+iteration: 551
+	f(x) = 9482.661823
+iteration: 552
+	f(x) = 9482.680067
+iteration: 553
+	f(x) = 9482.664579
+iteration: 554
+	f(x) = 9482.603941
+iteration: 555
+	f(x) = 9482.581740
+iteration: 556
+	f(x) = 9482.490976
+iteration: 557
+	f(x) = 9482.430782
+iteration: 558
+	f(x) = 9482.497536
+iteration: 559
+	f(x) = 9482.460727
+iteration: 560
+	f(x) = 9482.391999
+iteration: 561
+	f(x) = 9482.453640
+iteration: 562
+	f(x) = 9482.425497
+iteration: 563
+	f(x) = 9482.340047
+iteration: 564
+	f(x) = 9482.320221
+iteration: 565
+	f(x) = 9482.312664
+iteration: 566
+	f(x) = 9482.299420
+iteration: 567
+	f(x) = 9482.281909
+iteration: 568
+	f(x) = 9482.275491
+iteration: 569
+	f(x) = 9482.266760
+iteration: 570
+	f(x) = 9482.263184
+iteration: 571
+	f(x) = 9482.311809
+iteration: 572
+	f(x) = 9482.281457
+iteration: 573
+	f(x) = 9482.241727
+iteration: 574
+	f(x) = 9482.244851
+iteration: 575
+	f(x) = 9482.236611
+iteration: 576
+	f(x) = 9482.222652
+iteration: 577
+	f(x) = 9482.217559
+iteration: 578
+	f(x) = 9482.241049
+iteration: 579
+	f(x) = 9482.210663
+iteration: 580
+	f(x) = 9482.192859
+iteration: 581
+	f(x) = 9482.191330
+iteration: 582
+	f(x) = 9482.210053
+iteration: 583
+	f(x) = 9482.230207
+iteration: 584
+	f(x) = 9482.182959
+iteration: 585
+	f(x) = 9482.171242
+iteration: 586
+	f(x) = 9482.139793
+iteration: 587
+	f(x) = 9482.114015
+iteration: 588
+	f(x) = 9482.106732
+iteration: 589
+	f(x) = 9482.093963
+iteration: 590
+	f(x) = 9482.080745
+iteration: 591
+	f(x) = 9482.083386
+iteration: 592
+	f(x) = 9482.062881
+iteration: 593
+	f(x) = 9482.042117
+iteration: 594
+	f(x) = 9482.037780
+iteration: 595
+	f(x) = 9482.029988
+iteration: 596
+	f(x) = 9482.026139
+iteration: 597
+	f(x) = 9481.993771
+iteration: 598
+	f(x) = 9481.995055
+iteration: 599
+	f(x) = 9482.019872
+iteration: 600
+	f(x) = 9481.945909
+iteration: 601
+	f(x) = 9481.941740
+iteration: 602
+	f(x) = 9481.900965
+iteration: 603
+	f(x) = 9481.864841
+iteration: 604
+	f(x) = 9481.837320
+iteration: 605
+	f(x) = 9481.806128
+iteration: 606
+	f(x) = 9481.785052
+iteration: 607
+	f(x) = 9481.776182
+iteration: 608
+	f(x) = 9481.759877
+iteration: 609
+	f(x) = 9481.742906
+iteration: 610
+	f(x) = 9481.749531
+iteration: 611
+	f(x) = 9481.769931
+iteration: 612
+	f(x) = 9481.737269
+iteration: 613
+	f(x) = 9481.729284
+iteration: 614
+	f(x) = 9481.737693
+iteration: 615
+	f(x) = 9481.741774
+iteration: 616
+	f(x) = 9481.733801
+iteration: 617
+	f(x) = 9481.717634
+iteration: 618
+	f(x) = 9481.673215
+iteration: 619
+	f(x) = 9481.643756
+iteration: 620
+	f(x) = 9481.639897
+iteration: 621
+	f(x) = 9481.682884
+iteration: 622
+	f(x) = 9481.647187
+iteration: 623
+	f(x) = 9481.616940
+iteration: 624
+	f(x) = 9481.600810
+iteration: 625
+	f(x) = 9481.611624
+iteration: 626
+	f(x) = 9481.588756
+iteration: 627
+	f(x) = 9481.573224
+iteration: 628
+	f(x) = 9481.619329
+iteration: 629
+	f(x) = 9481.577411
+iteration: 630
+	f(x) = 9481.557048
+iteration: 631
+	f(x) = 9481.516632
+iteration: 632
+	f(x) = 9481.501677
+iteration: 633
+	f(x) = 9481.473860
+iteration: 634
+	f(x) = 9481.448517
+iteration: 635
+	f(x) = 9481.428656
+iteration: 636
+	f(x) = 9481.461476
+iteration: 637
+	f(x) = 9481.417007
+iteration: 638
+	f(x) = 9481.411154
+iteration: 639
+	f(x) = 9481.406863
+iteration: 640
+	f(x) = 9481.426780
+iteration: 641
+	f(x) = 9481.467786
+iteration: 642
+	f(x) = 9481.358196
+iteration: 643
+	f(x) = 9481.333497
+iteration: 644
+	f(x) = 9481.321256
+iteration: 645
+	f(x) = 9481.290691
+iteration: 646
+	f(x) = 9481.350553
+iteration: 647
+	f(x) = 9481.270282
+iteration: 648
+	f(x) = 9481.244885
+iteration: 649
+	f(x) = 9481.202791
+iteration: 650
+	f(x) = 9481.163248
+iteration: 651
+	f(x) = 9481.138212
+iteration: 652
+	f(x) = 9481.121911
+iteration: 653
+	f(x) = 9481.103159
+iteration: 654
+	f(x) = 9481.074395
+iteration: 655
+	f(x) = 9481.044648
+iteration: 656
+	f(x) = 9481.021858
+iteration: 657
+	f(x) = 9481.019829
+iteration: 658
+	f(x) = 9481.023566
+iteration: 659
+	f(x) = 9481.001188
+iteration: 660
+	f(x) = 9481.055984
+iteration: 661
+	f(x) = 9480.982168
+iteration: 662
+	f(x) = 9480.965010
+iteration: 663
+	f(x) = 9480.963850
+iteration: 664
+	f(x) = 9480.997485
+iteration: 665
+	f(x) = 9480.957695
+iteration: 666
+	f(x) = 9480.961784
+iteration: 667
+	f(x) = 9480.910500
+iteration: 668
+	f(x) = 9480.875147
+iteration: 669
+	f(x) = 9480.862940
+iteration: 670
+	f(x) = 9480.879402
+iteration: 671
+	f(x) = 9480.889899
+iteration: 672
+	f(x) = 9480.824818
+iteration: 673
+	f(x) = 9480.815594
+iteration: 674
+	f(x) = 9480.799356
+iteration: 675
+	f(x) = 9480.891477
+iteration: 676
+	f(x) = 9480.791197
+iteration: 677
+	f(x) = 9480.787785
+iteration: 678
+	f(x) = 9480.820607
+iteration: 679
+	f(x) = 9480.770954
+iteration: 680
+	f(x) = 9480.754114
+iteration: 681
+	f(x) = 9480.780925
+iteration: 682
+	f(x) = 9480.780129
+iteration: 683
+	f(x) = 9480.767926
+iteration: 684
+	f(x) = 9480.797829
+iteration: 685
+	f(x) = 9480.728017
+iteration: 686
+	f(x) = 9480.693090
+iteration: 687
+	f(x) = 9480.682768
+iteration: 688
+	f(x) = 9480.662723
+iteration: 689
+	f(x) = 9480.647535
+iteration: 690
+	f(x) = 9480.653581
+iteration: 691
+	f(x) = 9480.642094
+iteration: 692
+	f(x) = 9480.633248
+iteration: 693
+	f(x) = 9480.626206
+iteration: 694
+	f(x) = 9480.607802
+iteration: 695
+	f(x) = 9480.581706
+iteration: 696
+	f(x) = 9480.597744
+iteration: 697
+	f(x) = 9480.599749
+iteration: 698
+	f(x) = 9480.526584
+iteration: 699
+	f(x) = 9480.495169
+iteration: 700
+	f(x) = 9480.500768
+iteration: 701
+	f(x) = 9480.505763
+iteration: 702
+	f(x) = 9480.491168
+iteration: 703
+	f(x) = 9480.492289
+iteration: 704
+	f(x) = 9480.492822
+iteration: 705
+	f(x) = 9480.494771
+iteration: 706
+	f(x) = 9480.498786
+iteration: 707
+	f(x) = 9480.509028
+iteration: 708
+	f(x) = 9480.463362
+iteration: 709
+	f(x) = 9480.439258
+iteration: 710
+	f(x) = 9480.462154
+iteration: 711
+	f(x) = 9480.437090
+iteration: 712
+	f(x) = 9480.413306
+iteration: 713
+	f(x) = 9480.400835
+iteration: 714
+	f(x) = 9480.384566
+iteration: 715
+	f(x) = 9480.438532
+iteration: 716
+	f(x) = 9480.460400
+iteration: 717
+	f(x) = 9480.356736
+iteration: 718
+	f(x) = 9480.351836
+iteration: 719
+	f(x) = 9480.365827
+iteration: 720
+	f(x) = 9480.363344
+iteration: 721
+	f(x) = 9480.310325
+iteration: 722
+	f(x) = 9480.275371
+iteration: 723
+	f(x) = 9480.251953
+iteration: 724
+	f(x) = 9480.236728
+iteration: 725
+	f(x) = 9480.231383
+iteration: 726
+	f(x) = 9480.205835
+iteration: 727
+	f(x) = 9480.204861
+iteration: 728
+	f(x) = 9480.232806
+iteration: 729
+	f(x) = 9480.170339
+iteration: 730
+	f(x) = 9480.160052
+iteration: 731
+	f(x) = 9480.160325
+iteration: 732
+	f(x) = 9480.116992
+iteration: 733
+	f(x) = 9480.099529
+iteration: 734
+	f(x) = 9480.084757
+iteration: 735
+	f(x) = 9480.072573
+iteration: 736
+	f(x) = 9480.054870
+iteration: 737
+	f(x) = 9480.044419
+iteration: 738
+	f(x) = 9480.038888
+iteration: 739
+	f(x) = 9480.037245
+iteration: 740
+	f(x) = 9480.045932
+iteration: 741
+	f(x) = 9480.025791
+iteration: 742
+	f(x) = 9480.043785
+iteration: 743
+	f(x) = 9480.014968
+iteration: 744
+	f(x) = 9480.007767
+iteration: 745
+	f(x) = 9480.009606
+iteration: 746
+	f(x) = 9480.025451
+iteration: 747
+	f(x) = 9480.004601
+iteration: 748
+	f(x) = 9480.003269
+iteration: 749
+	f(x) = 9480.018518
+iteration: 750
+	f(x) = 9480.003302
+iteration: 751
+	f(x) = 9480.012620
+iteration: 752
+	f(x) = 9480.016074
+iteration: 753
+	f(x) = 9480.002046
+iteration: 754
+	f(x) = 9479.976763
+iteration: 755
+	f(x) = 9479.964979
+iteration: 756
+	f(x) = 9479.979557
+iteration: 757
+	f(x) = 9479.967034
+iteration: 758
+	f(x) = 9479.934586
+iteration: 759
+	f(x) = 9479.917742
+iteration: 760
+	f(x) = 9479.908731
+iteration: 761
+	f(x) = 9479.898054
+iteration: 762
+	f(x) = 9479.907081
+iteration: 763
+	f(x) = 9479.925100
+iteration: 764
+	f(x) = 9479.887164
+iteration: 765
+	f(x) = 9479.888295
+iteration: 766
+	f(x) = 9479.900124
+iteration: 767
+	f(x) = 9479.883644
+iteration: 768
+	f(x) = 9479.881691
+iteration: 769
+	f(x) = 9479.882328
+iteration: 770
+	f(x) = 9479.875952
+iteration: 771
+	f(x) = 9479.883570
+iteration: 772
+	f(x) = 9479.872670
+iteration: 773
+	f(x) = 9479.860673
+iteration: 774
+	f(x) = 9479.881757
+iteration: 775
+	f(x) = 9479.845661
+iteration: 776
+	f(x) = 9479.842111
+iteration: 777
+	f(x) = 9479.832249
+iteration: 778
+	f(x) = 9479.810420
+iteration: 779
+	f(x) = 9479.787585
+iteration: 780
+	f(x) = 9479.819807
+iteration: 781
+	f(x) = 9479.873558
+iteration: 782
+	f(x) = 9479.736475
+iteration: 783
+	f(x) = 9479.738893
+iteration: 784
+	f(x) = 9479.788069
+iteration: 785
+	f(x) = 9479.728243
+iteration: 786
+	f(x) = 9479.707454
+iteration: 787
+	f(x) = 9479.728141
+iteration: 788
+	f(x) = 9479.778625
+iteration: 789
+	f(x) = 9479.687389
+iteration: 790
+	f(x) = 9479.729332
+iteration: 791
+	f(x) = 9479.701965
+iteration: 792
+	f(x) = 9479.708810
+iteration: 793
+	f(x) = 9479.690560
+iteration: 794
+	f(x) = 9479.660783
+iteration: 795
+	f(x) = 9479.634153
+iteration: 796
+	f(x) = 9479.605071
+iteration: 797
+	f(x) = 9479.615434
+iteration: 798
+	f(x) = 9479.701670
+iteration: 799
+	f(x) = 9479.582502
+iteration: 800
+	f(x) = 9479.571802
+iteration: 801
+	f(x) = 9479.554579
+iteration: 802
+	f(x) = 9479.550040
+iteration: 803
+	f(x) = 9479.529490
+iteration: 804
+	f(x) = 9479.517519
+iteration: 805
+	f(x) = 9479.509635
+iteration: 806
+	f(x) = 9479.514661
+iteration: 807
+	f(x) = 9479.502065
+iteration: 808
+	f(x) = 9479.508489
+iteration: 809
+	f(x) = 9479.536203
+iteration: 810
+	f(x) = 9479.496568
+iteration: 811
+	f(x) = 9479.497637
+iteration: 812
+	f(x) = 9479.528420
+iteration: 813
+	f(x) = 9479.480054
+iteration: 814
+	f(x) = 9479.482689
+iteration: 815
+	f(x) = 9479.472603
+iteration: 816
+	f(x) = 9479.481424
+iteration: 817
+	f(x) = 9479.488824
+iteration: 818
+	f(x) = 9479.463839
+iteration: 819
+	f(x) = 9479.450598
+iteration: 820
+	f(x) = 9479.453181
+iteration: 821
+	f(x) = 9479.450901
+iteration: 822
+	f(x) = 9479.439801
+iteration: 823
+	f(x) = 9479.453576
+iteration: 824
+	f(x) = 9479.447587
+iteration: 825
+	f(x) = 9479.438378
+iteration: 826
+	f(x) = 9479.455319
+iteration: 827
+	f(x) = 9479.423495
+iteration: 828
+	f(x) = 9479.427181
+iteration: 829
+	f(x) = 9479.437786
+iteration: 830
+	f(x) = 9479.434351
+iteration: 831
+	f(x) = 9479.433418
+iteration: 832
+	f(x) = 9479.408874
+iteration: 833
+	f(x) = 9479.403332
+iteration: 834
+	f(x) = 9479.420814
+iteration: 835
+	f(x) = 9479.404881
+iteration: 836
+	f(x) = 9479.388814
+iteration: 837
+	f(x) = 9479.391716
+iteration: 838
+	f(x) = 9479.393835
+iteration: 839
+	f(x) = 9479.378633
+iteration: 840
+	f(x) = 9479.380827
+iteration: 841
+	f(x) = 9479.393078
+iteration: 842
+	f(x) = 9479.382445
+iteration: 843
+	f(x) = 9479.386107
+iteration: 844
+	f(x) = 9479.394420
+iteration: 845
+	f(x) = 9479.373410
+iteration: 846
+	f(x) = 9479.371940
+iteration: 847
+	f(x) = 9479.384753
+iteration: 848
+	f(x) = 9479.358026
+iteration: 849
+	f(x) = 9479.357645
+iteration: 850
+	f(x) = 9479.365256
+iteration: 851
+	f(x) = 9479.355658
+iteration: 852
+	f(x) = 9479.346339
+iteration: 853
+	f(x) = 9479.334832
+iteration: 854
+	f(x) = 9479.332038
+iteration: 855
+	f(x) = 9479.326354
+iteration: 856
+	f(x) = 9479.321952
+iteration: 857
+	f(x) = 9479.318003
+iteration: 858
+	f(x) = 9479.323402
+iteration: 859
+	f(x) = 9479.301042
+iteration: 860
+	f(x) = 9479.313000
+iteration: 861
+	f(x) = 9479.347283
+iteration: 862
+	f(x) = 9479.280251
+iteration: 863
+	f(x) = 9479.280171
+iteration: 864
+	f(x) = 9479.262542
+iteration: 865
+	f(x) = 9479.246311
+iteration: 866
+	f(x) = 9479.235163
+iteration: 867
+	f(x) = 9479.202281
+iteration: 868
+	f(x) = 9479.174737
+iteration: 869
+	f(x) = 9479.156711
+iteration: 870
+	f(x) = 9479.156310
+iteration: 871
+	f(x) = 9479.159165
+iteration: 872
+	f(x) = 9479.161720
+iteration: 873
+	f(x) = 9479.182709
+iteration: 874
+	f(x) = 9479.144190
+iteration: 875
+	f(x) = 9479.142768
+iteration: 876
+	f(x) = 9479.146375
+iteration: 877
+	f(x) = 9479.171656
+iteration: 878
+	f(x) = 9479.134181
+iteration: 879
+	f(x) = 9479.133004
+iteration: 880
+	f(x) = 9479.123224
+iteration: 881
+	f(x) = 9479.122198
+iteration: 882
+	f(x) = 9479.123492
+iteration: 883
+	f(x) = 9479.103374
+iteration: 884
+	f(x) = 9479.105182
+iteration: 885
+	f(x) = 9479.105503
+iteration: 886
+	f(x) = 9479.113199
+iteration: 887
+	f(x) = 9479.112383
+iteration: 888
+	f(x) = 9479.090313
+iteration: 889
+	f(x) = 9479.087223
+iteration: 890
+	f(x) = 9479.086316
+iteration: 891
+	f(x) = 9479.074866
+iteration: 892
+	f(x) = 9479.067091
+iteration: 893
+	f(x) = 9479.068384
+iteration: 894
+	f(x) = 9479.061137
+iteration: 895
+	f(x) = 9479.069727
+iteration: 896
+	f(x) = 9479.117590
+iteration: 897
+	f(x) = 9479.031286
+iteration: 898
+	f(x) = 9479.011653
+iteration: 899
+	f(x) = 9479.016293
+iteration: 900
+	f(x) = 9479.002708
+iteration: 901
+	f(x) = 9479.000362
+iteration: 902
+	f(x) = 9478.998868
+iteration: 903
+	f(x) = 9478.996590
+iteration: 904
+	f(x) = 9479.006842
+iteration: 905
+	f(x) = 9478.988806
+iteration: 906
+	f(x) = 9478.993680
+iteration: 907
+	f(x) = 9478.990824
+iteration: 908
+	f(x) = 9478.993103
+iteration: 909
+	f(x) = 9478.997541
+iteration: 910
+	f(x) = 9478.987078
+iteration: 911
+	f(x) = 9478.984291
+iteration: 912
+	f(x) = 9478.989129
+iteration: 913
+	f(x) = 9478.978898
+iteration: 914
+	f(x) = 9478.962254
+iteration: 915
+	f(x) = 9478.963580
+iteration: 916
+	f(x) = 9478.974017
+iteration: 917
+	f(x) = 9478.967244
+iteration: 918
+	f(x) = 9478.965760
+iteration: 919
+	f(x) = 9478.974527
+iteration: 920
+	f(x) = 9478.962608
+iteration: 921
+	f(x) = 9478.963182
+iteration: 922
+	f(x) = 9478.988081
+iteration: 923
+	f(x) = 9478.940991
+iteration: 924
+	f(x) = 9478.940360
+iteration: 925
+	f(x) = 9478.939702
+iteration: 926
+	f(x) = 9478.928736
+iteration: 927
+	f(x) = 9478.916981
+iteration: 928
+	f(x) = 9478.948151
+iteration: 929
+	f(x) = 9478.964962
+iteration: 930
+	f(x) = 9478.911698
+iteration: 931
+	f(x) = 9478.912575
+iteration: 932
+	f(x) = 9478.894026
+iteration: 933
+	f(x) = 9478.884544
+iteration: 934
+	f(x) = 9478.883188
+iteration: 935
+	f(x) = 9478.885283
+iteration: 936
+	f(x) = 9478.886576
+iteration: 937
+	f(x) = 9478.886123
+iteration: 938
+	f(x) = 9478.879364
+iteration: 939
+	f(x) = 9478.886937
+iteration: 940
+	f(x) = 9478.882097
+iteration: 941
+	f(x) = 9478.851253
+iteration: 942
+	f(x) = 9478.840882
+iteration: 943
+	f(x) = 9478.851612
+iteration: 944
+	f(x) = 9478.847880
+iteration: 945
+	f(x) = 9478.842188
+iteration: 946
+	f(x) = 9478.836395
+iteration: 947
+	f(x) = 9478.836638
+iteration: 948
+	f(x) = 9478.856954
+iteration: 949
+	f(x) = 9478.833399
+iteration: 950
+	f(x) = 9478.827893
+iteration: 951
+	f(x) = 9478.826193
+iteration: 952
+	f(x) = 9478.845401
+iteration: 953
+	f(x) = 9478.832075
+iteration: 954
+	f(x) = 9478.827376
+iteration: 955
+	f(x) = 9478.822673
+iteration: 956
+	f(x) = 9478.822458
+iteration: 957
+	f(x) = 9478.814728
+iteration: 958
+	f(x) = 9478.802290
+iteration: 959
+	f(x) = 9478.796837
+iteration: 960
+	f(x) = 9478.806064
+iteration: 961
+	f(x) = 9478.807110
+iteration: 962
+	f(x) = 9478.810555
+iteration: 963
+	f(x) = 9478.791049
+iteration: 964
+	f(x) = 9478.768265
+iteration: 965
+	f(x) = 9478.761730
+iteration: 966
+	f(x) = 9478.762389
+iteration: 967
+	f(x) = 9478.760407
+iteration: 968
+	f(x) = 9478.752257
+iteration: 969
+	f(x) = 9478.749357
+iteration: 970
+	f(x) = 9478.782331
+iteration: 971
+	f(x) = 9478.732269
+iteration: 972
+	f(x) = 9478.729992
+iteration: 973
+	f(x) = 9478.732261
+iteration: 974
+	f(x) = 9478.737822
+iteration: 975
+	f(x) = 9478.733144
+iteration: 976
+	f(x) = 9478.734691
+iteration: 977
+	f(x) = 9478.726319
+iteration: 978
+	f(x) = 9478.722410
+iteration: 979
+	f(x) = 9478.723826
+iteration: 980
+	f(x) = 9478.718623
+iteration: 981
+	f(x) = 9478.734199
+iteration: 982
+	f(x) = 9478.729268
+iteration: 983
+	f(x) = 9478.748524
+iteration: 984
+	f(x) = 9478.709386
+iteration: 985
+	f(x) = 9478.709298
+iteration: 986
+	f(x) = 9478.702548
+iteration: 987
+	f(x) = 9478.696296
+iteration: 988
+	f(x) = 9478.717677
+iteration: 989
+	f(x) = 9478.691147
+iteration: 990
+	f(x) = 9478.693579
+iteration: 991
+	f(x) = 9478.707099
+iteration: 992
+	f(x) = 9478.694907
+iteration: 993
+	f(x) = 9478.694634
+iteration: 994
+	f(x) = 9478.691987
+iteration: 995
+	f(x) = 9478.673151
+iteration: 996
+	f(x) = 9478.667010
+iteration: 997
+	f(x) = 9478.677261
+iteration: 998
+	f(x) = 9478.679402
+iteration: 999
+	f(x) = 9478.658947
+iteration: 1000
+	f(x) = 9478.656002
+iteration: 1001
+	f(x) = 9478.660090
+iteration: 1002
+	f(x) = 9478.669893
+iteration: 1003
+	f(x) = 9478.654607
+iteration: 1004
+	f(x) = 9478.656289
+iteration: 1005
+	f(x) = 9478.649889
+iteration: 1006
+	f(x) = 9478.656734
+iteration: 1007
+	f(x) = 9478.658289
+iteration: 1008
+	f(x) = 9478.656538
+iteration: 1009
+	f(x) = 9478.675038
+iteration: 1010
+	f(x) = 9478.646037
+iteration: 1011
+	f(x) = 9478.643728
+iteration: 1012
+	f(x) = 9478.652038
+iteration: 1013
+	f(x) = 9478.658113
+iteration: 1014
+	f(x) = 9478.631213
+iteration: 1015
+	f(x) = 9478.627295
+iteration: 1016
+	f(x) = 9478.629744
+iteration: 1017
+	f(x) = 9478.641904
+iteration: 1018
+	f(x) = 9478.623816
+iteration: 1019
+	f(x) = 9478.617037
+iteration: 1020
+	f(x) = 9478.608404
+iteration: 1021
+	f(x) = 9478.609241
+iteration: 1022
+	f(x) = 9478.609757
+iteration: 1023
+	f(x) = 9478.609508
+iteration: 1024
+	f(x) = 9478.628449
+iteration: 1025
+	f(x) = 9478.605864
+iteration: 1026
+	f(x) = 9478.592342
+iteration: 1027
+	f(x) = 9478.595239
+iteration: 1028
+	f(x) = 9478.601928
+iteration: 1029
+	f(x) = 9478.587894
+iteration: 1030
+	f(x) = 9478.588132
+iteration: 1031
+	f(x) = 9478.613577
+iteration: 1032
+	f(x) = 9478.576308
+iteration: 1033
+	f(x) = 9478.573945
+iteration: 1034
+	f(x) = 9478.580451
+iteration: 1035
+	f(x) = 9478.574948
+iteration: 1036
+	f(x) = 9478.571469
+iteration: 1037
+	f(x) = 9478.581693
+iteration: 1038
+	f(x) = 9478.575459
+iteration: 1039
+	f(x) = 9478.585284
+iteration: 1040
+	f(x) = 9478.569946
+iteration: 1041
+	f(x) = 9478.577377
+iteration: 1042
+	f(x) = 9478.573353
+iteration: 1043
+	f(x) = 9478.573053
+iteration: 1044
+	f(x) = 9478.568637
+iteration: 1045
+	f(x) = 9478.558328
+iteration: 1046
+	f(x) = 9478.554290
+iteration: 1047
+	f(x) = 9478.567949
+iteration: 1048
+	f(x) = 9478.554266
+iteration: 1049
+	f(x) = 9478.552612
+iteration: 1050
+	f(x) = 9478.553996
+iteration: 1051
+	f(x) = 9478.552213
+iteration: 1052
+	f(x) = 9478.552198
+iteration: 1053
+	f(x) = 9478.549093
+iteration: 1054
+	f(x) = 9478.554403
+iteration: 1055
+	f(x) = 9478.563202
+iteration: 1056
+	f(x) = 9478.539894
+iteration: 1057
+	f(x) = 9478.539791
+iteration: 1058
+	f(x) = 9478.561776
+iteration: 1059
+	f(x) = 9478.528204
+iteration: 1060
+	f(x) = 9478.528002
+iteration: 1061
+	f(x) = 9478.541412
+iteration: 1062
+	f(x) = 9478.528699
+iteration: 1063
+	f(x) = 9478.546950
+iteration: 1064
+	f(x) = 9478.518918
+iteration: 1065
+	f(x) = 9478.522277
+iteration: 1066
+	f(x) = 9478.519049
+iteration: 1067
+	f(x) = 9478.507419
+iteration: 1068
+	f(x) = 9478.504162
+iteration: 1069
+	f(x) = 9478.507008
+iteration: 1070
+	f(x) = 9478.517575
+iteration: 1071
+	f(x) = 9478.497186
+iteration: 1072
+	f(x) = 9478.501133
+iteration: 1073
+	f(x) = 9478.492867
+iteration: 1074
+	f(x) = 9478.489444
+iteration: 1075
+	f(x) = 9478.490526
+iteration: 1076
+	f(x) = 9478.490401
+iteration: 1077
+	f(x) = 9478.480641
+iteration: 1078
+	f(x) = 9478.493563
+iteration: 1079
+	f(x) = 9478.480282
+iteration: 1080
+	f(x) = 9478.476725
+iteration: 1081
+	f(x) = 9478.478631
+iteration: 1082
+	f(x) = 9478.484977
+iteration: 1083
+	f(x) = 9478.475150
+iteration: 1084
+	f(x) = 9478.472137
+iteration: 1085
+	f(x) = 9478.471889
+iteration: 1086
+	f(x) = 9478.485264
+iteration: 1087
+	f(x) = 9478.489806
+iteration: 1088
+	f(x) = 9478.473735
+iteration: 1089
+	f(x) = 9478.472282
+iteration: 1090
+	f(x) = 9478.475059
+iteration: 1091
+	f(x) = 9478.466175
+iteration: 1092
+	f(x) = 9478.463367
+iteration: 1093
+	f(x) = 9478.476663
+iteration: 1094
+	f(x) = 9478.465136
+iteration: 1095
+	f(x) = 9478.473515
+iteration: 1096
+	f(x) = 9478.465211
+iteration: 1097
+	f(x) = 9478.477074
+iteration: 1098
+	f(x) = 9478.464641
+iteration: 1099
+	f(x) = 9478.470444
+iteration: 1100
+	f(x) = 9478.468578
+iteration: 1101
+	f(x) = 9478.467717
+iteration: 1102
+	f(x) = 9478.471804
+iteration: 1103
+	f(x) = 9478.473070
+iteration: 1104
+	f(x) = 9478.456714
+iteration: 1105
+	f(x) = 9478.457805
+iteration: 1106
+	f(x) = 9478.471731
+iteration: 1107
+	f(x) = 9478.452384
+iteration: 1108
+	f(x) = 9478.456617
+iteration: 1109
+	f(x) = 9478.458710
+iteration: 1110
+	f(x) = 9478.452696
+iteration: 1111
+	f(x) = 9478.446570
+iteration: 1112
+	f(x) = 9478.449135
+iteration: 1113
+	f(x) = 9478.455421
+iteration: 1114
+	f(x) = 9478.444617
+iteration: 1115
+	f(x) = 9478.444262
+iteration: 1116
+	f(x) = 9478.449680
+iteration: 1117
+	f(x) = 9478.445254
+iteration: 1118
+	f(x) = 9478.428262
+iteration: 1119
+	f(x) = 9478.419808
+iteration: 1120
+	f(x) = 9478.418949
+iteration: 1121
+	f(x) = 9478.415775
+iteration: 1122
+	f(x) = 9478.420021
+iteration: 1123
+	f(x) = 9478.427417
+iteration: 1124
+	f(x) = 9478.416134
+iteration: 1125
+	f(x) = 9478.413181
+iteration: 1126
+	f(x) = 9478.412719
+iteration: 1127
+	f(x) = 9478.428630
+iteration: 1128
+	f(x) = 9478.398358
+iteration: 1129
+	f(x) = 9478.399602
+iteration: 1130
+	f(x) = 9478.408879
+iteration: 1131
+	f(x) = 9478.401673
+iteration: 1132
+	f(x) = 9478.413402
+iteration: 1133
+	f(x) = 9478.402960
+iteration: 1134
+	f(x) = 9478.424378
+iteration: 1135
+	f(x) = 9478.389610
+iteration: 1136
+	f(x) = 9478.389509
+iteration: 1137
+	f(x) = 9478.390639
+iteration: 1138
+	f(x) = 9478.386098
+iteration: 1139
+	f(x) = 9478.399319
+iteration: 1140
+	f(x) = 9478.394083
+iteration: 1141
+	f(x) = 9478.381992
+iteration: 1142
+	f(x) = 9478.384688
+iteration: 1143
+	f(x) = 9478.396685
+iteration: 1144
+	f(x) = 9478.393386
+iteration: 1145
+	f(x) = 9478.377156
+iteration: 1146
+	f(x) = 9478.372127
+iteration: 1147
+	f(x) = 9478.374341
+iteration: 1148
+	f(x) = 9478.367238
+iteration: 1149
+	f(x) = 9478.369265
+iteration: 1150
+	f(x) = 9478.379317
+iteration: 1151
+	f(x) = 9478.362909
+iteration: 1152
+	f(x) = 9478.365327
+iteration: 1153
+	f(x) = 9478.370544
+iteration: 1154
+	f(x) = 9478.361901
+iteration: 1155
+	f(x) = 9478.362779
+iteration: 1156
+	f(x) = 9478.359704
+iteration: 1157
+	f(x) = 9478.359744
+iteration: 1158
+	f(x) = 9478.375554
+iteration: 1159
+	f(x) = 9478.363090
+iteration: 1160
+	f(x) = 9478.368811
+iteration: 1161
+	f(x) = 9478.359141
+iteration: 1162
+	f(x) = 9478.379496
+iteration: 1163
+	f(x) = 9478.348539
+iteration: 1164
+	f(x) = 9478.351374
+iteration: 1165
+	f(x) = 9478.346561
+iteration: 1166
+	f(x) = 9478.351381
+iteration: 1167
+	f(x) = 9478.356389
+iteration: 1168
+	f(x) = 9478.348770
+iteration: 1169
+	f(x) = 9478.350511
+iteration: 1170
+	f(x) = 9478.349540
+iteration: 1171
+	f(x) = 9478.352758
+iteration: 1172
+	f(x) = 9478.342965
+iteration: 1173
+	f(x) = 9478.342470
+iteration: 1174
+	f(x) = 9478.346233
+iteration: 1175
+	f(x) = 9478.363574
+iteration: 1176
+	f(x) = 9478.339762
+iteration: 1177
+	f(x) = 9478.340238
+iteration: 1178
+	f(x) = 9478.350086
+iteration: 1179
+	f(x) = 9478.338125
+iteration: 1180
+	f(x) = 9478.347540
+iteration: 1181
+	f(x) = 9478.348493
+iteration: 1182
+	f(x) = 9478.356691
+iteration: 1183
+	f(x) = 9478.335013
+iteration: 1184
+	f(x) = 9478.337052
+iteration: 1185
+	f(x) = 9478.340444
+iteration: 1186
+	f(x) = 9478.337317
+iteration: 1187
+	f(x) = 9478.339899
+iteration: 1188
+	f(x) = 9478.342073
+iteration: 1189
+	f(x) = 9478.337267
+iteration: 1190
+	f(x) = 9478.332820
+iteration: 1191
+	f(x) = 9478.326748
+iteration: 1192
+	f(x) = 9478.326698
+iteration: 1193
+	f(x) = 9478.330949
+iteration: 1194
+	f(x) = 9478.328860
+iteration: 1195
+	f(x) = 9478.344989
+iteration: 1196
+	f(x) = 9478.325768
+iteration: 1197
+	f(x) = 9478.342864
+iteration: 1198
+	f(x) = 9478.321671
+iteration: 1199
+	f(x) = 9478.324044
+iteration: 1200
+	f(x) = 9478.336885
+iteration: 1201
+	f(x) = 9478.323406
+iteration: 1202
+	f(x) = 9478.327211
+iteration: 1203
+	f(x) = 9478.319356
+iteration: 1204
+	f(x) = 9478.324528
+iteration: 1205
+	f(x) = 9478.330278
+iteration: 1206
+	f(x) = 9478.330909
+iteration: 1207
+	f(x) = 9478.335203
+iteration: 1208
+	f(x) = 9478.318559
+iteration: 1209
+	f(x) = 9478.320181
+iteration: 1210
+	f(x) = 9478.311497
+iteration: 1211
+	f(x) = 9478.314078
+iteration: 1212
+	f(x) = 9478.319278
+iteration: 1213
+	f(x) = 9478.311618
+iteration: 1214
+	f(x) = 9478.311029
+iteration: 1215
+	f(x) = 9478.307628
+iteration: 1216
+	f(x) = 9478.305957
+iteration: 1217
+	f(x) = 9478.305007
+iteration: 1218
+	f(x) = 9478.306944
+iteration: 1219
+	f(x) = 9478.304189
+iteration: 1220
+	f(x) = 9478.303681
+iteration: 1221
+	f(x) = 9478.302152
+iteration: 1222
+	f(x) = 9478.312797
+iteration: 1223
+	f(x) = 9478.311605
+iteration: 1224
+	f(x) = 9478.309997
+iteration: 1225
+	f(x) = 9478.315649
+iteration: 1226
+	f(x) = 9478.310598
+iteration: 1227
+	f(x) = 9478.305017
+iteration: 1228
+	f(x) = 9478.304321
+iteration: 1229
+	f(x) = 9478.304494
+iteration: 1230
+	f(x) = 9478.299969
+iteration: 1231
+	f(x) = 9478.304645
+iteration: 1232
+	f(x) = 9478.315386
+iteration: 1233
+	f(x) = 9478.298487
+iteration: 1234
+	f(x) = 9478.296342
+iteration: 1235
+	f(x) = 9478.309992
+iteration: 1236
+	f(x) = 9478.292979
+iteration: 1237
+	f(x) = 9478.290115
+iteration: 1238
+	f(x) = 9478.290945
+iteration: 1239
+	f(x) = 9478.298434
+iteration: 1240
+	f(x) = 9478.290131
+iteration: 1241
+	f(x) = 9478.301658
+iteration: 1242
+	f(x) = 9478.294378
+iteration: 1243
+	f(x) = 9478.286500
+iteration: 1244
+	f(x) = 9478.279668
+iteration: 1245
+	f(x) = 9478.279036
+iteration: 1246
+	f(x) = 9478.280567
+iteration: 1247
+	f(x) = 9478.282697
+iteration: 1248
+	f(x) = 9478.289292
+iteration: 1249
+	f(x) = 9478.278096
+iteration: 1250
+	f(x) = 9478.275492
+iteration: 1251
+	f(x) = 9478.275270
+iteration: 1252
+	f(x) = 9478.280586
+iteration: 1253
+	f(x) = 9478.274716
+iteration: 1254
+	f(x) = 9478.293970
+iteration: 1255
+	f(x) = 9478.275025
+iteration: 1256
+	f(x) = 9478.269199
+iteration: 1257
+	f(x) = 9478.277041
+iteration: 1258
+	f(x) = 9478.276284
+iteration: 1259
+	f(x) = 9478.262075
+iteration: 1260
+	f(x) = 9478.266580
+iteration: 1261
+	f(x) = 9478.262948
+iteration: 1262
+	f(x) = 9478.258380
+iteration: 1263
+	f(x) = 9478.258724
+iteration: 1264
+	f(x) = 9478.257854
+iteration: 1265
+	f(x) = 9478.254816
+iteration: 1266
+	f(x) = 9478.256168
+iteration: 1267
+	f(x) = 9478.265037
+iteration: 1268
+	f(x) = 9478.255231
+iteration: 1269
+	f(x) = 9478.265883
+iteration: 1270
+	f(x) = 9478.255925
+iteration: 1271
+	f(x) = 9478.262725
+iteration: 1272
+	f(x) = 9478.251691
+iteration: 1273
+	f(x) = 9478.255454
+iteration: 1274
+	f(x) = 9478.251706
+iteration: 1275
+	f(x) = 9478.265213
+iteration: 1276
+	f(x) = 9478.251050
+iteration: 1277
+	f(x) = 9478.267777
+iteration: 1278
+	f(x) = 9478.251021
+iteration: 1279
+	f(x) = 9478.263150
+iteration: 1280
+	f(x) = 9478.250984
+iteration: 1281
+	f(x) = 9478.259329
+iteration: 1282
+	f(x) = 9478.249940
+iteration: 1283
+	f(x) = 9478.266385
+iteration: 1284
+	f(x) = 9478.261535
+iteration: 1285
+	f(x) = 9478.262866
+iteration: 1286
+	f(x) = 9478.258024
+iteration: 1287
+	f(x) = 9478.258805
+iteration: 1288
+	f(x) = 9478.251287
+iteration: 1289
+	f(x) = 9478.249555
+iteration: 1290
+	f(x) = 9478.268647
+iteration: 1291
+	f(x) = 9478.251270
+iteration: 1292
+	f(x) = 9478.249711
+iteration: 1293
+	f(x) = 9478.249508
+iteration: 1294
+	f(x) = 9478.265167
+iteration: 1295
+	f(x) = 9478.243709
+iteration: 1296
+	f(x) = 9478.249575
+iteration: 1297
+	f(x) = 9478.253358
+iteration: 1298
+	f(x) = 9478.236308
+iteration: 1299
+	f(x) = 9478.236715
+iteration: 1300
+	f(x) = 9478.241391
+iteration: 1301
+	f(x) = 9478.236445
+iteration: 1302
+	f(x) = 9478.251857
+iteration: 1303
+	f(x) = 9478.235970
+iteration: 1304
+	f(x) = 9478.235001
+iteration: 1305
+	f(x) = 9478.243683
+iteration: 1306
+	f(x) = 9478.235514
+iteration: 1307
+	f(x) = 9478.231954
+iteration: 1308
+	f(x) = 9478.240135
+iteration: 1309
+	f(x) = 9478.233277
+iteration: 1310
+	f(x) = 9478.229368
+iteration: 1311
+	f(x) = 9478.234227
+iteration: 1312
+	f(x) = 9478.225891
+iteration: 1313
+	f(x) = 9478.221903
+iteration: 1314
+	f(x) = 9478.217601
+iteration: 1315
+	f(x) = 9478.215942
+iteration: 1316
+	f(x) = 9478.216262
+iteration: 1317
+	f(x) = 9478.228688
+iteration: 1318
+	f(x) = 9478.218802
+iteration: 1319
+	f(x) = 9478.220533
+iteration: 1320
+	f(x) = 9478.222452
+iteration: 1321
+	f(x) = 9478.236379
+iteration: 1322
+	f(x) = 9478.209235
+iteration: 1323
+	f(x) = 9478.214680
+iteration: 1324
+	f(x) = 9478.212650
+iteration: 1325
+	f(x) = 9478.204647
+iteration: 1326
+	f(x) = 9478.201202
+iteration: 1327
+	f(x) = 9478.199994
+iteration: 1328
+	f(x) = 9478.200840
+iteration: 1329
+	f(x) = 9478.217097
+iteration: 1330
+	f(x) = 9478.199655
+iteration: 1331
+	f(x) = 9478.210847
+iteration: 1332
+	f(x) = 9478.201778
+iteration: 1333
+	f(x) = 9478.203875
+iteration: 1334
+	f(x) = 9478.202268
+iteration: 1335
+	f(x) = 9478.212848
+iteration: 1336
+	f(x) = 9478.197667
+iteration: 1337
+	f(x) = 9478.194330
+iteration: 1338
+	f(x) = 9478.195918
+iteration: 1339
+	f(x) = 9478.194241
+iteration: 1340
+	f(x) = 9478.201499
+iteration: 1341
+	f(x) = 9478.196378
+iteration: 1342
+	f(x) = 9478.214523
+iteration: 1343
+	f(x) = 9478.193397
+iteration: 1344
+	f(x) = 9478.195993
+iteration: 1345
+	f(x) = 9478.197325
+iteration: 1346
+	f(x) = 9478.202476
+iteration: 1347
+	f(x) = 9478.188158
+iteration: 1348
+	f(x) = 9478.185909
+iteration: 1349
+	f(x) = 9478.181053
+iteration: 1350
+	f(x) = 9478.182855
+iteration: 1351
+	f(x) = 9478.186186
+iteration: 1352
+	f(x) = 9478.182570
+iteration: 1353
+	f(x) = 9478.187138
+iteration: 1354
+	f(x) = 9478.186642
+iteration: 1355
+	f(x) = 9478.185809
+iteration: 1356
+	f(x) = 9478.181709
+iteration: 1357
+	f(x) = 9478.191644
+iteration: 1358
+	f(x) = 9478.179969
+iteration: 1359
+	f(x) = 9478.180344
+iteration: 1360
+	f(x) = 9478.194217
+iteration: 1361
+	f(x) = 9478.179330
+iteration: 1362
+	f(x) = 9478.180930
+iteration: 1363
+	f(x) = 9478.182638
+iteration: 1364
+	f(x) = 9478.182196
+iteration: 1365
+	f(x) = 9478.188809
+iteration: 1366
+	f(x) = 9478.196439
+iteration: 1367
+	f(x) = 9478.169893
+iteration: 1368
+	f(x) = 9478.171515
+iteration: 1369
+	f(x) = 9478.175864
+iteration: 1370
+	f(x) = 9478.167501
+iteration: 1371
+	f(x) = 9478.167854
+iteration: 1372
+	f(x) = 9478.183875
+iteration: 1373
+	f(x) = 9478.166308
+iteration: 1374
+	f(x) = 9478.167613
+iteration: 1375
+	f(x) = 9478.171922
+iteration: 1376
+	f(x) = 9478.167765
+iteration: 1377
+	f(x) = 9478.177424
+iteration: 1378
+	f(x) = 9478.164272
+iteration: 1379
+	f(x) = 9478.164239
+iteration: 1380
+	f(x) = 9478.163577
+iteration: 1381
+	f(x) = 9478.164774
+iteration: 1382
+	f(x) = 9478.167634
+iteration: 1383
+	f(x) = 9478.160506
+iteration: 1384
+	f(x) = 9478.160264
+iteration: 1385
+	f(x) = 9478.162529
+iteration: 1386
+	f(x) = 9478.159671
+iteration: 1387
+	f(x) = 9478.165108
+iteration: 1388
+	f(x) = 9478.179866
+iteration: 1389
+	f(x) = 9478.162155
+iteration: 1390
+	f(x) = 9478.180722
+iteration: 1391
+	f(x) = 9478.153192
+iteration: 1392
+	f(x) = 9478.149972
+iteration: 1393
+	f(x) = 9478.152171
+iteration: 1394
+	f(x) = 9478.163371
+iteration: 1395
+	f(x) = 9478.148971
+iteration: 1396
+	f(x) = 9478.153562
+iteration: 1397
+	f(x) = 9478.152533
+iteration: 1398
+	f(x) = 9478.158761
+iteration: 1399
+	f(x) = 9478.141485
+iteration: 1400
+	f(x) = 9478.144841
+iteration: 1401
+	f(x) = 9478.153310
+iteration: 1402
+	f(x) = 9478.138722
+iteration: 1403
+	f(x) = 9478.139969
+iteration: 1404
+	f(x) = 9478.138366
+iteration: 1405
+	f(x) = 9478.135753
+iteration: 1406
+	f(x) = 9478.134987
+iteration: 1407
+	f(x) = 9478.144197
+iteration: 1408
+	f(x) = 9478.148193
+iteration: 1409
+	f(x) = 9478.157415
+iteration: 1410
+	f(x) = 9478.143320
+iteration: 1411
+	f(x) = 9478.136669
+iteration: 1412
+	f(x) = 9478.139880
+iteration: 1413
+	f(x) = 9478.145785
+iteration: 1414
+	f(x) = 9478.140012
+iteration: 1415
+	f(x) = 9478.142846
+iteration: 1416
+	f(x) = 9478.140950
+iteration: 1417
+	f(x) = 9478.144021
+iteration: 1418
+	f(x) = 9478.139208
+iteration: 1419
+	f(x) = 9478.148939
+iteration: 1420
+	f(x) = 9478.136918
+iteration: 1421
+	f(x) = 9478.148170
+iteration: 1422
+	f(x) = 9478.133887
+iteration: 1423
+	f(x) = 9478.132268
+iteration: 1424
+	f(x) = 9478.146105
+iteration: 1425
+	f(x) = 9478.134308
+iteration: 1426
+	f(x) = 9478.131852
+iteration: 1427
+	f(x) = 9478.131986
+iteration: 1428
+	f(x) = 9478.145244
+iteration: 1429
+	f(x) = 9478.129741
+iteration: 1430
+	f(x) = 9478.135783
+iteration: 1431
+	f(x) = 9478.135144
+iteration: 1432
+	f(x) = 9478.129941
+iteration: 1433
+	f(x) = 9478.138879
+iteration: 1434
+	f(x) = 9478.128768
+iteration: 1435
+	f(x) = 9478.140964
+iteration: 1436
+	f(x) = 9478.138196
+iteration: 1437
+	f(x) = 9478.138880
+iteration: 1438
+	f(x) = 9478.138141
+iteration: 1439
+	f(x) = 9478.148454
+iteration: 1440
+	f(x) = 9478.127237
+iteration: 1441
+	f(x) = 9478.133651
+iteration: 1442
+	f(x) = 9478.142105
+iteration: 1443
+	f(x) = 9478.128109
+iteration: 1444
+	f(x) = 9478.138345
+iteration: 1445
+	f(x) = 9478.129576
+iteration: 1446
+	f(x) = 9478.129503
+iteration: 1447
+	f(x) = 9478.128129
+iteration: 1448
+	f(x) = 9478.139764
+iteration: 1449
+	f(x) = 9478.128063
+iteration: 1450
+	f(x) = 9478.137179
+iteration: 1451
+	f(x) = 9478.126381
+iteration: 1452
+	f(x) = 9478.125283
+iteration: 1453
+	f(x) = 9478.124661
+iteration: 1454
+	f(x) = 9478.128927
+iteration: 1455
+	f(x) = 9478.126644
+iteration: 1456
+	f(x) = 9478.121740
+iteration: 1457
+	f(x) = 9478.121831
+iteration: 1458
+	f(x) = 9478.145001
+iteration: 1459
+	f(x) = 9478.121265
+iteration: 1460
+	f(x) = 9478.118535
+iteration: 1461
+	f(x) = 9478.120366
+iteration: 1462
+	f(x) = 9478.130407
+iteration: 1463
+	f(x) = 9478.117936
+iteration: 1464
+	f(x) = 9478.117545
+iteration: 1465
+	f(x) = 9478.116745
+iteration: 1466
+	f(x) = 9478.116894
+iteration: 1467
+	f(x) = 9478.139199
+iteration: 1468
+	f(x) = 9478.115277
+iteration: 1469
+	f(x) = 9478.116120
+iteration: 1470
+	f(x) = 9478.119669
+iteration: 1471
+	f(x) = 9478.115640
+iteration: 1472
+	f(x) = 9478.119142
+iteration: 1473
+	f(x) = 9478.117365
+iteration: 1474
+	f(x) = 9478.119812
+iteration: 1475
+	f(x) = 9478.114957
+iteration: 1476
+	f(x) = 9478.125435
+iteration: 1477
+	f(x) = 9478.116343
+iteration: 1478
+	f(x) = 9478.117382
+iteration: 1479
+	f(x) = 9478.114769
+iteration: 1480
+	f(x) = 9478.120842
+iteration: 1481
+	f(x) = 9478.117146
+iteration: 1482
+	f(x) = 9478.128755
+iteration: 1483
+	f(x) = 9478.114549
+iteration: 1484
+	f(x) = 9478.120689
+iteration: 1485
+	f(x) = 9478.112170
+iteration: 1486
+	f(x) = 9478.113080
+iteration: 1487
+	f(x) = 9478.127529
+iteration: 1488
+	f(x) = 9478.117137
+iteration: 1489
+	f(x) = 9478.122703
+iteration: 1490
+	f(x) = 9478.111613
+iteration: 1491
+	f(x) = 9478.115917
+iteration: 1492
+	f(x) = 9478.112704
+iteration: 1493
+	f(x) = 9478.120050
+iteration: 1494
+	f(x) = 9478.111833
+iteration: 1495
+	f(x) = 9478.120071
+iteration: 1496
+	f(x) = 9478.110264
+iteration: 1497
+	f(x) = 9478.113356
+iteration: 1498
+	f(x) = 9478.120189
+iteration: 1499
+	f(x) = 9478.110778
+iteration: 1500
+	f(x) = 9478.122080
+iteration: 1501
+	f(x) = 9478.109160
+iteration: 1502
+	f(x) = 9478.108614
+iteration: 1503
+	f(x) = 9478.120066
+iteration: 1504
+	f(x) = 9478.126431
+iteration: 1505
+	f(x) = 9478.110952
+iteration: 1506
+	f(x) = 9478.114629
+iteration: 1507
+	f(x) = 9478.114199
+iteration: 1508
+	f(x) = 9478.115459
+iteration: 1509
+	f(x) = 9478.113093
+iteration: 1510
+	f(x) = 9478.115802
+iteration: 1511
+	f(x) = 9478.107087
+iteration: 1512
+	f(x) = 9478.109211
+iteration: 1513
+	f(x) = 9478.112057
+iteration: 1514
+	f(x) = 9478.104462
+iteration: 1515
+	f(x) = 9478.104641
+iteration: 1516
+	f(x) = 9478.120682
+iteration: 1517
+	f(x) = 9478.106035
+iteration: 1518
+	f(x) = 9478.129728
+iteration: 1519
+	f(x) = 9478.112476
+iteration: 1520
+	f(x) = 9478.115147
+iteration: 1521
+	f(x) = 9478.109439
+iteration: 1522
+	f(x) = 9478.111575
+iteration: 1523
+	f(x) = 9478.109429
+iteration: 1524
+	f(x) = 9478.107339
+iteration: 1525
+	f(x) = 9478.111695
+iteration: 1526
+	f(x) = 9478.110548
+iteration: 1527
+	f(x) = 9478.109198
+iteration: 1528
+	f(x) = 9478.109709
+iteration: 1529
+	f(x) = 9478.107541
+iteration: 1530
+	f(x) = 9478.109485
+iteration: 1531
+	f(x) = 9478.112577
+iteration: 1532
+	f(x) = 9478.110723
+iteration: 1533
+	f(x) = 9478.106716
+iteration: 1534
+	f(x) = 9478.104617
+iteration: 1535
+	f(x) = 9478.105000
+iteration: 1536
+	f(x) = 9478.104280
+iteration: 1537
+	f(x) = 9478.104435
+iteration: 1538
+	f(x) = 9478.104105
+iteration: 1539
+	f(x) = 9478.103632
+iteration: 1540
+	f(x) = 9478.103815
+iteration: 1541
+	f(x) = 9478.103032
+iteration: 1542
+	f(x) = 9478.102737
+iteration: 1543
+	f(x) = 9478.102300
+iteration: 1544
+	f(x) = 9478.101754
+iteration: 1545
+	f(x) = 9478.101276
+iteration: 1546
+	f(x) = 9478.101277
+iteration: 1547
+	f(x) = 9478.101440
+iteration: 1548
+	f(x) = 9478.100913
+iteration: 1549
+	f(x) = 9478.100303
+iteration: 1550
+	f(x) = 9478.099685
+iteration: 1551
+	f(x) = 9478.099241
+iteration: 1552
+	f(x) = 9478.099238
+iteration: 1553
+	f(x) = 9478.099389
+iteration: 1554
+	f(x) = 9478.099331
+iteration: 1555
+	f(x) = 9478.099479
+iteration: 1556
+	f(x) = 9478.099326
+iteration: 1557
+	f(x) = 9478.098951
+iteration: 1558
+	f(x) = 9478.098758
+iteration: 1559
+	f(x) = 9478.098567
+iteration: 1560
+	f(x) = 9478.098101
+iteration: 1561
+	f(x) = 9478.097389
+iteration: 1562
+	f(x) = 9478.096923
+iteration: 1563
+	f(x) = 9478.098027
+iteration: 1564
+	f(x) = 9478.098206
+iteration: 1565
+	f(x) = 9478.096910
+iteration: 1566
+	f(x) = 9478.097336
+iteration: 1567
+	f(x) = 9478.096266
+iteration: 1568
+	f(x) = 9478.095463
+iteration: 1569
+	f(x) = 9478.094867
+iteration: 1570
+	f(x) = 9478.095024
+iteration: 1571
+	f(x) = 9478.097592
+iteration: 1572
+	f(x) = 9478.096040
+iteration: 1573
+	f(x) = 9478.094712
+iteration: 1574
+	f(x) = 9478.093887
+iteration: 1575
+	f(x) = 9478.093385
+iteration: 1576
+	f(x) = 9478.093197
+iteration: 1577
+	f(x) = 9478.093015
+iteration: 1578
+	f(x) = 9478.093529
+iteration: 1579
+	f(x) = 9478.092525
+iteration: 1580
+	f(x) = 9478.092406
+iteration: 1581
+	f(x) = 9478.093032
+iteration: 1582
+	f(x) = 9478.091841
+iteration: 1583
+	f(x) = 9478.091821
+iteration: 1584
+	f(x) = 9478.091597
+iteration: 1585
+	f(x) = 9478.091409
+iteration: 1586
+	f(x) = 9478.091636
+iteration: 1587
+	f(x) = 9478.091840
+iteration: 1588
+	f(x) = 9478.091242
+iteration: 1589
+	f(x) = 9478.090971
+iteration: 1590
+	f(x) = 9478.091018
+iteration: 1591
+	f(x) = 9478.091376
+iteration: 1592
+	f(x) = 9478.090718
+iteration: 1593
+	f(x) = 9478.090505
+iteration: 1594
+	f(x) = 9478.090456
+iteration: 1595
+	f(x) = 9478.090490
+iteration: 1596
+	f(x) = 9478.090568
+iteration: 1597
+	f(x) = 9478.090459
+iteration: 1598
+	f(x) = 9478.090569
+iteration: 1599
+	f(x) = 9478.090518
+iteration: 1600
+	f(x) = 9478.090935
+iteration: 1601
+	f(x) = 9478.090155
+iteration: 1602
+	f(x) = 9478.090228
+iteration: 1603
+	f(x) = 9478.089834
+iteration: 1604
+	f(x) = 9478.089633
+iteration: 1605
+	f(x) = 9478.089379
+iteration: 1606
+	f(x) = 9478.089203
+iteration: 1607
+	f(x) = 9478.088917
+iteration: 1608
+	f(x) = 9478.089173
+iteration: 1609
+	f(x) = 9478.089649
+iteration: 1610
+	f(x) = 9478.088071
+iteration: 1611
+	f(x) = 9478.088225
+iteration: 1612
+	f(x) = 9478.088677
+iteration: 1613
+	f(x) = 9478.087041
+iteration: 1614
+	f(x) = 9478.085876
+iteration: 1615
+	f(x) = 9478.085905
+iteration: 1616
+	f(x) = 9478.087639
+iteration: 1617
+	f(x) = 9478.086082
+iteration: 1618
+	f(x) = 9478.085604
+iteration: 1619
+	f(x) = 9478.084988
+iteration: 1620
+	f(x) = 9478.085082
+iteration: 1621
+	f(x) = 9478.084596
+iteration: 1622
+	f(x) = 9478.084498
+iteration: 1623
+	f(x) = 9478.083506
+iteration: 1624
+	f(x) = 9478.083469
+iteration: 1625
+	f(x) = 9478.083929
+iteration: 1626
+	f(x) = 9478.082677
+iteration: 1627
+	f(x) = 9478.082441
+iteration: 1628
+	f(x) = 9478.082578
+iteration: 1629
+	f(x) = 9478.082412
+iteration: 1630
+	f(x) = 9478.082795
+iteration: 1631
+	f(x) = 9478.081733
+iteration: 1632
+	f(x) = 9478.081111
+iteration: 1633
+	f(x) = 9478.080571
+iteration: 1634
+	f(x) = 9478.079928
+iteration: 1635
+	f(x) = 9478.079541
+iteration: 1636
+	f(x) = 9478.079395
+iteration: 1637
+	f(x) = 9478.079776
+iteration: 1638
+	f(x) = 9478.081134
+iteration: 1639
+	f(x) = 9478.080026
+iteration: 1640
+	f(x) = 9478.079325
+iteration: 1641
+	f(x) = 9478.079650
+iteration: 1642
+	f(x) = 9478.079185
+iteration: 1643
+	f(x) = 9478.078986
+iteration: 1644
+	f(x) = 9478.078910
+iteration: 1645
+	f(x) = 9478.078951
+iteration: 1646
+	f(x) = 9478.078826
+iteration: 1647
+	f(x) = 9478.078784
+iteration: 1648
+	f(x) = 9478.078805
+iteration: 1649
+	f(x) = 9478.079187
+iteration: 1650
+	f(x) = 9478.078400
+iteration: 1651
+	f(x) = 9478.078123
+iteration: 1652
+	f(x) = 9478.078729
+iteration: 1653
+	f(x) = 9478.078291
+iteration: 1654
+	f(x) = 9478.077631
+iteration: 1655
+	f(x) = 9478.077458
+iteration: 1656
+	f(x) = 9478.077587
+iteration: 1657
+	f(x) = 9478.077834
+iteration: 1658
+	f(x) = 9478.077098
+iteration: 1659
+	f(x) = 9478.076800
+iteration: 1660
+	f(x) = 9478.076441
+iteration: 1661
+	f(x) = 9478.076483
+iteration: 1662
+	f(x) = 9478.077260
+iteration: 1663
+	f(x) = 9478.075838
+iteration: 1664
+	f(x) = 9478.075528
+iteration: 1665
+	f(x) = 9478.075519
+iteration: 1666
+	f(x) = 9478.077737
+iteration: 1667
+	f(x) = 9478.075455
+iteration: 1668
+	f(x) = 9478.075311
+iteration: 1669
+	f(x) = 9478.075725
+iteration: 1670
+	f(x) = 9478.075382
+iteration: 1671
+	f(x) = 9478.075910
+iteration: 1672
+	f(x) = 9478.075117
+iteration: 1673
+	f(x) = 9478.074936
+iteration: 1674
+	f(x) = 9478.074916
+iteration: 1675
+	f(x) = 9478.074642
+iteration: 1676
+	f(x) = 9478.074542
+iteration: 1677
+	f(x) = 9478.074567
+iteration: 1678
+	f(x) = 9478.074822
+iteration: 1679
+	f(x) = 9478.074598
+iteration: 1680
+	f(x) = 9478.074519
+iteration: 1681
+	f(x) = 9478.074509
+iteration: 1682
+	f(x) = 9478.074985
+iteration: 1683
+	f(x) = 9478.074250
+iteration: 1684
+	f(x) = 9478.073771
+iteration: 1685
+	f(x) = 9478.073157
+iteration: 1686
+	f(x) = 9478.073052
+iteration: 1687
+	f(x) = 9478.073079
+iteration: 1688
+	f(x) = 9478.074758
+iteration: 1689
+	f(x) = 9478.071980
+iteration: 1690
+	f(x) = 9478.071851
+iteration: 1691
+	f(x) = 9478.072785
+iteration: 1692
+	f(x) = 9478.072405
+iteration: 1693
+	f(x) = 9478.071503
+iteration: 1694
+	f(x) = 9478.071669
+iteration: 1695
+	f(x) = 9478.071409
+iteration: 1696
+	f(x) = 9478.071426
+iteration: 1697
+	f(x) = 9478.071363
+iteration: 1698
+	f(x) = 9478.071372
+iteration: 1699
+	f(x) = 9478.071322
+iteration: 1700
+	f(x) = 9478.071498
+iteration: 1701
+	f(x) = 9478.071871
+iteration: 1702
+	f(x) = 9478.070944
+iteration: 1703
+	f(x) = 9478.070655
+iteration: 1704
+	f(x) = 9478.070592
+iteration: 1705
+	f(x) = 9478.070286
+iteration: 1706
+	f(x) = 9478.069901
+iteration: 1707
+	f(x) = 9478.069693
+iteration: 1708
+	f(x) = 9478.069410
+iteration: 1709
+	f(x) = 9478.070173
+iteration: 1710
+	f(x) = 9478.069693
+iteration: 1711
+	f(x) = 9478.069261
+iteration: 1712
+	f(x) = 9478.069239
+iteration: 1713
+	f(x) = 9478.069074
+iteration: 1714
+	f(x) = 9478.068474
+iteration: 1715
+	f(x) = 9478.068356
+iteration: 1716
+	f(x) = 9478.068269
+iteration: 1717
+	f(x) = 9478.068655
+iteration: 1718
+	f(x) = 9478.068247
+iteration: 1719
+	f(x) = 9478.067975
+iteration: 1720
+	f(x) = 9478.067924
+iteration: 1721
+	f(x) = 9478.067747
+iteration: 1722
+	f(x) = 9478.067673
+iteration: 1723
+	f(x) = 9478.067534
+iteration: 1724
+	f(x) = 9478.067633
+iteration: 1725
+	f(x) = 9478.067911
+iteration: 1726
+	f(x) = 9478.067323
+iteration: 1727
+	f(x) = 9478.067129
+iteration: 1728
+	f(x) = 9478.067319
+iteration: 1729
+	f(x) = 9478.067042
+iteration: 1730
+	f(x) = 9478.066950
+iteration: 1731
+	f(x) = 9478.066668
+iteration: 1732
+	f(x) = 9478.066806
+iteration: 1733
+	f(x) = 9478.067118
+iteration: 1734
+	f(x) = 9478.066741
+iteration: 1735
+	f(x) = 9478.067080
+iteration: 1736
+	f(x) = 9478.066287
+iteration: 1737
+	f(x) = 9478.065884
+iteration: 1738
+	f(x) = 9478.065550
+iteration: 1739
+	f(x) = 9478.065399
+iteration: 1740
+	f(x) = 9478.065368
+iteration: 1741
+	f(x) = 9478.065167
+iteration: 1742
+	f(x) = 9478.065100
+iteration: 1743
+	f(x) = 9478.065305
+iteration: 1744
+	f(x) = 9478.065175
+iteration: 1745
+	f(x) = 9478.064966
+iteration: 1746
+	f(x) = 9478.064734
+iteration: 1747
+	f(x) = 9478.064509
+iteration: 1748
+	f(x) = 9478.064581
+iteration: 1749
+	f(x) = 9478.064923
+iteration: 1750
+	f(x) = 9478.064133
+iteration: 1751
+	f(x) = 9478.063849
+iteration: 1752
+	f(x) = 9478.065014
+iteration: 1753
+	f(x) = 9478.065160
+iteration: 1754
+	f(x) = 9478.063739
+iteration: 1755
+	f(x) = 9478.063615
+iteration: 1756
+	f(x) = 9478.063670
+iteration: 1757
+	f(x) = 9478.063728
+iteration: 1758
+	f(x) = 9478.063583
+iteration: 1759
+	f(x) = 9478.063709
+iteration: 1760
+	f(x) = 9478.063405
+iteration: 1761
+	f(x) = 9478.063147
+iteration: 1762
+	f(x) = 9478.062949
+iteration: 1763
+	f(x) = 9478.062912
+iteration: 1764
+	f(x) = 9478.062748
+iteration: 1765
+	f(x) = 9478.062952
+iteration: 1766
+	f(x) = 9478.062823
+iteration: 1767
+	f(x) = 9478.062330
+iteration: 1768
+	f(x) = 9478.062130
+iteration: 1769
+	f(x) = 9478.061980
+iteration: 1770
+	f(x) = 9478.062050
+iteration: 1771
+	f(x) = 9478.061931
+iteration: 1772
+	f(x) = 9478.061877
+iteration: 1773
+	f(x) = 9478.061840
+iteration: 1774
+	f(x) = 9478.061890
+iteration: 1775
+	f(x) = 9478.061781
+iteration: 1776
+	f(x) = 9478.061573
+iteration: 1777
+	f(x) = 9478.061489
+iteration: 1778
+	f(x) = 9478.061345
+iteration: 1779
+	f(x) = 9478.061604
+iteration: 1780
+	f(x) = 9478.061879
+iteration: 1781
+	f(x) = 9478.061450
+iteration: 1782
+	f(x) = 9478.061159
+iteration: 1783
+	f(x) = 9478.061144
+iteration: 1784
+	f(x) = 9478.061596
+iteration: 1785
+	f(x) = 9478.060935
+iteration: 1786
+	f(x) = 9478.060801
+iteration: 1787
+	f(x) = 9478.060625
+iteration: 1788
+	f(x) = 9478.060526
+iteration: 1789
+	f(x) = 9478.060645
+iteration: 1790
+	f(x) = 9478.060353
+iteration: 1791
+	f(x) = 9478.060640
+iteration: 1792
+	f(x) = 9478.060336
+iteration: 1793
+	f(x) = 9478.060035
+iteration: 1794
+	f(x) = 9478.059892
+iteration: 1795
+	f(x) = 9478.059934
+iteration: 1796
+	f(x) = 9478.059859
+iteration: 1797
+	f(x) = 9478.060032
+iteration: 1798
+	f(x) = 9478.059783
+iteration: 1799
+	f(x) = 9478.059614
+iteration: 1800
+	f(x) = 9478.059565
+iteration: 1801
+	f(x) = 9478.059531
+iteration: 1802
+	f(x) = 9478.059548
+iteration: 1803
+	f(x) = 9478.059577
+iteration: 1804
+	f(x) = 9478.059575
+iteration: 1805
+	f(x) = 9478.059524
+iteration: 1806
+	f(x) = 9478.059502
+iteration: 1807
+	f(x) = 9478.059590
+iteration: 1808
+	f(x) = 9478.059516
+iteration: 1809
+	f(x) = 9478.059440
+iteration: 1810
+	f(x) = 9478.059444
+iteration: 1811
+	f(x) = 9478.059663
+iteration: 1812
+	f(x) = 9478.059286
+iteration: 1813
+	f(x) = 9478.059299
+iteration: 1814
+	f(x) = 9478.059193
+iteration: 1815
+	f(x) = 9478.059267
+iteration: 1816
+	f(x) = 9478.059341
+iteration: 1817
+	f(x) = 9478.059076
+iteration: 1818
+	f(x) = 9478.059240
+iteration: 1819
+	f(x) = 9478.059231
+iteration: 1820
+	f(x) = 9478.059075
+iteration: 1
+	f(x) = 9478.045156
+iteration: 2
+	f(x) = 9532.589577
+iteration: 3
+	f(x) = 9483.216385
+iteration: 4
+	f(x) = 9486.982028
+iteration: 5
+	f(x) = 9485.920065
+iteration: 6
+	f(x) = 9478.538115
+iteration: 7
+	f(x) = 9478.578754
+iteration: 8
+	f(x) = 9480.752425
+iteration: 9
+	f(x) = 9479.575835
+iteration: 10
+	f(x) = 9571.008495
+iteration: 11
+	f(x) = 9478.956988
+iteration: 12
+	f(x) = 9478.074268
+iteration: 13
+	f(x) = 9478.057955
+iteration: 14
+	f(x) = 9478.042510
+iteration: 15
+	f(x) = 9478.037758
+iteration: 16
+	f(x) = 9478.074930
+iteration: 17
+	f(x) = 9540.902660
+iteration: 18
+	f(x) = 9478.120102
+iteration: 19
+	f(x) = 9483.924156
+iteration: 20
+	f(x) = 9478.027007
+iteration: 21
+	f(x) = 9477.997228
+iteration: 22
+	f(x) = 9480.441932
+iteration: 23
+	f(x) = 9478.087653
+iteration: 24
+	f(x) = 9478.085028
+iteration: 25
+	f(x) = 9478.061951
+iteration: 26
+	f(x) = 9478.055958
+iteration: 27
+	f(x) = 9478.099022
+iteration: 28
+	f(x) = 9478.108724
+iteration: 29
+	f(x) = 9478.044564
+iteration: 30
+	f(x) = 9478.042133
+iteration: 31
+	f(x) = 9478.140727
+iteration: 32
+	f(x) = 9478.045165
+iteration: 33
+	f(x) = 9478.048028
+iteration: 34
+	f(x) = 9478.046926
+iteration: 35
+	f(x) = 9478.045893
+iteration: 36
+	f(x) = 9478.058167
+iteration: 37
+	f(x) = 9499.415582
+iteration: 38
+	f(x) = 9487.340212
+iteration: 39
+	f(x) = 9480.382590
+iteration: 40
+	f(x) = 9482.054948
+iteration: 41
+	f(x) = 9478.075760
+iteration: 42
+	f(x) = 9478.750528
+iteration: 43
+	f(x) = 9484.600033
+iteration: 44
+	f(x) = 9485.098829
+iteration: 45
+	f(x) = 9480.680311
+iteration: 46
+	f(x) = 9482.252177
+iteration: 47
+	f(x) = 9480.527237
+iteration: 48
+	f(x) = 9479.106323
+iteration: 49
+	f(x) = 9478.079582
+iteration: 50
+	f(x) = 9478.071782
+iteration: 51
+	f(x) = 9487.996056
+iteration: 52
+	f(x) = 9480.757711
+iteration: 53
+	f(x) = 9480.283067
+iteration: 54
+	f(x) = 9479.852695
+iteration: 55
+	f(x) = 9478.054837
+iteration: 56
+	f(x) = 9479.927920
+iteration: 57
+	f(x) = 9482.141006
+iteration: 58
+	f(x) = 9478.291631
+iteration: 59
+	f(x) = 9478.110296
+iteration: 60
+	f(x) = 9478.111144
+iteration: 61
+	f(x) = 9478.152843
+iteration: 62
+	f(x) = 9478.853747
+iteration: 63
+	f(x) = 9478.169567
+iteration: 64
+	f(x) = 9478.046046
+iteration: 65
+	f(x) = 9478.046368
+iteration: 66
+	f(x) = 9478.091559
+iteration: 67
+	f(x) = 9478.054345
+iteration: 68
+	f(x) = 9513.742606
+iteration: 69
+	f(x) = 9478.046718
+iteration: 70
+	f(x) = 9478.045960
+iteration: 71
+	f(x) = 9478.045363
+iteration: 72
+	f(x) = 9478.045178
+iteration: 73
+	f(x) = 9478.045158
+iteration: 74
+	f(x) = 9795.972269
+iteration: 75
+	f(x) = 9478.266649
+iteration: 76
+	f(x) = 9477.691977
+iteration: 77
+	f(x) = 9477.929076
+iteration: 78
+	f(x) = 9522.292350
+iteration: 79
+	f(x) = 9481.571393
+iteration: 80
+	f(x) = 9480.416196
+iteration: 81
+	f(x) = 9493.461196
+iteration: 82
+	f(x) = 9514.730956
+iteration: 83
+	f(x) = 9481.626571
+iteration: 84
+	f(x) = 9509.568764
+iteration: 85
+	f(x) = 9487.827839
+iteration: 86
+	f(x) = 9478.255246
+iteration: 87
+	f(x) = 9478.421003
+iteration: 88
+	f(x) = 9479.340962
+iteration: 89
+	f(x) = 9478.615100
+iteration: 90
+	f(x) = 9839.253937
+iteration: 91
+	f(x) = 9478.048289
+iteration: 92
+	f(x) = 9478.037066
+iteration: 93
+	f(x) = 9478.119084
+iteration: 94
+	f(x) = 9478.054026
+iteration: 95
+	f(x) = 9478.092128
+iteration: 96
+	f(x) = 9478.036294
+iteration: 97
+	f(x) = 9530.991341
+iteration: 98
+	f(x) = 9477.999988
+iteration: 99
+	f(x) = 9484.874368
+iteration: 100
+	f(x) = 9478.070724
+iteration: 101
+	f(x) = 9478.124582
+iteration: 102
+	f(x) = 9479.301585
+iteration: 103
+	f(x) = 9478.049772
+iteration: 104
+	f(x) = 9478.045865
+iteration: 105
+	f(x) = 9478.067358
+iteration: 106
+	f(x) = 9478.086560
+iteration: 107
+	f(x) = 9478.061683
+iteration: 108
+	f(x) = 9478.049524
+iteration: 109
+	f(x) = 9478.045946
+iteration: 110
+	f(x) = 9478.049430
+iteration: 111
+	f(x) = 9478.055489
+iteration: 112
+	f(x) = 9478.045149
+iteration: 113
+	f(x) = 9478.045253
+iteration: 114
+	f(x) = 9478.045585
+iteration: 115
+	f(x) = 9478.044521
+iteration: 116
+	f(x) = 9478.040374
+iteration: 117
+	f(x) = 9578.572134
+iteration: 118
+	f(x) = 9542.035668
+iteration: 119
+	f(x) = 9480.733899
+iteration: 120
+	f(x) = 9482.387670
+iteration: 121
+	f(x) = 9478.059667
+iteration: 122
+	f(x) = 9478.648062
+iteration: 123
+	f(x) = 9484.443163
+iteration: 124
+	f(x) = 9485.672551
+iteration: 125
+	f(x) = 9482.277135
+iteration: 126
+	f(x) = 9484.131194
+iteration: 127
+	f(x) = 9480.442928
+iteration: 128
+	f(x) = 9479.103520
+iteration: 129
+	f(x) = 9478.097970
+iteration: 130
+	f(x) = 9478.130043
+iteration: 131
+	f(x) = 9488.394584
+iteration: 132
+	f(x) = 9480.378009
+iteration: 133
+	f(x) = 9480.144919
+iteration: 134
+	f(x) = 9479.834723
+iteration: 135
+	f(x) = 9478.064405
+iteration: 136
+	f(x) = 9479.846858
+iteration: 137
+	f(x) = 9481.718729
+iteration: 138
+	f(x) = 9478.239923
+iteration: 139
+	f(x) = 9478.081109
+iteration: 140
+	f(x) = 9478.114996
+iteration: 141
+	f(x) = 9478.153932
+iteration: 142
+	f(x) = 9478.384529
+iteration: 143
+	f(x) = 9478.172878
+iteration: 144
+	f(x) = 9478.046836
+iteration: 145
+	f(x) = 9478.046838
+iteration: 146
+	f(x) = 9478.066884
+iteration: 147
+	f(x) = 9478.057284
+iteration: 148
+	f(x) = 9538.928828
+iteration: 149
+	f(x) = 9478.045821
+iteration: 150
+	f(x) = 9478.046072
+iteration: 151
+	f(x) = 9478.045151
+iteration: 152
+	f(x) = 9478.045294
+iteration: 153
+	f(x) = 9478.045156
+iteration: 154
+	f(x) = 9909.370231
+iteration: 155
+	f(x) = 9482.461631
+iteration: 156
+	f(x) = 9478.514864
+iteration: 157
+	f(x) = 9478.825778
+iteration: 158
+	f(x) = 9514.312478
+iteration: 159
+	f(x) = 9478.663171
+iteration: 160
+	f(x) = 9476.841293
+iteration: 161
+	f(x) = 9515.326009
+iteration: 162
+	f(x) = 9492.317970
+iteration: 163
+	f(x) = 9477.839339
+iteration: 164
+	f(x) = 9478.329300
+iteration: 165
+	f(x) = 9477.045138
+iteration: 166
+	f(x) = 9477.546066
+iteration: 167
+	f(x) = 9476.111555
+iteration: 168
+	f(x) = 9476.321548
+iteration: 169
+	f(x) = 9476.157977
+iteration: 170
+	f(x) = 9476.403438
+iteration: 171
+	f(x) = 9476.078522
+iteration: 172
+	f(x) = 9476.210066
+iteration: 173
+	f(x) = 9476.128829
+iteration: 174
+	f(x) = 9476.153816
+iteration: 175
+	f(x) = 9476.113997
+iteration: 176
+	f(x) = 9476.179638
+iteration: 177
+	f(x) = 9476.092951
+iteration: 178
+	f(x) = 9476.156704
+iteration: 179
+	f(x) = 9476.160955
+iteration: 180
+	f(x) = 9476.202685
+iteration: 181
+	f(x) = 9476.067281
+iteration: 182
+	f(x) = 9476.244083
+iteration: 183
+	f(x) = 9476.071783
+iteration: 184
+	f(x) = 9476.197179
+iteration: 185
+	f(x) = 9476.072762
+iteration: 186
+	f(x) = 9476.188998
+iteration: 187
+	f(x) = 9476.116520
+iteration: 188
+	f(x) = 9476.399234
+iteration: 189
+	f(x) = 9476.079992
+iteration: 190
+	f(x) = 9476.159048
+iteration: 191
+	f(x) = 9476.597885
+iteration: 192
+	f(x) = 9476.316725
+iteration: 193
+	f(x) = 9476.210466
+iteration: 194
+	f(x) = 9476.063375
+iteration: 195
+	f(x) = 9476.059278
+iteration: 196
+	f(x) = 9476.155946
+iteration: 197
+	f(x) = 9476.068588
+iteration: 198
+	f(x) = 9476.144836
+iteration: 199
+	f(x) = 9476.138696
+iteration: 200
+	f(x) = 9476.374798
+iteration: 201
+	f(x) = 9476.102762
+iteration: 202
+	f(x) = 9476.213258
+iteration: 203
+	f(x) = 9476.096007
+iteration: 204
+	f(x) = 9475.988753
+iteration: 205
+	f(x) = 9476.108685
+iteration: 206
+	f(x) = 9475.972136
+iteration: 207
+	f(x) = 9476.039913
+iteration: 208
+	f(x) = 9476.045484
+iteration: 209
+	f(x) = 9475.955227
+iteration: 210
+	f(x) = 9475.930113
+iteration: 211
+	f(x) = 9475.979331
+iteration: 212
+	f(x) = 9475.953007
+iteration: 213
+	f(x) = 9475.951297
+iteration: 214
+	f(x) = 9475.960531
+iteration: 215
+	f(x) = 9476.103867
+iteration: 216
+	f(x) = 9476.018555
+iteration: 217
+	f(x) = 9475.982453
+iteration: 218
+	f(x) = 9475.952508
+iteration: 219
+	f(x) = 9475.799252
+iteration: 220
+	f(x) = 9475.808714
+iteration: 221
+	f(x) = 9475.825492
+iteration: 222
+	f(x) = 9475.794484
+iteration: 223
+	f(x) = 9475.818348
+iteration: 224
+	f(x) = 9475.779834
+iteration: 225
+	f(x) = 9475.791747
+iteration: 226
+	f(x) = 9475.796265
+iteration: 227
+	f(x) = 9475.804696
+iteration: 228
+	f(x) = 9475.760801
+iteration: 229
+	f(x) = 9475.785845
+iteration: 230
+	f(x) = 9475.808738
+iteration: 231
+	f(x) = 9475.771140
+iteration: 232
+	f(x) = 9475.784987
+iteration: 233
+	f(x) = 9475.778675
+iteration: 234
+	f(x) = 9475.775918
+iteration: 235
+	f(x) = 9477.662886
+iteration: 236
+	f(x) = 9475.823575
+iteration: 237
+	f(x) = 9475.773657
+iteration: 238
+	f(x) = 9475.813915
+iteration: 239
+	f(x) = 9475.775590
+iteration: 240
+	f(x) = 9475.791884
+iteration: 241
+	f(x) = 9475.771536
+iteration: 242
+	f(x) = 9475.797816
+iteration: 243
+	f(x) = 9475.773547
+iteration: 244
+	f(x) = 9475.816456
+iteration: 245
+	f(x) = 9475.771296
+iteration: 246
+	f(x) = 9475.704685
+iteration: 247
+	f(x) = 9475.719219
+iteration: 248
+	f(x) = 9475.730045
+iteration: 249
+	f(x) = 9475.860011
+iteration: 250
+	f(x) = 9475.713677
+iteration: 251
+	f(x) = 9475.748888
+iteration: 252
+	f(x) = 9475.717144
+iteration: 253
+	f(x) = 9475.774611
+iteration: 254
+	f(x) = 9475.715105
+iteration: 255
+	f(x) = 9475.678442
+iteration: 256
+	f(x) = 9475.805731
+iteration: 257
+	f(x) = 9475.708056
+iteration: 258
+	f(x) = 9475.691126
+iteration: 259
+	f(x) = 9475.702919
+iteration: 260
+	f(x) = 9475.692260
+iteration: 261
+	f(x) = 9475.719233
+iteration: 262
+	f(x) = 9475.672665
+iteration: 263
+	f(x) = 9475.699485
+iteration: 264
+	f(x) = 9475.699591
+iteration: 265
+	f(x) = 9475.662219
+iteration: 266
+	f(x) = 9475.673875
+iteration: 267
+	f(x) = 9475.648318
+iteration: 268
+	f(x) = 9475.685991
+iteration: 269
+	f(x) = 9475.651496
+iteration: 270
+	f(x) = 9475.657907
+iteration: 271
+	f(x) = 9475.632097
+iteration: 272
+	f(x) = 9475.633474
+iteration: 273
+	f(x) = 9475.646910
+iteration: 274
+	f(x) = 9475.672176
+iteration: 275
+	f(x) = 9475.645880
+iteration: 276
+	f(x) = 9475.641430
+iteration: 277
+	f(x) = 9475.646402
+iteration: 278
+	f(x) = 9475.658160
+iteration: 279
+	f(x) = 9475.645579
+iteration: 280
+	f(x) = 9475.637231
+iteration: 281
+	f(x) = 9475.665874
+iteration: 282
+	f(x) = 9475.637075
+iteration: 283
+	f(x) = 9475.645964
+iteration: 284
+	f(x) = 9475.651413
+iteration: 285
+	f(x) = 9475.807187
+iteration: 286
+	f(x) = 9475.673954
+iteration: 287
+	f(x) = 9475.646331
+iteration: 288
+	f(x) = 9475.613233
+iteration: 289
+	f(x) = 9475.621158
+iteration: 290
+	f(x) = 9475.634795
+iteration: 291
+	f(x) = 9475.641325
+iteration: 292
+	f(x) = 9475.627827
+iteration: 293
+	f(x) = 9475.631237
+iteration: 294
+	f(x) = 9475.786781
+iteration: 295
+	f(x) = 9475.614221
+iteration: 296
+	f(x) = 9475.625512
+iteration: 297
+	f(x) = 9475.633182
+iteration: 298
+	f(x) = 9475.621573
+iteration: 299
+	f(x) = 9475.598972
+iteration: 300
+	f(x) = 9475.603140
+iteration: 301
+	f(x) = 9475.617752
+iteration: 302
+	f(x) = 9475.614035
+iteration: 303
+	f(x) = 9475.617748
+iteration: 304
+	f(x) = 9475.585856
+iteration: 305
+	f(x) = 9475.591909
+iteration: 306
+	f(x) = 9475.593780
+iteration: 307
+	f(x) = 9475.619883
+iteration: 308
+	f(x) = 9475.593700
+iteration: 309
+	f(x) = 9475.595960
+iteration: 310
+	f(x) = 9475.600440
+iteration: 311
+	f(x) = 9475.605284
+iteration: 312
+	f(x) = 9475.593534
+iteration: 313
+	f(x) = 9475.628066
+iteration: 314
+	f(x) = 9475.596913
+iteration: 315
+	f(x) = 9475.608914
+iteration: 316
+	f(x) = 9475.600482
+iteration: 317
+	f(x) = 9475.635745
+iteration: 318
+	f(x) = 9475.593264
+iteration: 319
+	f(x) = 9475.590298
+iteration: 320
+	f(x) = 9475.600444
+iteration: 321
+	f(x) = 9475.578922
+iteration: 322
+	f(x) = 9475.937885
+iteration: 323
+	f(x) = 9475.618148
+iteration: 324
+	f(x) = 9475.652927
+iteration: 325
+	f(x) = 9475.585322
+iteration: 326
+	f(x) = 9475.592166
+iteration: 327
+	f(x) = 9475.601680
+iteration: 328
+	f(x) = 9475.592173
+iteration: 329
+	f(x) = 9475.564374
+iteration: 330
+	f(x) = 9475.654062
+iteration: 331
+	f(x) = 9475.578246
+iteration: 332
+	f(x) = 9475.584488
+iteration: 333
+	f(x) = 9475.579445
+iteration: 334
+	f(x) = 9475.632490
+iteration: 335
+	f(x) = 9475.573461
+iteration: 336
+	f(x) = 9475.575975
+iteration: 337
+	f(x) = 9475.573204
+iteration: 338
+	f(x) = 9475.553366
+iteration: 339
+	f(x) = 9475.583808
+iteration: 340
+	f(x) = 9475.550529
+iteration: 341
+	f(x) = 9475.887502
+iteration: 342
+	f(x) = 9475.569441
+iteration: 343
+	f(x) = 9475.535997
+iteration: 344
+	f(x) = 9475.536067
+iteration: 345
+	f(x) = 9475.547143
+iteration: 346
+	f(x) = 9475.537937
+iteration: 347
+	f(x) = 9475.567393
+iteration: 348
+	f(x) = 9475.535776
+iteration: 349
+	f(x) = 9475.563140
+iteration: 350
+	f(x) = 9475.555462
+iteration: 351
+	f(x) = 9475.521407
+iteration: 352
+	f(x) = 9475.555897
+iteration: 353
+	f(x) = 9475.532531
+iteration: 354
+	f(x) = 9475.503477
+iteration: 355
+	f(x) = 9475.496318
+iteration: 356
+	f(x) = 9475.508522
+iteration: 357
+	f(x) = 9475.511767
+iteration: 358
+	f(x) = 9475.524209
+iteration: 359
+	f(x) = 9475.519748
+iteration: 360
+	f(x) = 9475.579786
+iteration: 361
+	f(x) = 9475.495058
+iteration: 362
+	f(x) = 9475.506321
+iteration: 363
+	f(x) = 9475.504900
+iteration: 364
+	f(x) = 9475.514381
+iteration: 365
+	f(x) = 9475.500301
+iteration: 366
+	f(x) = 9475.499882
+iteration: 367
+	f(x) = 9475.524040
+iteration: 368
+	f(x) = 9475.497509
+iteration: 369
+	f(x) = 9475.508466
+iteration: 370
+	f(x) = 9475.500474
+iteration: 371
+	f(x) = 9475.468808
+iteration: 372
+	f(x) = 9475.473821
+iteration: 373
+	f(x) = 9475.482383
+iteration: 374
+	f(x) = 9475.510583
+iteration: 375
+	f(x) = 9475.479614
+iteration: 376
+	f(x) = 9475.454193
+iteration: 377
+	f(x) = 9475.465049
+iteration: 378
+	f(x) = 9475.472922
+iteration: 379
+	f(x) = 9475.426276
+iteration: 380
+	f(x) = 9475.441128
+iteration: 381
+	f(x) = 9475.448672
+iteration: 382
+	f(x) = 9475.468659
+iteration: 383
+	f(x) = 9475.446845
+iteration: 384
+	f(x) = 9475.419591
+iteration: 385
+	f(x) = 9475.440912
+iteration: 386
+	f(x) = 9475.438898
+iteration: 387
+	f(x) = 9475.599463
+iteration: 388
+	f(x) = 9475.409549
+iteration: 389
+	f(x) = 9475.437606
+iteration: 390
+	f(x) = 9475.422442
+iteration: 391
+	f(x) = 9475.398358
+iteration: 392
+	f(x) = 9475.407314
+iteration: 393
+	f(x) = 9475.407513
+iteration: 394
+	f(x) = 9475.423981
+iteration: 395
+	f(x) = 9475.403567
+iteration: 396
+	f(x) = 9475.421530
+iteration: 397
+	f(x) = 9475.403610
+iteration: 398
+	f(x) = 9475.418268
+iteration: 399
+	f(x) = 9475.677363
+iteration: 400
+	f(x) = 9475.411239
+iteration: 401
+	f(x) = 9475.573081
+iteration: 402
+	f(x) = 9475.385193
+iteration: 403
+	f(x) = 9475.409206
+iteration: 404
+	f(x) = 9475.395832
+iteration: 405
+	f(x) = 9475.381781
+iteration: 406
+	f(x) = 9475.408479
+iteration: 407
+	f(x) = 9475.367227
+iteration: 408
+	f(x) = 9475.374523
+iteration: 409
+	f(x) = 9475.370377
+iteration: 410
+	f(x) = 9475.379718
+iteration: 411
+	f(x) = 9476.520317
+iteration: 412
+	f(x) = 9475.382615
+iteration: 413
+	f(x) = 9475.388269
+iteration: 414
+	f(x) = 9475.369463
+iteration: 415
+	f(x) = 9475.370912
+iteration: 416
+	f(x) = 9475.368941
+iteration: 417
+	f(x) = 9475.370200
+iteration: 418
+	f(x) = 9475.367458
+iteration: 419
+	f(x) = 9475.370769
+iteration: 420
+	f(x) = 9475.398121
+iteration: 421
+	f(x) = 9475.370991
+iteration: 422
+	f(x) = 9475.382013
+iteration: 423
+	f(x) = 9475.392336
+iteration: 424
+	f(x) = 9475.364964
+iteration: 425
+	f(x) = 9475.382571
+iteration: 426
+	f(x) = 9475.384429
+iteration: 427
+	f(x) = 9475.387881
+iteration: 428
+	f(x) = 9475.359704
+iteration: 429
+	f(x) = 9475.376892
+iteration: 430
+	f(x) = 9475.370889
+iteration: 431
+	f(x) = 9475.338180
+iteration: 432
+	f(x) = 9475.374747
+iteration: 433
+	f(x) = 9475.347173
+iteration: 434
+	f(x) = 9475.331400
+iteration: 435
+	f(x) = 9475.328647
+iteration: 436
+	f(x) = 9475.355604
+iteration: 437
+	f(x) = 9475.370603
+iteration: 438
+	f(x) = 9475.336415
+iteration: 439
+	f(x) = 9475.348662
+iteration: 440
+	f(x) = 9475.335935
+iteration: 441
+	f(x) = 9475.350359
+iteration: 442
+	f(x) = 9475.341736
+iteration: 443
+	f(x) = 9475.346403
+iteration: 444
+	f(x) = 9475.304651
+iteration: 445
+	f(x) = 9475.315778
+iteration: 446
+	f(x) = 9475.308052
+iteration: 447
+	f(x) = 9475.306788
+iteration: 448
+	f(x) = 9475.324318
+iteration: 449
+	f(x) = 9475.302899
+iteration: 450
+	f(x) = 9475.312812
+iteration: 451
+	f(x) = 9475.328093
+iteration: 452
+	f(x) = 9475.404461
+iteration: 453
+	f(x) = 9475.303387
+iteration: 454
+	f(x) = 9475.352605
+iteration: 455
+	f(x) = 9475.300001
+iteration: 456
+	f(x) = 9475.281653
+iteration: 457
+	f(x) = 9475.224788
+iteration: 458
+	f(x) = 9475.197587
+iteration: 459
+	f(x) = 9475.256960
+iteration: 460
+	f(x) = 9475.205053
+iteration: 461
+	f(x) = 9475.223720
+iteration: 462
+	f(x) = 9475.214184
+iteration: 463
+	f(x) = 9475.219903
+iteration: 464
+	f(x) = 9475.215926
+iteration: 465
+	f(x) = 9475.201931
+iteration: 466
+	f(x) = 9475.242742
+iteration: 467
+	f(x) = 9475.174670
+iteration: 468
+	f(x) = 9475.209777
+iteration: 469
+	f(x) = 9475.189162
+iteration: 470
+	f(x) = 9475.203171
+iteration: 471
+	f(x) = 9475.185184
+iteration: 472
+	f(x) = 9475.198096
+iteration: 473
+	f(x) = 9475.209316
+iteration: 474
+	f(x) = 9475.166745
+iteration: 475
+	f(x) = 9475.174965
+iteration: 476
+	f(x) = 9475.214877
+iteration: 477
+	f(x) = 9475.162836
+iteration: 478
+	f(x) = 9475.149496
+iteration: 479
+	f(x) = 9475.112170
+iteration: 480
+	f(x) = 9475.123267
+iteration: 481
+	f(x) = 9476.267558
+iteration: 482
+	f(x) = 9475.134253
+iteration: 483
+	f(x) = 9475.443897
+iteration: 484
+	f(x) = 9475.122070
+iteration: 485
+	f(x) = 9475.238638
+iteration: 486
+	f(x) = 9475.138944
+iteration: 487
+	f(x) = 9475.181043
+iteration: 488
+	f(x) = 9475.125996
+iteration: 489
+	f(x) = 9475.422288
+iteration: 490
+	f(x) = 9475.107616
+iteration: 491
+	f(x) = 9475.302510
+iteration: 492
+	f(x) = 9475.129982
+iteration: 493
+	f(x) = 9475.142572
+iteration: 494
+	f(x) = 9475.110498
+iteration: 495
+	f(x) = 9475.463492
+iteration: 496
+	f(x) = 9475.128294
+iteration: 497
+	f(x) = 9475.120187
+iteration: 498
+	f(x) = 9475.139635
+iteration: 499
+	f(x) = 9475.140135
+iteration: 500
+	f(x) = 9475.112878
+iteration: 501
+	f(x) = 9475.115258
+iteration: 502
+	f(x) = 9475.124035
+iteration: 503
+	f(x) = 9475.110455
+iteration: 504
+	f(x) = 9475.102806
+iteration: 505
+	f(x) = 9475.100762
+iteration: 506
+	f(x) = 9475.101770
+iteration: 507
+	f(x) = 9475.097729
+iteration: 508
+	f(x) = 9475.099197
+iteration: 509
+	f(x) = 9475.092842
+iteration: 510
+	f(x) = 9475.099836
+iteration: 511
+	f(x) = 9475.090351
+iteration: 512
+	f(x) = 9475.094362
+iteration: 513
+	f(x) = 9475.095826
+iteration: 514
+	f(x) = 9475.089844
+iteration: 515
+	f(x) = 9475.098305
+iteration: 516
+	f(x) = 9475.084440
+iteration: 517
+	f(x) = 9475.079943
+iteration: 518
+	f(x) = 9475.076959
+iteration: 519
+	f(x) = 9475.077963
+iteration: 520
+	f(x) = 9475.085990
+iteration: 521
+	f(x) = 9475.075168
+iteration: 522
+	f(x) = 9475.079110
+iteration: 523
+	f(x) = 9475.071312
+iteration: 524
+	f(x) = 9475.070023
+iteration: 525
+	f(x) = 9475.079981
+iteration: 526
+	f(x) = 9475.069718
+iteration: 527
+	f(x) = 9475.067943
+iteration: 528
+	f(x) = 9475.068323
+iteration: 529
+	f(x) = 9475.077280
+iteration: 530
+	f(x) = 9475.065433
+iteration: 531
+	f(x) = 9475.060908
+iteration: 532
+	f(x) = 9475.058795
+iteration: 533
+	f(x) = 9475.052880
+iteration: 534
+	f(x) = 9475.050175
+iteration: 535
+	f(x) = 9475.045535
+iteration: 536
+	f(x) = 9475.043968
+iteration: 537
+	f(x) = 9475.043567
+iteration: 538
+	f(x) = 9475.047561
+iteration: 539
+	f(x) = 9475.041551
+iteration: 540
+	f(x) = 9475.038376
+iteration: 541
+	f(x) = 9475.039475
+iteration: 542
+	f(x) = 9475.038961
+iteration: 543
+	f(x) = 9475.037848
+iteration: 544
+	f(x) = 9475.038362
+iteration: 545
+	f(x) = 9475.037477
+iteration: 546
+	f(x) = 9475.040949
+iteration: 547
+	f(x) = 9475.038906
+iteration: 548
+	f(x) = 9475.038622
+iteration: 549
+	f(x) = 9475.036555
+iteration: 550
+	f(x) = 9475.032845
+iteration: 551
+	f(x) = 9475.029990
+iteration: 552
+	f(x) = 9475.029758
+iteration: 553
+	f(x) = 9475.026237
+iteration: 554
+	f(x) = 9475.020605
+iteration: 555
+	f(x) = 9475.021529
+iteration: 556
+	f(x) = 9475.024272
+iteration: 557
+	f(x) = 9475.022352
+iteration: 558
+	f(x) = 9475.023847
+iteration: 559
+	f(x) = 9475.017894
+iteration: 560
+	f(x) = 9475.015186
+iteration: 561
+	f(x) = 9475.013918
+iteration: 562
+	f(x) = 9475.011025
+iteration: 563
+	f(x) = 9475.008923
+iteration: 564
+	f(x) = 9475.007355
+iteration: 565
+	f(x) = 9475.004363
+iteration: 566
+	f(x) = 9475.000806
+iteration: 567
+	f(x) = 9475.001379
+iteration: 568
+	f(x) = 9475.001731
+iteration: 569
+	f(x) = 9474.998047
+iteration: 570
+	f(x) = 9474.997438
+iteration: 571
+	f(x) = 9474.993763
+iteration: 572
+	f(x) = 9474.990250
+iteration: 573
+	f(x) = 9474.987847
+iteration: 574
+	f(x) = 9474.988002
+iteration: 575
+	f(x) = 9474.988777
+iteration: 576
+	f(x) = 9474.986116
+iteration: 577
+	f(x) = 9474.984437
+iteration: 578
+	f(x) = 9474.983041
+iteration: 579
+	f(x) = 9474.981656
+iteration: 580
+	f(x) = 9474.980633
+iteration: 581
+	f(x) = 9474.978939
+iteration: 582
+	f(x) = 9474.979049
+iteration: 583
+	f(x) = 9474.979282
+iteration: 584
+	f(x) = 9474.977776
+iteration: 585
+	f(x) = 9474.975319
+iteration: 586
+	f(x) = 9474.973204
+iteration: 587
+	f(x) = 9474.971252
+iteration: 588
+	f(x) = 9474.970251
+iteration: 589
+	f(x) = 9474.970914
+iteration: 590
+	f(x) = 9474.966496
+iteration: 591
+	f(x) = 9474.964897
+iteration: 592
+	f(x) = 9474.962360
+iteration: 593
+	f(x) = 9474.959197
+iteration: 594
+	f(x) = 9474.956099
+iteration: 595
+	f(x) = 9474.952226
+iteration: 596
+	f(x) = 9474.949837
+iteration: 597
+	f(x) = 9474.946148
+iteration: 598
+	f(x) = 9474.942321
+iteration: 599
+	f(x) = 9474.937575
+iteration: 600
+	f(x) = 9474.935537
+iteration: 601
+	f(x) = 9474.927932
+iteration: 602
+	f(x) = 9474.932742
+iteration: 603
+	f(x) = 9474.930712
+iteration: 604
+	f(x) = 9474.928597
+iteration: 605
+	f(x) = 9474.927498
+iteration: 606
+	f(x) = 9474.927541
+iteration: 607
+	f(x) = 9474.929419
+iteration: 608
+	f(x) = 9474.928132
+iteration: 609
+	f(x) = 9474.928833
+iteration: 610
+	f(x) = 9474.928436
+iteration: 611
+	f(x) = 9474.929669
+iteration: 612
+	f(x) = 9474.925084
+iteration: 613
+	f(x) = 9474.920982
+iteration: 614
+	f(x) = 9474.916223
+iteration: 615
+	f(x) = 9474.911544
+iteration: 616
+	f(x) = 9474.908401
+iteration: 617
+	f(x) = 9474.907502
+iteration: 618
+	f(x) = 9474.909763
+iteration: 619
+	f(x) = 9474.906518
+iteration: 620
+	f(x) = 9474.906512
+iteration: 621
+	f(x) = 9474.909214
+iteration: 622
+	f(x) = 9474.904010
+iteration: 623
+	f(x) = 9474.903890
+iteration: 624
+	f(x) = 9474.906385
+iteration: 625
+	f(x) = 9474.903051
+iteration: 626
+	f(x) = 9474.901593
+iteration: 627
+	f(x) = 9474.901783
+iteration: 628
+	f(x) = 9474.904147
+iteration: 629
+	f(x) = 9474.901579
+iteration: 630
+	f(x) = 9474.900475
+iteration: 631
+	f(x) = 9474.901255
+iteration: 632
+	f(x) = 9474.901304
+iteration: 633
+	f(x) = 9474.898742
+iteration: 634
+	f(x) = 9474.898122
+iteration: 635
+	f(x) = 9474.896231
+iteration: 636
+	f(x) = 9474.894563
+iteration: 637
+	f(x) = 9474.892139
+iteration: 638
+	f(x) = 9474.889704
+iteration: 639
+	f(x) = 9474.885335
+iteration: 640
+	f(x) = 9474.884306
+iteration: 641
+	f(x) = 9474.883256
+iteration: 642
+	f(x) = 9474.882241
+iteration: 643
+	f(x) = 9474.883667
+iteration: 644
+	f(x) = 9474.883280
+iteration: 645
+	f(x) = 9474.883337
+iteration: 646
+	f(x) = 9474.886280
+iteration: 647
+	f(x) = 9474.881155
+iteration: 648
+	f(x) = 9474.880477
+iteration: 649
+	f(x) = 9474.881485
+iteration: 650
+	f(x) = 9474.883534
+iteration: 651
+	f(x) = 9474.879555
+iteration: 652
+	f(x) = 9474.877957
+iteration: 653
+	f(x) = 9474.875645
+iteration: 654
+	f(x) = 9474.872692
+iteration: 655
+	f(x) = 9474.870659
+iteration: 656
+	f(x) = 9474.868620
+iteration: 657
+	f(x) = 9474.868313
+iteration: 658
+	f(x) = 9474.869256
+iteration: 659
+	f(x) = 9474.867497
+iteration: 660
+	f(x) = 9474.867465
+iteration: 661
+	f(x) = 9474.869116
+iteration: 662
+	f(x) = 9474.867821
+iteration: 663
+	f(x) = 9474.870377
+iteration: 664
+	f(x) = 9474.867298
+iteration: 665
+	f(x) = 9474.864696
+iteration: 666
+	f(x) = 9474.863532
+iteration: 667
+	f(x) = 9474.861506
+iteration: 668
+	f(x) = 9474.860148
+iteration: 669
+	f(x) = 9474.860376
+iteration: 670
+	f(x) = 9474.862700
+iteration: 671
+	f(x) = 9474.858893
+iteration: 672
+	f(x) = 9474.857127
+iteration: 673
+	f(x) = 9474.855805
+iteration: 674
+	f(x) = 9474.854001
+iteration: 675
+	f(x) = 9474.851973
+iteration: 676
+	f(x) = 9474.849650
+iteration: 677
+	f(x) = 9474.844379
+iteration: 678
+	f(x) = 9474.837924
+iteration: 679
+	f(x) = 9474.835573
+iteration: 680
+	f(x) = 9474.836070
+iteration: 681
+	f(x) = 9474.844877
+iteration: 682
+	f(x) = 9474.833449
+iteration: 683
+	f(x) = 9474.829923
+iteration: 684
+	f(x) = 9474.830693
+iteration: 685
+	f(x) = 9474.831928
+iteration: 686
+	f(x) = 9474.828125
+iteration: 687
+	f(x) = 9474.828129
+iteration: 688
+	f(x) = 9474.828873
+iteration: 689
+	f(x) = 9474.825469
+iteration: 690
+	f(x) = 9474.825979
+iteration: 691
+	f(x) = 9474.831386
+iteration: 692
+	f(x) = 9474.823763
+iteration: 693
+	f(x) = 9474.824159
+iteration: 694
+	f(x) = 9474.833747
+iteration: 695
+	f(x) = 9474.824878
+iteration: 696
+	f(x) = 9474.829834
+iteration: 697
+	f(x) = 9474.822773
+iteration: 698
+	f(x) = 9474.822046
+iteration: 699
+	f(x) = 9474.819474
+iteration: 700
+	f(x) = 9474.819723
+iteration: 701
+	f(x) = 9474.820305
+iteration: 702
+	f(x) = 9474.817890
+iteration: 703
+	f(x) = 9474.817342
+iteration: 704
+	f(x) = 9474.819082
+iteration: 705
+	f(x) = 9474.818632
+iteration: 706
+	f(x) = 9474.816365
+iteration: 707
+	f(x) = 9474.816301
+iteration: 708
+	f(x) = 9474.817034
+iteration: 709
+	f(x) = 9474.816077
+iteration: 710
+	f(x) = 9474.818092
+iteration: 711
+	f(x) = 9474.813876
+iteration: 712
+	f(x) = 9474.812072
+iteration: 713
+	f(x) = 9474.810257
+iteration: 714
+	f(x) = 9474.808966
+iteration: 715
+	f(x) = 9474.808152
+iteration: 716
+	f(x) = 9474.807705
+iteration: 717
+	f(x) = 9474.807985
+iteration: 718
+	f(x) = 9474.810999
+iteration: 719
+	f(x) = 9474.806086
+iteration: 720
+	f(x) = 9474.805181
+iteration: 721
+	f(x) = 9474.802877
+iteration: 722
+	f(x) = 9474.801867
+iteration: 723
+	f(x) = 9474.798240
+iteration: 724
+	f(x) = 9474.797678
+iteration: 725
+	f(x) = 9474.800294
+iteration: 726
+	f(x) = 9474.797419
+iteration: 727
+	f(x) = 9474.796682
+iteration: 728
+	f(x) = 9474.795946
+iteration: 729
+	f(x) = 9474.796440
+iteration: 730
+	f(x) = 9474.798238
+iteration: 731
+	f(x) = 9474.795453
+iteration: 732
+	f(x) = 9474.797546
+iteration: 733
+	f(x) = 9474.795464
+iteration: 734
+	f(x) = 9474.794307
+iteration: 735
+	f(x) = 9474.794678
+iteration: 736
+	f(x) = 9474.796805
+iteration: 737
+	f(x) = 9474.793603
+iteration: 738
+	f(x) = 9474.794485
+iteration: 739
+	f(x) = 9474.793735
+iteration: 740
+	f(x) = 9474.796079
+iteration: 741
+	f(x) = 9474.793465
+iteration: 742
+	f(x) = 9474.794664
+iteration: 743
+	f(x) = 9474.791859
+iteration: 744
+	f(x) = 9474.790793
+iteration: 745
+	f(x) = 9474.790583
+iteration: 746
+	f(x) = 9474.791224
+iteration: 747
+	f(x) = 9474.789868
+iteration: 748
+	f(x) = 9474.790356
+iteration: 749
+	f(x) = 9474.792190
+iteration: 750
+	f(x) = 9474.789757
+iteration: 751
+	f(x) = 9474.790366
+iteration: 752
+	f(x) = 9474.789386
+iteration: 753
+	f(x) = 9474.788714
+iteration: 754
+	f(x) = 9474.788372
+iteration: 755
+	f(x) = 9474.787426
+iteration: 756
+	f(x) = 9474.786430
+iteration: 757
+	f(x) = 9474.786661
+iteration: 758
+	f(x) = 9474.787426
+iteration: 759
+	f(x) = 9474.785798
+iteration: 760
+	f(x) = 9474.786166
+iteration: 761
+	f(x) = 9474.787261
+iteration: 762
+	f(x) = 9474.784009
+iteration: 763
+	f(x) = 9474.782450
+iteration: 764
+	f(x) = 9474.781262
+iteration: 765
+	f(x) = 9474.780512
+iteration: 766
+	f(x) = 9474.779211
+iteration: 767
+	f(x) = 9474.778418
+iteration: 768
+	f(x) = 9474.778918
+iteration: 769
+	f(x) = 9474.780146
+iteration: 770
+	f(x) = 9474.777221
+iteration: 771
+	f(x) = 9474.776450
+iteration: 772
+	f(x) = 9474.775866
+iteration: 773
+	f(x) = 9474.774434
+iteration: 774
+	f(x) = 9474.773350
+iteration: 775
+	f(x) = 9474.771229
+iteration: 776
+	f(x) = 9474.768873
+iteration: 777
+	f(x) = 9474.769928
+iteration: 778
+	f(x) = 9474.770813
+iteration: 779
+	f(x) = 9474.767311
+iteration: 780
+	f(x) = 9474.765723
+iteration: 781
+	f(x) = 9474.763550
+iteration: 782
+	f(x) = 9474.762441
+iteration: 783
+	f(x) = 9474.760617
+iteration: 784
+	f(x) = 9474.759151
+iteration: 785
+	f(x) = 9474.757994
+iteration: 786
+	f(x) = 9474.757182
+iteration: 787
+	f(x) = 9474.754869
+iteration: 788
+	f(x) = 9474.752072
+iteration: 789
+	f(x) = 9474.746784
+iteration: 790
+	f(x) = 9474.851600
+iteration: 791
+	f(x) = 9474.757509
+iteration: 792
+	f(x) = 9474.759373
+iteration: 793
+	f(x) = 9474.753129
+iteration: 794
+	f(x) = 9474.746966
+iteration: 795
+	f(x) = 9474.746106
+iteration: 796
+	f(x) = 9474.744961
+iteration: 797
+	f(x) = 9474.748814
+iteration: 798
+	f(x) = 9474.744314
+iteration: 799
+	f(x) = 9474.743068
+iteration: 800
+	f(x) = 9474.745093
+iteration: 801
+	f(x) = 9474.745288
+iteration: 802
+	f(x) = 9474.743002
+iteration: 803
+	f(x) = 9474.743733
+iteration: 804
+	f(x) = 9474.741740
+iteration: 805
+	f(x) = 9474.741823
+iteration: 806
+	f(x) = 9474.742060
+iteration: 807
+	f(x) = 9474.743386
+iteration: 808
+	f(x) = 9474.740924
+iteration: 809
+	f(x) = 9474.741780
+iteration: 810
+	f(x) = 9474.740327
+iteration: 811
+	f(x) = 9474.741823
+iteration: 812
+	f(x) = 9474.739913
+iteration: 813
+	f(x) = 9474.738768
+iteration: 814
+	f(x) = 9474.739424
+iteration: 815
+	f(x) = 9474.741906
+iteration: 816
+	f(x) = 9474.738626
+iteration: 817
+	f(x) = 9474.738364
+iteration: 818
+	f(x) = 9474.736571
+iteration: 819
+	f(x) = 9474.736516
+iteration: 820
+	f(x) = 9474.736572
+iteration: 821
+	f(x) = 9474.736549
+iteration: 822
+	f(x) = 9474.739033
+iteration: 823
+	f(x) = 9474.735537
+iteration: 824
+	f(x) = 9474.735294
+iteration: 825
+	f(x) = 9474.739047
+iteration: 826
+	f(x) = 9474.734625
+iteration: 827
+	f(x) = 9474.739025
+iteration: 828
+	f(x) = 9474.734032
+iteration: 829
+	f(x) = 9474.734767
+iteration: 830
+	f(x) = 9474.733557
+iteration: 831
+	f(x) = 9474.734059
+iteration: 832
+	f(x) = 9474.733746
+iteration: 833
+	f(x) = 9474.734155
+iteration: 834
+	f(x) = 9474.733058
+iteration: 835
+	f(x) = 9474.733009
+iteration: 836
+	f(x) = 9474.732181
+iteration: 837
+	f(x) = 9474.731534
+iteration: 838
+	f(x) = 9474.731540
+iteration: 839
+	f(x) = 9474.730324
+iteration: 840
+	f(x) = 9474.730182
+iteration: 841
+	f(x) = 9474.731264
+iteration: 842
+	f(x) = 9474.729725
+iteration: 843
+	f(x) = 9474.728781
+iteration: 844
+	f(x) = 9474.728937
+iteration: 845
+	f(x) = 9474.733673
+iteration: 846
+	f(x) = 9474.728591
+iteration: 847
+	f(x) = 9474.729526
+iteration: 848
+	f(x) = 9474.728027
+iteration: 849
+	f(x) = 9474.726983
+iteration: 850
+	f(x) = 9474.726267
+iteration: 851
+	f(x) = 9474.724976
+iteration: 852
+	f(x) = 9474.723561
+iteration: 853
+	f(x) = 9474.723192
+iteration: 854
+	f(x) = 9474.724196
+iteration: 855
+	f(x) = 9474.722078
+iteration: 856
+	f(x) = 9474.722818
+iteration: 857
+	f(x) = 9474.735108
+iteration: 858
+	f(x) = 9474.720986
+iteration: 859
+	f(x) = 9474.720752
+iteration: 860
+	f(x) = 9474.720220
+iteration: 861
+	f(x) = 9474.720303
+iteration: 862
+	f(x) = 9474.722695
+iteration: 863
+	f(x) = 9474.720549
+iteration: 864
+	f(x) = 9474.721066
+iteration: 865
+	f(x) = 9474.719751
+iteration: 866
+	f(x) = 9474.719418
+iteration: 867
+	f(x) = 9474.717783
+iteration: 868
+	f(x) = 9474.717382
+iteration: 869
+	f(x) = 9474.716896
+iteration: 870
+	f(x) = 9474.716002
+iteration: 871
+	f(x) = 9474.715919
+iteration: 872
+	f(x) = 9474.715793
+iteration: 873
+	f(x) = 9474.714877
+iteration: 874
+	f(x) = 9474.714466
+iteration: 875
+	f(x) = 9474.714028
+iteration: 876
+	f(x) = 9474.714164
+iteration: 877
+	f(x) = 9474.716030
+iteration: 878
+	f(x) = 9474.713225
+iteration: 879
+	f(x) = 9474.712453
+iteration: 880
+	f(x) = 9474.711775
+iteration: 881
+	f(x) = 9474.711194
+iteration: 882
+	f(x) = 9474.711940
+iteration: 883
+	f(x) = 9474.711901
+iteration: 884
+	f(x) = 9474.711325
+iteration: 885
+	f(x) = 9474.712590
+iteration: 886
+	f(x) = 9474.710856
+iteration: 887
+	f(x) = 9474.710033
+iteration: 888
+	f(x) = 9474.709868
+iteration: 889
+	f(x) = 9474.709360
+iteration: 890
+	f(x) = 9474.708963
+iteration: 891
+	f(x) = 9474.708971
+iteration: 892
+	f(x) = 9474.711094
+iteration: 893
+	f(x) = 9474.708877
+iteration: 894
+	f(x) = 9474.710497
+iteration: 895
+	f(x) = 9474.709005
+iteration: 896
+	f(x) = 9474.709528
+iteration: 897
+	f(x) = 9474.707802
+iteration: 898
+	f(x) = 9474.707071
+iteration: 899
+	f(x) = 9474.706246
+iteration: 900
+	f(x) = 9474.705649
+iteration: 901
+	f(x) = 9474.706273
+iteration: 902
+	f(x) = 9474.708225
+iteration: 903
+	f(x) = 9474.705796
+iteration: 904
+	f(x) = 9474.705182
+iteration: 905
+	f(x) = 9474.703572
+iteration: 906
+	f(x) = 9474.702492
+iteration: 907
+	f(x) = 9474.701596
+iteration: 908
+	f(x) = 9474.700157
+iteration: 909
+	f(x) = 9474.698134
+iteration: 910
+	f(x) = 9474.698519
+iteration: 911
+	f(x) = 9474.698175
+iteration: 912
+	f(x) = 9474.697144
+iteration: 913
+	f(x) = 9474.696664
+iteration: 914
+	f(x) = 9474.695960
+iteration: 915
+	f(x) = 9474.695436
+iteration: 916
+	f(x) = 9474.694878
+iteration: 917
+	f(x) = 9474.693827
+iteration: 918
+	f(x) = 9474.692760
+iteration: 919
+	f(x) = 9474.690371
+iteration: 920
+	f(x) = 9474.688603
+iteration: 921
+	f(x) = 9474.688890
+iteration: 922
+	f(x) = 9474.692937
+iteration: 923
+	f(x) = 9474.688263
+iteration: 924
+	f(x) = 9474.689995
+iteration: 925
+	f(x) = 9474.686774
+iteration: 926
+	f(x) = 9474.686032
+iteration: 927
+	f(x) = 9474.685410
+iteration: 928
+	f(x) = 9474.685219
+iteration: 929
+	f(x) = 9474.684263
+iteration: 930
+	f(x) = 9474.683686
+iteration: 931
+	f(x) = 9474.683369
+iteration: 932
+	f(x) = 9474.683245
+iteration: 933
+	f(x) = 9474.684119
+iteration: 934
+	f(x) = 9474.683139
+iteration: 935
+	f(x) = 9474.686793
+iteration: 936
+	f(x) = 9474.681904
+iteration: 937
+	f(x) = 9474.681661
+iteration: 938
+	f(x) = 9474.680929
+iteration: 939
+	f(x) = 9474.680659
+iteration: 940
+	f(x) = 9474.680156
+iteration: 941
+	f(x) = 9474.679556
+iteration: 942
+	f(x) = 9474.679271
+iteration: 943
+	f(x) = 9474.678970
+iteration: 944
+	f(x) = 9474.678679
+iteration: 945
+	f(x) = 9474.679444
+iteration: 946
+	f(x) = 9474.684831
+iteration: 947
+	f(x) = 9474.678646
+iteration: 948
+	f(x) = 9474.679681
+iteration: 949
+	f(x) = 9474.678198
+iteration: 950
+	f(x) = 9474.677335
+iteration: 951
+	f(x) = 9474.677160
+iteration: 952
+	f(x) = 9474.677642
+iteration: 953
+	f(x) = 9474.681478
+iteration: 954
+	f(x) = 9474.676554
+iteration: 955
+	f(x) = 9474.676234
+iteration: 956
+	f(x) = 9474.675979
+iteration: 957
+	f(x) = 9474.675312
+iteration: 958
+	f(x) = 9474.675017
+iteration: 959
+	f(x) = 9474.674900
+iteration: 960
+	f(x) = 9474.674903
+iteration: 961
+	f(x) = 9474.674652
+iteration: 962
+	f(x) = 9474.675845
+iteration: 963
+	f(x) = 9474.673733
+iteration: 964
+	f(x) = 9474.672914
+iteration: 965
+	f(x) = 9474.673155
+iteration: 966
+	f(x) = 9474.674881
+iteration: 967
+	f(x) = 9474.672860
+iteration: 968
+	f(x) = 9474.674318
+iteration: 969
+	f(x) = 9474.671840
+iteration: 970
+	f(x) = 9474.671605
+iteration: 971
+	f(x) = 9474.671305
+iteration: 972
+	f(x) = 9474.671392
+iteration: 973
+	f(x) = 9474.674572
+iteration: 974
+	f(x) = 9474.671307
+iteration: 975
+	f(x) = 9474.675354
+iteration: 976
+	f(x) = 9474.671113
+iteration: 977
+	f(x) = 9474.674737
+iteration: 978
+	f(x) = 9474.670660
+iteration: 979
+	f(x) = 9474.671249
+iteration: 980
+	f(x) = 9474.671074
+iteration: 981
+	f(x) = 9474.670566
+iteration: 982
+	f(x) = 9474.674401
+iteration: 983
+	f(x) = 9474.670390
+iteration: 984
+	f(x) = 9474.670637
+iteration: 985
+	f(x) = 9474.670728
+iteration: 986
+	f(x) = 9474.670482
+iteration: 987
+	f(x) = 9474.672984
+iteration: 988
+	f(x) = 9474.670022
+iteration: 989
+	f(x) = 9474.670715
+iteration: 990
+	f(x) = 9474.680333
+iteration: 991
+	f(x) = 9474.670082
+iteration: 992
+	f(x) = 9474.671159
+iteration: 993
+	f(x) = 9474.669745
+iteration: 994
+	f(x) = 9474.672769
+iteration: 995
+	f(x) = 9474.669492
+iteration: 996
+	f(x) = 9474.670114
+iteration: 997
+	f(x) = 9474.669759
+iteration: 998
+	f(x) = 9474.671118
+iteration: 999
+	f(x) = 9474.670111
+iteration: 1000
+	f(x) = 9474.670431
+iteration: 1001
+	f(x) = 9474.668791
+iteration: 1002
+	f(x) = 9474.669664
+iteration: 1003
+	f(x) = 9474.674207
+iteration: 1004
+	f(x) = 9474.669066
+iteration: 1005
+	f(x) = 9474.669434
+iteration: 1006
+	f(x) = 9474.669284
+iteration: 1007
+	f(x) = 9474.669801
+iteration: 1008
+	f(x) = 9474.669173
+iteration: 1009
+	f(x) = 9474.669490
+iteration: 1010
+	f(x) = 9474.668927
+iteration: 1011
+	f(x) = 9474.670311
+iteration: 1012
+	f(x) = 9474.668300
+iteration: 1013
+	f(x) = 9474.667940
+iteration: 1014
+	f(x) = 9474.668479
+iteration: 1015
+	f(x) = 9474.668721
+iteration: 1016
+	f(x) = 9474.667903
+iteration: 1017
+	f(x) = 9474.667926
+iteration: 1018
+	f(x) = 9474.667136
+iteration: 1019
+	f(x) = 9474.667106
+iteration: 1020
+	f(x) = 9474.667979
+iteration: 1021
+	f(x) = 9474.666701
+iteration: 1022
+	f(x) = 9474.666074
+iteration: 1023
+	f(x) = 9474.665852
+iteration: 1024
+	f(x) = 9474.664975
+iteration: 1025
+	f(x) = 9474.664583
+iteration: 1026
+	f(x) = 9474.665912
+iteration: 1027
+	f(x) = 9474.666764
+iteration: 1028
+	f(x) = 9474.664589
+iteration: 1029
+	f(x) = 9474.673773
+iteration: 1030
+	f(x) = 9474.664020
+iteration: 1031
+	f(x) = 9474.663803
+iteration: 1032
+	f(x) = 9474.663522
+iteration: 1033
+	f(x) = 9474.662986
+iteration: 1034
+	f(x) = 9474.663567
+iteration: 1035
+	f(x) = 9474.664674
+iteration: 1036
+	f(x) = 9474.662665
+iteration: 1037
+	f(x) = 9474.662077
+iteration: 1038
+	f(x) = 9474.661582
+iteration: 1039
+	f(x) = 9474.661504
+iteration: 1040
+	f(x) = 9474.662240
+iteration: 1041
+	f(x) = 9474.661554
+iteration: 1042
+	f(x) = 9474.662615
+iteration: 1043
+	f(x) = 9474.661022
+iteration: 1044
+	f(x) = 9474.661527
+iteration: 1045
+	f(x) = 9474.662755
+iteration: 1046
+	f(x) = 9474.660674
+iteration: 1047
+	f(x) = 9474.660503
+iteration: 1048
+	f(x) = 9474.659590
+iteration: 1049
+	f(x) = 9474.659376
+iteration: 1050
+	f(x) = 9474.661449
+iteration: 1051
+	f(x) = 9474.658940
+iteration: 1052
+	f(x) = 9474.658592
+iteration: 1053
+	f(x) = 9474.658113
+iteration: 1054
+	f(x) = 9474.658317
+iteration: 1055
+	f(x) = 9474.659090
+iteration: 1056
+	f(x) = 9474.657323
+iteration: 1057
+	f(x) = 9474.657092
+iteration: 1058
+	f(x) = 9474.656575
+iteration: 1059
+	f(x) = 9474.656444
+iteration: 1060
+	f(x) = 9474.656487
+iteration: 1061
+	f(x) = 9474.656786
+iteration: 1062
+	f(x) = 9474.656455
+iteration: 1063
+	f(x) = 9474.657272
+iteration: 1064
+	f(x) = 9474.655539
+iteration: 1065
+	f(x) = 9474.655667
+iteration: 1066
+	f(x) = 9474.658451
+iteration: 1067
+	f(x) = 9474.654927
+iteration: 1068
+	f(x) = 9474.654801
+iteration: 1069
+	f(x) = 9474.654428
+iteration: 1070
+	f(x) = 9474.654357
+iteration: 1071
+	f(x) = 9474.654659
+iteration: 1072
+	f(x) = 9474.655873
+iteration: 1073
+	f(x) = 9474.654163
+iteration: 1074
+	f(x) = 9474.653788
+iteration: 1075
+	f(x) = 9474.653668
+iteration: 1076
+	f(x) = 9474.653834
+iteration: 1077
+	f(x) = 9474.656371
+iteration: 1078
+	f(x) = 9474.653442
+iteration: 1079
+	f(x) = 9474.653004
+iteration: 1080
+	f(x) = 9474.652868
+iteration: 1081
+	f(x) = 9474.652939
+iteration: 1082
+	f(x) = 9474.654153
+iteration: 1083
+	f(x) = 9474.652962
+iteration: 1084
+	f(x) = 9474.653622
+iteration: 1085
+	f(x) = 9474.653451
+iteration: 1086
+	f(x) = 9474.652913
+iteration: 1087
+	f(x) = 9474.652554
+iteration: 1088
+	f(x) = 9474.652611
+iteration: 1089
+	f(x) = 9474.660220
+iteration: 1090
+	f(x) = 9474.652495
+iteration: 1091
+	f(x) = 9474.653978
+iteration: 1092
+	f(x) = 9474.653023
+iteration: 1093
+	f(x) = 9474.651750
+iteration: 1094
+	f(x) = 9474.651775
+iteration: 1095
+	f(x) = 9474.652641
+iteration: 1096
+	f(x) = 9474.650689
+iteration: 1097
+	f(x) = 9474.651115
+iteration: 1098
+	f(x) = 9474.651126
+iteration: 1099
+	f(x) = 9474.650601
+iteration: 1100
+	f(x) = 9474.651658
+iteration: 1101
+	f(x) = 9474.650546
+iteration: 1102
+	f(x) = 9474.650264
+iteration: 1103
+	f(x) = 9474.649575
+iteration: 1104
+	f(x) = 9474.649345
+iteration: 1105
+	f(x) = 9474.649811
+iteration: 1106
+	f(x) = 9474.649501
+iteration: 1107
+	f(x) = 9474.650893
+iteration: 1108
+	f(x) = 9474.649483
+iteration: 1109
+	f(x) = 9474.650326
+iteration: 1110
+	f(x) = 9474.648927
+iteration: 1111
+	f(x) = 9474.648742
+iteration: 1112
+	f(x) = 9474.648356
+iteration: 1113
+	f(x) = 9474.648033
+iteration: 1114
+	f(x) = 9474.647900
+iteration: 1115
+	f(x) = 9474.648070
+iteration: 1116
+	f(x) = 9474.648295
+iteration: 1117
+	f(x) = 9474.647733
+iteration: 1118
+	f(x) = 9474.647992
+iteration: 1119
+	f(x) = 9474.649154
+iteration: 1120
+	f(x) = 9474.647718
+iteration: 1121
+	f(x) = 9474.648671
+iteration: 1122
+	f(x) = 9474.647288
+iteration: 1123
+	f(x) = 9474.647334
+iteration: 1124
+	f(x) = 9474.648281
+iteration: 1125
+	f(x) = 9474.647541
+iteration: 1126
+	f(x) = 9474.649439
+iteration: 1127
+	f(x) = 9474.647373
+iteration: 1128
+	f(x) = 9474.648189
+iteration: 1129
+	f(x) = 9474.647409
+iteration: 1130
+	f(x) = 9474.648520
+iteration: 1131
+	f(x) = 9474.647301
+iteration: 1132
+	f(x) = 9474.646728
+iteration: 1133
+	f(x) = 9474.646781
+iteration: 1134
+	f(x) = 9474.647303
+iteration: 1135
+	f(x) = 9474.646852
+iteration: 1136
+	f(x) = 9474.648399
+iteration: 1137
+	f(x) = 9474.646737
+iteration: 1138
+	f(x) = 9474.648223
+iteration: 1139
+	f(x) = 9474.646390
+iteration: 1140
+	f(x) = 9474.646061
+iteration: 1141
+	f(x) = 9474.645958
+iteration: 1142
+	f(x) = 9474.650336
+iteration: 1143
+	f(x) = 9474.645954
+iteration: 1144
+	f(x) = 9474.650092
+iteration: 1145
+	f(x) = 9474.645626
+iteration: 1146
+	f(x) = 9474.645388
+iteration: 1147
+	f(x) = 9474.646280
+iteration: 1148
+	f(x) = 9474.646110
+iteration: 1149
+	f(x) = 9474.646195
+iteration: 1150
+	f(x) = 9474.645399
+iteration: 1151
+	f(x) = 9474.648303
+iteration: 1152
+	f(x) = 9474.645493
+iteration: 1153
+	f(x) = 9474.647898
+iteration: 1154
+	f(x) = 9474.645030
+iteration: 1155
+	f(x) = 9474.645518
+iteration: 1156
+	f(x) = 9474.647904
+iteration: 1157
+	f(x) = 9474.644753
+iteration: 1158
+	f(x) = 9474.644722
+iteration: 1159
+	f(x) = 9474.644666
+iteration: 1160
+	f(x) = 9474.644498
+iteration: 1161
+	f(x) = 9474.646631
+iteration: 1162
+	f(x) = 9474.644296
+iteration: 1163
+	f(x) = 9474.644338
+iteration: 1164
+	f(x) = 9474.645622
+iteration: 1165
+	f(x) = 9474.644103
+iteration: 1166
+	f(x) = 9474.643967
+iteration: 1167
+	f(x) = 9474.643412
+iteration: 1168
+	f(x) = 9474.642734
+iteration: 1169
+	f(x) = 9474.644199
+iteration: 1170
+	f(x) = 9474.644412
+iteration: 1171
+	f(x) = 9474.642861
+iteration: 1172
+	f(x) = 9474.643609
+iteration: 1173
+	f(x) = 9474.643083
+iteration: 1174
+	f(x) = 9474.643851
+iteration: 1175
+	f(x) = 9474.642973
+iteration: 1176
+	f(x) = 9474.643720
+iteration: 1177
+	f(x) = 9474.642830
+iteration: 1178
+	f(x) = 9474.642679
+iteration: 1179
+	f(x) = 9474.642236
+iteration: 1180
+	f(x) = 9474.642375
+iteration: 1181
+	f(x) = 9474.648421
+iteration: 1182
+	f(x) = 9474.641951
+iteration: 1183
+	f(x) = 9474.641789
+iteration: 1184
+	f(x) = 9474.641663
+iteration: 1185
+	f(x) = 9474.641518
+iteration: 1186
+	f(x) = 9474.641285
+iteration: 1187
+	f(x) = 9474.640729
+iteration: 1188
+	f(x) = 9474.640360
+iteration: 1189
+	f(x) = 9474.639945
+iteration: 1190
+	f(x) = 9474.640040
+iteration: 1191
+	f(x) = 9474.640160
+iteration: 1192
+	f(x) = 9474.639670
+iteration: 1193
+	f(x) = 9474.639699
+iteration: 1194
+	f(x) = 9474.640133
+iteration: 1195
+	f(x) = 9474.639455
+iteration: 1196
+	f(x) = 9474.639692
+iteration: 1197
+	f(x) = 9474.642317
+iteration: 1198
+	f(x) = 9474.638843
+iteration: 1199
+	f(x) = 9474.638393
+iteration: 1200
+	f(x) = 9474.638407
+iteration: 1201
+	f(x) = 9474.644088
+iteration: 1202
+	f(x) = 9474.637859
+iteration: 1203
+	f(x) = 9474.637290
+iteration: 1204
+	f(x) = 9474.636463
+iteration: 1205
+	f(x) = 9474.636642
+iteration: 1206
+	f(x) = 9474.636872
+iteration: 1207
+	f(x) = 9474.636668
+iteration: 1208
+	f(x) = 9474.638549
+iteration: 1209
+	f(x) = 9474.636516
+iteration: 1210
+	f(x) = 9474.638648
+iteration: 1211
+	f(x) = 9474.636297
+iteration: 1212
+	f(x) = 9474.635876
+iteration: 1213
+	f(x) = 9474.635654
+iteration: 1214
+	f(x) = 9474.635685
+iteration: 1215
+	f(x) = 9474.636290
+iteration: 1216
+	f(x) = 9474.635321
+iteration: 1217
+	f(x) = 9474.634868
+iteration: 1218
+	f(x) = 9474.634314
+iteration: 1219
+	f(x) = 9474.634050
+iteration: 1220
+	f(x) = 9474.633943
+iteration: 1221
+	f(x) = 9474.634771
+iteration: 1222
+	f(x) = 9474.633951
+iteration: 1223
+	f(x) = 9474.634878
+iteration: 1224
+	f(x) = 9474.633932
+iteration: 1225
+	f(x) = 9474.634225
+iteration: 1226
+	f(x) = 9474.634366
+iteration: 1227
+	f(x) = 9474.635629
+iteration: 1228
+	f(x) = 9474.633712
+iteration: 1229
+	f(x) = 9474.635332
+iteration: 1230
+	f(x) = 9474.633942
+iteration: 1231
+	f(x) = 9474.634693
+iteration: 1232
+	f(x) = 9474.634070
+iteration: 1233
+	f(x) = 9474.634123
+iteration: 1234
+	f(x) = 9474.633357
+iteration: 1235
+	f(x) = 9474.633478
+iteration: 1236
+	f(x) = 9474.633354
+iteration: 1237
+	f(x) = 9474.633412
+iteration: 1238
+	f(x) = 9474.633563
+iteration: 1239
+	f(x) = 9474.632798
+iteration: 1240
+	f(x) = 9474.632671
+iteration: 1241
+	f(x) = 9474.634078
+iteration: 1242
+	f(x) = 9474.632868
+iteration: 1243
+	f(x) = 9474.634502
+iteration: 1244
+	f(x) = 9474.633225
+iteration: 1245
+	f(x) = 9474.633093
+iteration: 1246
+	f(x) = 9474.632953
+iteration: 1247
+	f(x) = 9474.636741
+iteration: 1248
+	f(x) = 9474.632711
+iteration: 1249
+	f(x) = 9474.634152
+iteration: 1250
+	f(x) = 9474.632487
+iteration: 1251
+	f(x) = 9474.633259
+iteration: 1252
+	f(x) = 9474.632627
+iteration: 1253
+	f(x) = 9474.632499
+iteration: 1254
+	f(x) = 9474.632663
+iteration: 1255
+	f(x) = 9474.634352
+iteration: 1256
+	f(x) = 9474.632303
+iteration: 1257
+	f(x) = 9474.633341
+iteration: 1258
+	f(x) = 9474.632038
+iteration: 1259
+	f(x) = 9474.632239
+iteration: 1260
+	f(x) = 9474.633580
+iteration: 1261
+	f(x) = 9474.632226
+iteration: 1262
+	f(x) = 9474.633611
+iteration: 1263
+	f(x) = 9474.631487
+iteration: 1264
+	f(x) = 9474.631649
+iteration: 1265
+	f(x) = 9474.634711
+iteration: 1266
+	f(x) = 9474.631606
+iteration: 1267
+	f(x) = 9474.632546
+iteration: 1268
+	f(x) = 9474.631937
+iteration: 1269
+	f(x) = 9474.632218
+iteration: 1270
+	f(x) = 9474.631866
+iteration: 1271
+	f(x) = 9474.636214
+iteration: 1272
+	f(x) = 9474.631490
+iteration: 1273
+	f(x) = 9474.632264
+iteration: 1274
+	f(x) = 9474.632730
+iteration: 1275
+	f(x) = 9474.632133
+iteration: 1276
+	f(x) = 9474.631342
+iteration: 1277
+	f(x) = 9474.633938
+iteration: 1278
+	f(x) = 9474.631584
+iteration: 1279
+	f(x) = 9474.634541
+iteration: 1280
+	f(x) = 9474.631617
+iteration: 1281
+	f(x) = 9474.632828
+iteration: 1282
+	f(x) = 9474.631593
+iteration: 1283
+	f(x) = 9474.632452
+iteration: 1284
+	f(x) = 9474.631126
+iteration: 1285
+	f(x) = 9474.638237
+iteration: 1286
+	f(x) = 9474.631340
+iteration: 1287
+	f(x) = 9474.631960
+iteration: 1288
+	f(x) = 9474.630594
+iteration: 1289
+	f(x) = 9474.630907
+iteration: 1290
+	f(x) = 9474.633335
+iteration: 1291
+	f(x) = 9474.630830
+iteration: 1292
+	f(x) = 9474.633059
+iteration: 1293
+	f(x) = 9474.630271
+iteration: 1294
+	f(x) = 9474.630254
+iteration: 1295
+	f(x) = 9474.633399
+iteration: 1296
+	f(x) = 9474.630156
+iteration: 1297
+	f(x) = 9474.629641
+iteration: 1298
+	f(x) = 9474.629701
+iteration: 1299
+	f(x) = 9474.629992
+iteration: 1300
+	f(x) = 9474.629581
+iteration: 1301
+	f(x) = 9474.630558
+iteration: 1302
+	f(x) = 9474.629667
+iteration: 1303
+	f(x) = 9474.631866
+iteration: 1304
+	f(x) = 9474.629683
+iteration: 1305
+	f(x) = 9474.633524
+iteration: 1306
+	f(x) = 9474.629462
+iteration: 1307
+	f(x) = 9474.630484
+iteration: 1308
+	f(x) = 9474.629083
+iteration: 1309
+	f(x) = 9474.628964
+iteration: 1310
+	f(x) = 9474.628908
+iteration: 1311
+	f(x) = 9474.629913
+iteration: 1312
+	f(x) = 9474.628852
+iteration: 1313
+	f(x) = 9474.630133
+iteration: 1314
+	f(x) = 9474.628618
+iteration: 1315
+	f(x) = 9474.628245
+iteration: 1316
+	f(x) = 9474.627982
+iteration: 1317
+	f(x) = 9474.627644
+iteration: 1318
+	f(x) = 9474.627475
+iteration: 1319
+	f(x) = 9474.627114
+iteration: 1320
+	f(x) = 9474.627110
+iteration: 1321
+	f(x) = 9474.627565
+iteration: 1322
+	f(x) = 9474.626924
+iteration: 1323
+	f(x) = 9474.626850
+iteration: 1324
+	f(x) = 9474.627239
+iteration: 1325
+	f(x) = 9474.626763
+iteration: 1326
+	f(x) = 9474.626962
+iteration: 1327
+	f(x) = 9474.626011
+iteration: 1328
+	f(x) = 9474.625814
+iteration: 1329
+	f(x) = 9474.625876
+iteration: 1330
+	f(x) = 9474.627881
+iteration: 1331
+	f(x) = 9474.625623
+iteration: 1332
+	f(x) = 9474.625652
+iteration: 1333
+	f(x) = 9474.626265
+iteration: 1334
+	f(x) = 9474.625343
+iteration: 1335
+	f(x) = 9474.625275
+iteration: 1336
+	f(x) = 9474.625066
+iteration: 1337
+	f(x) = 9474.624931
+iteration: 1338
+	f(x) = 9474.624826
+iteration: 1339
+	f(x) = 9474.624751
+iteration: 1340
+	f(x) = 9474.624741
+iteration: 1341
+	f(x) = 9474.625107
+iteration: 1342
+	f(x) = 9474.624583
+iteration: 1343
+	f(x) = 9474.624665
+iteration: 1344
+	f(x) = 9474.626665
+iteration: 1345
+	f(x) = 9474.624764
+iteration: 1346
+	f(x) = 9474.627368
+iteration: 1347
+	f(x) = 9474.624321
+iteration: 1348
+	f(x) = 9474.624347
+iteration: 1349
+	f(x) = 9474.624646
+iteration: 1350
+	f(x) = 9474.624183
+iteration: 1351
+	f(x) = 9474.624137
+iteration: 1352
+	f(x) = 9474.625180
+iteration: 1353
+	f(x) = 9474.624307
+iteration: 1354
+	f(x) = 9474.624988
+iteration: 1355
+	f(x) = 9474.624352
+iteration: 1356
+	f(x) = 9474.624520
+iteration: 1357
+	f(x) = 9474.623946
+iteration: 1358
+	f(x) = 9474.623940
+iteration: 1359
+	f(x) = 9474.628404
+iteration: 1360
+	f(x) = 9474.623950
+iteration: 1361
+	f(x) = 9474.624781
+iteration: 1362
+	f(x) = 9474.624052
+iteration: 1363
+	f(x) = 9474.624280
+iteration: 1364
+	f(x) = 9474.623907
+iteration: 1365
+	f(x) = 9474.625152
+iteration: 1366
+	f(x) = 9474.623939
+iteration: 1367
+	f(x) = 9474.624991
+iteration: 1368
+	f(x) = 9474.623920
+iteration: 1369
+	f(x) = 9474.624606
+iteration: 1370
+	f(x) = 9474.624072
+iteration: 1371
+	f(x) = 9474.624761
+iteration: 1372
+	f(x) = 9474.623649
+iteration: 1373
+	f(x) = 9474.624038
+iteration: 1374
+	f(x) = 9474.623992
+iteration: 1375
+	f(x) = 9474.623675
+iteration: 1376
+	f(x) = 9474.624679
+iteration: 1377
+	f(x) = 9474.623689
+iteration: 1378
+	f(x) = 9474.624174
+iteration: 1379
+	f(x) = 9474.623738
+iteration: 1380
+	f(x) = 9474.624123
+iteration: 1381
+	f(x) = 9474.623175
+iteration: 1382
+	f(x) = 9474.624099
+iteration: 1383
+	f(x) = 9474.625126
+iteration: 1384
+	f(x) = 9474.623758
+iteration: 1385
+	f(x) = 9474.624599
+iteration: 1386
+	f(x) = 9474.623096
+iteration: 1387
+	f(x) = 9474.624731
+iteration: 1388
+	f(x) = 9474.623462
+iteration: 1389
+	f(x) = 9474.624173
+iteration: 1390
+	f(x) = 9474.622653
+iteration: 1391
+	f(x) = 9474.622448
+iteration: 1392
+	f(x) = 9474.622401
+iteration: 1393
+	f(x) = 9474.626244
+iteration: 1394
+	f(x) = 9474.622406
+iteration: 1395
+	f(x) = 9474.623848
+iteration: 1396
+	f(x) = 9474.622438
+iteration: 1397
+	f(x) = 9474.632663
+iteration: 1398
+	f(x) = 9474.621894
+iteration: 1399
+	f(x) = 9474.621939
+iteration: 1400
+	f(x) = 9474.625135
+iteration: 1401
+	f(x) = 9474.621824
+iteration: 1402
+	f(x) = 9474.624671
+iteration: 1403
+	f(x) = 9474.621622
+iteration: 1404
+	f(x) = 9474.621592
+iteration: 1405
+	f(x) = 9474.624224
+iteration: 1406
+	f(x) = 9474.621561
+iteration: 1407
+	f(x) = 9474.623540
+iteration: 1408
+	f(x) = 9474.621687
+iteration: 1409
+	f(x) = 9474.624453
+iteration: 1410
+	f(x) = 9474.621405
+iteration: 1411
+	f(x) = 9474.621419
+iteration: 1412
+	f(x) = 9474.622381
+iteration: 1413
+	f(x) = 9474.621194
+iteration: 1414
+	f(x) = 9474.623998
+iteration: 1415
+	f(x) = 9474.621288
+iteration: 1416
+	f(x) = 9474.623200
+iteration: 1417
+	f(x) = 9474.620880
+iteration: 1418
+	f(x) = 9474.621176
+iteration: 1419
+	f(x) = 9474.620717
+iteration: 1420
+	f(x) = 9474.620665
+iteration: 1421
+	f(x) = 9474.623526
+iteration: 1422
+	f(x) = 9474.620642
+iteration: 1423
+	f(x) = 9474.621073
+iteration: 1424
+	f(x) = 9474.620592
+iteration: 1425
+	f(x) = 9474.621477
+iteration: 1426
+	f(x) = 9474.620542
+iteration: 1427
+	f(x) = 9474.622140
+iteration: 1428
+	f(x) = 9474.620658
+iteration: 1429
+	f(x) = 9474.622456
+iteration: 1430
+	f(x) = 9474.620409
+iteration: 1431
+	f(x) = 9474.620574
+iteration: 1432
+	f(x) = 9474.620909
+iteration: 1433
+	f(x) = 9474.620418
+iteration: 1434
+	f(x) = 9474.621172
+iteration: 1435
+	f(x) = 9474.620542
+iteration: 1436
+	f(x) = 9474.621006
+iteration: 1437
+	f(x) = 9474.620438
+iteration: 1438
+	f(x) = 9474.621321
+iteration: 1439
+	f(x) = 9474.620410
+iteration: 1440
+	f(x) = 9474.621905
+iteration: 1441
+	f(x) = 9474.620748
+iteration: 1442
+	f(x) = 9474.621346
+iteration: 1443
+	f(x) = 9474.620596
+iteration: 1444
+	f(x) = 9474.621155
+iteration: 1445
+	f(x) = 9474.620269
+iteration: 1446
+	f(x) = 9474.620217
+iteration: 1447
+	f(x) = 9474.621486
+iteration: 1448
+	f(x) = 9474.620006
+iteration: 1449
+	f(x) = 9474.620173
+iteration: 1450
+	f(x) = 9474.620950
+iteration: 1451
+	f(x) = 9474.619847
+iteration: 1452
+	f(x) = 9474.619634
+iteration: 1453
+	f(x) = 9474.619488
+iteration: 1454
+	f(x) = 9474.619693
+iteration: 1455
+	f(x) = 9474.619718
+iteration: 1456
+	f(x) = 9474.619096
+iteration: 1457
+	f(x) = 9474.619529
+iteration: 1458
+	f(x) = 9474.621009
+iteration: 1459
+	f(x) = 9474.619241
+iteration: 1460
+	f(x) = 9474.620711
+iteration: 1461
+	f(x) = 9474.618767
+iteration: 1462
+	f(x) = 9474.618608
+iteration: 1463
+	f(x) = 9474.618963
+iteration: 1464
+	f(x) = 9474.619345
+iteration: 1465
+	f(x) = 9474.618697
+iteration: 1466
+	f(x) = 9474.620782
+iteration: 1467
+	f(x) = 9474.618608
+singular fit
+[1] "Saving the glmm.max.acc ..."
+R version 3.5.1 (2018-07-02)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: CentOS Linux 7 (Core)
+
+Matrix products: default
+BLAS/LAPACK: /scale_wlg_persistent/filesets/opt_nesi/mahuika/imkl/2017.6.256-gimpi-2017a/linux/mkl/lib/intel64_lin/libmkl_gf_lp64.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] lmerTest_3.0-1  lme4_1.1-19     Matrix_1.2-14   forcats_0.3.0  
+ [5] stringr_1.3.1   dplyr_0.7.8     purrr_0.2.5     readr_1.1.1    
+ [9] tidyr_0.8.0     tibble_1.4.2    ggplot2_2.2.1   tidyverse_1.2.1
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.0        nloptr_1.0.4      cellranger_1.1.0  pillar_1.2.2     
+ [5] compiler_3.5.1    plyr_1.8.4        bindr_0.1.1       tools_3.5.1      
+ [9] jsonlite_1.5      lubridate_1.7.4   gtable_0.2.0      nlme_3.1-137     
+[13] lattice_0.20-35   pkgconfig_2.0.1   rlang_0.3.1       cli_1.0.0        
+[17] rstudioapi_0.7    haven_1.1.1       bindrcpp_0.2.2    xml2_1.2.0       
+[21] httr_1.3.1        generics_0.0.2    hms_0.4.2         grid_3.5.1       
+[25] tidyselect_0.2.4  glue_1.2.0        R6_2.2.2          readxl_1.1.0     
+[29] minqa_1.2.4       modelr_0.1.2      magrittr_1.5      MASS_7.3-50      
+[33] splines_3.5.1     backports_1.1.2   scales_0.5.0      rvest_0.3.2      
+[37] assertthat_0.2.0  colorspace_1.3-2  numDeriv_2016.8-1 stringi_1.2.2    
+[41] lazyeval_0.2.1    munsell_0.4.3     broom_0.5.1       crayon_1.3.4     

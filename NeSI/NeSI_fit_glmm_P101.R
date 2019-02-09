@@ -33,7 +33,8 @@ glmm.max.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment +
                       data = df.clean,
                       family = "binomial",
                       verbose = TRUE,
-                      control=glmerControl(optCtrl=list(maxfun=1e6))
+                      control=glmerControl(optimizer = "nloptwrap", 
+                                           optCtrl=list(maxfun=1e6))
 )
 
 # Save the maximum model
@@ -53,7 +54,7 @@ save(glmm.max.acc, file = "E1046_glmm_max_acc.RData")
 #                   data = filter(df.clean, Experiment == "CFS"),
 #                   family = "binomial",
 #                   verbose = TRUE,
-#                   control=glmerControl(optCtrl=list(maxfun=1e6))
+#                   control=glmerControl(optimizer = "nloptwrap",optCtrl=list(maxfun=1e6))
 #                   )
 # 
 # # Save the glmm.cfs
@@ -72,7 +73,7 @@ save(glmm.max.acc, file = "E1046_glmm_max_acc.RData")
 #                    data = filter(df.clean, Experiment == "monocular"),
 #                    family = "binomial",
 #                    verbose = TRUE,
-#                    control=glmerControl(optCtrl=list(maxfun=1e6))
+#                    control=glmerControl(optimizer = "nloptwrap",optCtrl=list(maxfun=1e6))
 #                    )
 # 
 # # Save the glmm.mono

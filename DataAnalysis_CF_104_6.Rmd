@@ -460,7 +460,8 @@ if (!file.exists(datafn.glmm.max.acc)) {
                           data = df.clean,
                           family = "binomial",
                           verbose = TRUE,
-                          control=glmerControl(optCtrl=list(maxfun=1e6))
+                          control=glmerControl(optimizer = "nloptwrap",
+                                               optCtrl=list(maxfun=1e6))
     )
 } else {
     load(datafn.glmm.max.acc)
@@ -483,7 +484,8 @@ if (!file.exists(datafn.glmm.zcp.acc)) {
                           data = df.clean,
                           family = "binomial",
                           # verbose = TRUE,
-                          control=glmerControl(optCtrl=list(maxfun=1e6)))
+                          control=glmerControl(optimizer = "nloptwrap",
+                                               optCtrl=list(maxfun=1e6)))
     # save glmm.zcp.acc
     save(glmm.zcp.acc, file = datafn.glmm.zcp.acc)
     
@@ -498,7 +500,13 @@ The results show that the zero-correlation-parameter model (`glmm.zcp.acc`) fits
 ```{r rePCA for glmm.zcp.acc}
 summary(rePCA(glmm.zcp.acc))
 ```
-Results of PCA show that the proportion of variances of four stimulus random effects and four participant random effects are less than 1%. These eight random effects (`Exp_Ali`, `Exp_D`, `Con_Ali`, and `Ali_D` for Stimuli; `Exp_Con`, `Ali_D`, `Con_D`, and `Exp_Ali` for Participant) were removed from the first reduced model.
+Results of PCA show that the proportion of variances of four stimulus random effects and four participant random effects are less than 1%. 
+
+```{r}
+print(summary(glmm.zcp.acc), corr = FALSE)
+```
+
+These eight random effects (`Exp_Ali`, `Ali_D`, `Exp_Con`, `Con_Ali`, and  for Stimuli; `Exp_Con_Ali`, `Exp_Ali`, `Exp_Con`, `Ali_D`, and  for Participant) were removed from the first reduced model.
 
 ### Reduced model
 ```{r reduced model 1 for accuracy (glmm.rdc1.acc)}
@@ -508,12 +516,13 @@ datafn.glmm.rdc1.acc <- file.path(folder.output, "E1046_glmm_rdc1_acc.RData")
 if (!file.exists(datafn.glmm.rdc1.acc)) {
     # reduce the random effects
     glmm.rdc1.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-                               (1 + Exp_D + Con_Ali + Exp_Con_Ali || Participant) +
-                               (1 + Con_D + Exp_Con + Exp_Con_Ali || Stimuli),
+                               (1 + Exp_D + Con_D + Con_Ali || Participant) +
+                               (1 + Exp_D + Con_D + Exp_Con_Ali || Stimuli),
                            data = df.clean,
                            family = "binomial",
                            # verbose = TRUE,
-                           control=glmerControl(optCtrl=list(maxfun=1e6))
+                           control=glmerControl(optimizer = "nloptwrap",
+                                                optCtrl=list(maxfun=1e6))
     )
     
     # save glmm.rdc1.acc
@@ -537,43 +546,31 @@ print(summary(glmm.rdc1.acc), corr = FALSE)
 ```
 
 
-```{r reduced model 2 for accuracy (glmm.rdc2.acc)}
-# reduce the random effects
-glmm.rdc2.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-                          (1 + Exp_D + Con_Ali || Participant) +
-                          (1 + Con_D + Exp_Con_Ali || Stimuli),
-                      data = df.clean,
-                      family = "binomial"
-                      # verbose = TRUE
-)
-
-anova(glmm.rdc2.acc, glmm.rdc1.acc)
-```
-
-
-```{r rePCA for glmm.rdc2.acc}
-# PCA for random effects of glmm.rdc2.acc
-summary(rePCA(glmm.rdc2.acc))
-```
-
-```{r}
-print(summary(glmm.rdc2.acc), corr = FALSE)
-```
-
-
 ### Extended model
 ```{r extended model for accuracy (glmm.etd.acc)}
-# extend the reduced model with correlation parameters
-glmm.etd.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
-                          (1 + Exp_D + Con_Ali | Participant) +
-                          (1 + Con_D + Exp_Con_Ali | Stimuli),
-                      data = df.clean,
-                      family = "binomial",
-                      # verbose = TRUE,
-                      control=glmerControl(optCtrl=list(maxfun=1e7))
-)
+# data filename for this model
+datafn.glmm.etd.acc <- file.path(folder.output, "E1046_glmm_etd_acc.RData")
 
-anova(glmm.etd.acc, glmm.rdc2.acc)
+if (!file.exists(datafn.glmm.etd.acc)) {
+    # reduce the random effects
+    glmm.etd.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                               (1 + Exp_D + Con_D + Con_Ali | Participant) +
+                               (1 + Exp_D + Con_D + Exp_Con_Ali | Stimuli),
+                           data = df.clean,
+                           family = "binomial",
+                           # verbose = TRUE,
+                           control=glmerControl(optimizer = "nloptwrap",
+                                                optCtrl=list(maxfun=1e6))
+    )
+    
+    # save glmm.etd.acc
+    save(glmm.etd.acc, file = datafn.glmm.etd.acc)
+    
+} else {
+    load(datafn.glmm.etd.acc)
+}
+
+anova(glmm.etd.acc, glmm.rdc1.acc)
 ```
 
 
