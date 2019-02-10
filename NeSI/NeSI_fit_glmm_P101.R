@@ -29,12 +29,11 @@ message("Fitting the maximum model...")
 
 glmm.max.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
                           (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Participant) +
-                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Stimuli),
+                          (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | FaceGroup),
                       data = df.clean,
                       family = "binomial",
                       verbose = TRUE,
-                      control=glmerControl(optimizer = "nloptwrap", 
-                                           optCtrl=list(maxfun=1e6))
+                      control=glmerControl(optCtrl=list(maxfun=1e6))
 )
 
 # Save the maximum model
