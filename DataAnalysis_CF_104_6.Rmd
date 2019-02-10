@@ -456,7 +456,7 @@ if (!file.exists(datafn.glmm.max.acc)) {
     # fit the maximum model
     glmm.max.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
                               (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Participant) +
-                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Stimuli),
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | FaceGroup),
                           data = df.clean,
                           family = "binomial",
                           verbose = TRUE,
@@ -480,7 +480,7 @@ if (!file.exists(datafn.glmm.zcp.acc)) {
     # fit the zcp model
     glmm.zcp.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
                               (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Participant) +
-                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Stimuli),
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || FaceGroup),
                           data = df.clean,
                           family = "binomial",
                           # verbose = TRUE,
@@ -500,13 +500,13 @@ The results show that the zero-correlation-parameter model (`glmm.zcp.acc`) fits
 ```{r rePCA for glmm.zcp.acc}
 summary(rePCA(glmm.zcp.acc))
 ```
-Results of PCA show that the proportion of variances of four stimulus random effects and four participant random effects are less than 1%. 
+Results of PCA show that the proportion of variances of five face group random effects and four participant random effects are less than 1%. 
 
 ```{r}
 print(summary(glmm.zcp.acc), corr = FALSE)
 ```
 
-These eight random effects (`Exp_Ali`, `Ali_D`, `Exp_Con`, `Con_Ali`, and  for Stimuli; `Exp_Con_Ali`, `Exp_Ali`, `Exp_Con`, `Ali_D`, and  for Participant) were removed from the first reduced model.
+These eight random effects (`Exp_Con_Ali`, `Con_Ali`, `Exp_D`, `Ali_D`, and `Exp_Ali`, for FaceGroup; `Exp_Con_Ali`, `Exp_Ali`, `Exp_Con`, `Ali_D`, and  for Participant) were removed from the first reduced model.
 
 ### Reduced model
 ```{r reduced model 1 for accuracy (glmm.rdc1.acc)}
@@ -517,7 +517,7 @@ if (!file.exists(datafn.glmm.rdc1.acc)) {
     # reduce the random effects
     glmm.rdc1.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
                                (1 + Exp_D + Con_D + Con_Ali || Participant) +
-                               (1 + Exp_D + Con_D + Exp_Con_Ali || Stimuli),
+                               (1 + Con_D + Exp_Con || FaceGroup),
                            data = df.clean,
                            family = "binomial",
                            # verbose = TRUE,
@@ -555,12 +555,11 @@ if (!file.exists(datafn.glmm.etd.acc)) {
     # reduce the random effects
     glmm.etd.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
                                (1 + Exp_D + Con_D + Con_Ali | Participant) +
-                               (1 + Exp_D + Con_D + Exp_Con_Ali | Stimuli),
+                               (1 + Con_D + Exp_Con | FaceGroup),
                            data = df.clean,
                            family = "binomial",
                            # verbose = TRUE,
-                           control=glmerControl(optimizer = "nloptwrap",
-                                                optCtrl=list(maxfun=1e6))
+                           control=glmerControl(optCtrl=list(maxfun=1e6))
     )
     
     # save glmm.etd.acc
@@ -573,11 +572,48 @@ if (!file.exists(datafn.glmm.etd.acc)) {
 anova(glmm.etd.acc, glmm.rdc1.acc)
 ```
 
+```{r}
+summary(rePCA(glmm.etd.acc))
+```
+
+
+```{r}
+summary(glmm.etd.acc)
+```
+
+
+```{r}
+glmm.etd2.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                               (1 + Exp_D + Con_D + Con_Ali | Participant) +
+                               (1 + Exp_Con | FaceGroup),
+                           data = df.clean,
+                           family = "binomial"
+                           # verbose = TRUE,
+                           # control=glmerControl(optCtrl=list(maxfun=1e6))
+    )
+```
+
+```{r}
+summary(glmm.etd2.acc)
+```
+
+
 
 ### Optimal model
 ```{r optimal model for accuracy (glmm.opt.acc)}
+glmm.opt.acc <- glmm.etd2.acc
+
+
+all.fit <- allFit(glmm.etd2.acc)
 
 ```
+
+```{r}
+is.OK <- sapply(all.fit,is,"merMod")  ## nlopt NELDERMEAD failed, others succeeded
+aa.OK <- all.fit[is.OK]
+lapply(aa.OK,function(x) x@optinfo$conv$lme4$messages)
+```
+
 
 
 
