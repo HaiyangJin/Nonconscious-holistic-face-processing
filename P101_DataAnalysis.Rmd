@@ -1,0 +1,666 @@
+---
+title: "Data Analysis for P101"
+author: "[Haiyang Jin](https://haiyangjin.github.io/)"
+date:  "`r format(Sys.time(), '%d-%m-%Y')`"
+knit: ""
+output: 
+  html_document:
+    number_sections: true
+    toc: true
+    toc_depth: 4
+    toc_float: true
+    includes:
+        after_body: Utilities/footer.html
+version: "4.0"
+---
+
+```{r setup, include=FALSE}
+## set chunk options
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Preparation
+```{r load the related libraries, message=FALSE}
+## load libraries
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+
+source(file.path("R", "geom_flat_violin.R"))
+source(file.path("R", "plot_theme.R"))
+    
+```
+
+
+```{r input all the information about the data set}
+###### Optional ######
+## the filename of the raw data file 
+fn.raw <- file.path("data","104_106_n-20_2017-05-04-1446.csv")
+
+## input the filename of the output file (.csv)
+output.name <- "E1_104_106"
+
+folder.nesi <- "NeSI"
+folder.output <- "output"
+
+```
+
+```{r save CSV, include = FALSE}
+# do you want save the data into *.csv files
+# saveCSV = TRUE
+saveCSV = FALSE
+path.output <- file.path("output", ".")
+
+# set the filenames for R and SPSS data format
+output.d.R <- file.path(path.output, paste0(output.name, "_d_R.csv"))
+output.d.SPSS <- file.path(path.output, paste0(output.name, "_d_SPSS.csv"))
+output.rt.R <- file.path(path.output, paste0(output.name, "_rt_R.csv"))
+output.rt.SPSS <- file.path(path.output, paste0(output.name, "_rt_SPSS.csv"))
+
+```
+
+The raw data was loaded from the file named `r basename(fn.raw)` in the `r dirname(fn.raw)`/ folder. 
+
+# Tidying up the data
+```{r read the raw data file and set the name for output file, message = FALSE}
+# read data file
+df.raw <- read_csv(fn.raw)
+str(df.raw)
+```
+
+
+```{r calculate the Z value for RT and clean data}
+# clean and rename the levels of independent variables
+df.clean <- {
+  df.raw %>%
+    tbl_df() %>%  # change into table data frame format
+    mutate(
+      Participant = as.factor(Participant),
+      Congruency = as.factor(Congruency),
+      Alignment = as.factor(Alignment),
+      Experiment = as.factor(Experiment),
+      Congruency = recode(Congruency, "C" = "congruent", "I" = "incongruent"), # rename the levels for Congruency
+      Alignment = recode(Alignment, "A" = "aligned", "M" = "misaligned"),
+      Experiment = recode(Experiment, "104_CF_CFS" = "CFS", "106_CF_Mono" = "monocular")
+      ) %>% # rename the levels for Alignment
+    group_by(Experiment, Participant, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
+    mutate(
+      RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
+      RT.Within3Z = ifelse(RT.Z <= 3 & RT.Z >= -3, 1, ifelse(RT.Z < -3 | RT.Z > 3, 0, NaN))
+      ) %>%  # if the Z values are between -3 and 3, will be marked as 1. 
+      mutate(Stimuli = paste(StudyUpper, StudyLower, TargetUpper, TargetLower, sep = "-")) %>%
+    ungroup()  # ungroup the data
+}
+
+df.clean
+
+```
+
+
+# Sensitivity d'
+```{r calculate the sensitivity d for R analysis}
+# calculate the d'
+individual.d.R <- { # get the hit and correct rejection rates
+  df.clean %>%
+    group_by(Experiment, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
+    summarize(Accuracy = mean(isCorrect), Count = n()) %>% # get accuracy and count for each condition (hit and correct rejection)  
+    mutate(Accuracy = ifelse(Accuracy == 1, 1 - 0.5/Count, Accuracy)) %>%  # set 1 equals to 1-0.5/n
+    spread(SameDifferent, Accuracy) %>%  # spread the Accuracy into two columns based on SameDifferent
+    mutate(FA = 1 - D,
+           Z.hit = qnorm(S),
+           Z.FA = qnorm(FA),
+           dprime = Z.hit - Z.FA) %>% # get the d prime
+    select(Experiment, Participant, Congruency, Alignment, dprime, Count)
+}
+
+# descriptive statistics of d for plotting
+sum.d.R <- {
+  individual.d.R %>% 
+    group_by(Experiment, Congruency, Alignment) %>% 
+    summarize(Mean = mean(dprime), N = n(), SD = sd(dprime), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(dprime), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# d for SPSS sytle analysis
+individual.d.SPSS <- {
+  individual.d.R %>%
+    ungroup() %>%  # ungroup the data.d.r 
+    mutate(Conditions = paste(Experiment, Congruency, Alignment, sep = ".")) %>% # combine all the levels together
+    select(Participant, dprime, Conditions, Count) %>% # delete the Independet Variables
+    spread(Conditions, dprime)
+}
+
+# save the d' for R analysis
+if (saveCSV) {
+  write.csv(individual.d.R, output.d.R, row.names = FALSE)
+  write.csv(individual.d.SPSS, output.d.SPSS, row.names = FALSE)
+}
+
+```
+
+
+## RainClound plot of sensitivity (d')
+```{r rainclound plot of sensitivity}
+knitr::kable(sum.d.R, digits = 4)
+
+d.RainPlot <- {
+  ggplot(data = individual.d.R, aes(y = dprime, x = Alignment, fill = Congruency)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = dprime, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = dprime), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = sum.d.R, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = sum.d.R, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Experiment, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Sensitivity d' for E104_106", x = "Experiment", y = "Sensitivity", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+&nbsp;
+
+```{r display the RainCloud plot for sensitivity (d)}
+d.RainPlot
+```
+
+
+## Repeated measure ANOVA for sensitivity (d')
+### Sensitivity d': Experiment(2) $\times$ Congruency(2) $\times$ Alignment(2)
+```{r repeated measure ANOVA for d}
+
+d.anova <- { 
+  ezANOVA(data = individual.d.R
+          , dv = dprime
+          , wid = Participant
+          , within = c(Experiment, Congruency, Alignment)
+          , detailed = TRUE
+          # , type = 3 # for this test, results for type II and III are the same
+          # , return_aov = TRUE
+  )
+}
+
+knitr::kable(d.anova$ANOVA, digits = 4)
+```
+
+
+```{r include = FALSE}
+thisExp <- unique(df.clean$Experiment)[1]
+```
+
+### Sensitivity d' for `r thisExp`: Congruency(2) $\times$ Alignment(2)
+```{r ANOVA of sensitivity d for CF with CFS}
+d.anova.CFS <- {
+  individual.d.R %>%
+    filter(Experiment == thisExp) %>% 
+    ezANOVA(
+      dv = dprime,
+      wid = Participant,
+      within = .(Congruency, Alignment),
+      detailed = TRUE,
+      return_aov = TRUE
+    )  # run repeaed measures ANOVA 
+}
+
+knitr::kable(d.anova.CFS$ANOVA, digits = 4)
+
+```
+
+
+```{r include = FALSE}
+thisExp <- unique(df.clean$Experiment)[2]
+```
+
+### Sensitivity d' for `r thisExp`: Congruency(2) $\times$ Alignment(2)
+```{r ANOVA of sensitivity d for CF with monocular}
+d.anova.CFS <- {
+  individual.d.R %>%
+    filter(Experiment == thisExp) %>% 
+    ezANOVA(
+      dv = dprime,
+      wid = Participant,
+      within = .(Congruency, Alignment),
+      detailed = TRUE,
+      return_aov = TRUE
+    )  # run repeaed measures ANOVA 
+}
+
+knitr::kable(d.anova.CFS$ANOVA, digits = 4)
+```
+
+
+## Line plot of sensitivity (d')
+```{r Plot of d}
+
+d.ColuPlot = {
+  ggplot(data = sum.d.R, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point() +
+    geom_line() +  # position = "dodge", alpha = .7
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Experiment, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(title = "Sensitivity for E104_106", x = "Experiment", y = "Sensitivity", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+d.ColuPlot
+```
+
+
+
+# Correct Response Times
+```{r calculate the correct response times for R analysis}
+individual.rt.R <- {
+  df.clean %>%
+    filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
+    filter(isCorrect == 1)  %>%  # only keep the correct correct
+    group_by(Experiment, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
+    summarize(RT = mean(reactionTime) * 1000 + 300, Count = n()) %>% # get RT and count for each condition
+    ungroup()
+}
+
+# descriptive statistics of RT for plotting
+sum.rt.R <- {
+  individual.rt.R %>% 
+    select(-Count) %>% 
+    group_by(Experiment, Congruency, Alignment) %>% 
+    summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# RT for SPSS sytle analysis
+individual.rt.SPSS <- {
+  individual.rt.R %>%
+    mutate(Conditions = paste(Experiment, Congruency, Alignment, sep = ".")) %>%
+    select(Participant, Conditions, RT) %>% 
+    spread(Conditions, RT)
+}
+
+# save the RT for R analysis
+if (saveCSV) {
+  write.csv(individual.rt.R, output.rt.R, row.names = FALSE)
+  write.csv(individual.rt.SPSS, output.rt.SPSS, row.names = FALSE)
+}
+
+```
+
+
+## RainClound plot of correct response times
+```{r rainclound plot of correct response times}
+knitr::kable(sum.rt.R, digits = 4)
+
+rt.RainPlot <- {
+  ggplot(data = individual.rt.R, aes(y = RT, x = Alignment, fill = Congruency)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = RT, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = sum.rt.R, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = sum.rt.R, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Experiment, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Correct Response Times for E104_106", x = "Alignment", y = "Response Times (ms)", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand = c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+
+&nbsp;
+
+```{r display the RainCloud plot for response times}
+rt.RainPlot
+```
+
+
+## Repeated measure ANOVA for response times
+### Correct RT: Experiment(2) $\times$ Congruency(2) $\times$ Alignment(2)
+```{r repeated measure ANOVA for response times}
+
+rt.anova <- { 
+  ezANOVA(data = individual.rt.R
+          , dv = RT
+          , wid = Participant
+          , within = c(Experiment, Congruency, Alignment)
+          , detailed = TRUE
+          # , type = 3 # for this test, results for type II and III are the same
+          # , return_aov = TRUE
+  )
+}
+
+knitr::kable(rt.anova$ANOVA, digits = 4)
+```
+
+
+
+```{r include = FALSE}
+thisExp <- unique(df.clean$Experiment)[1]
+```
+
+### Correct RT for `r thisExp`: Congruency(2) $\times$ Alignment(2)
+```{r ANOVA of Correct RT for CF with CFS}
+rt.anova.CFS <- {
+  individual.rt.R %>%
+    filter(Experiment == thisExp) %>%
+    ezANOVA(
+      dv = RT,
+      wid = Participant,
+      within = .(Congruency, Alignment),
+      detailed = TRUE,
+      return_aov = TRUE
+    )  # run repeaed measures ANOVA 
+}
+
+knitr::kable(rt.anova.CFS$ANOVA, digits = 4)
+```
+
+
+```{r include = FALSE}
+thisExp = unique(df.clean$Experiment)[2]
+```
+
+### Correct RT for `r thisExp`: Congruency(2) $\times$ Alignment(2)
+```{r ANOVA of Correct RT for CF with monocular}
+rt.anova.CFS <- {
+  individual.rt.R %>%
+    filter(Experiment == thisExp) %>%
+    ezANOVA(
+      dv = RT,
+      wid = Participant,
+      within = .(Congruency, Alignment),
+      detailed = TRUE,
+      return_aov = TRUE
+    )  # run repeaed measures ANOVA 
+}
+
+knitr::kable(rt.anova.CFS$ANOVA, digits = 4)
+```
+
+
+## Line plot of correct response times
+```{r Plot of correct response times}
+
+rt.ColuPlot = {
+  ggplot(data = sum.rt.R, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point() +
+    geom_line() +  # position = "dodge", alpha = .7
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Experiment, switch = "both") +
+    labs(title = "Correct Response Times for E104_106", x = "Experiment", y = "Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("*", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+rt.ColuPlot
+```
+
+
+# Accuracy (Raw Responses)
+
+## Logit Mixed Model for Accuracy
+```{r add coding matrix}
+# construct the dummy coding
+df.clean <- {
+    df.clean %>% 
+        mutate(
+            Exp_D = ifelse(Experiment == "CFS", 0, ifelse(Experiment == "monocular", 1, NaN)),
+            Con_D = ifelse(Congruency == "congruent", 0, ifelse(Congruency == "incongruent", 1, NaN)),
+            Ali_D = ifelse(Alignment == "aligned", 0, ifelse(Alignment == "misaligned", 1, NaN)),
+            
+            Exp_Con = Exp_D * Con_D,
+            Exp_Ali = Exp_D * Ali_D,
+            Con_Ali = Con_D * Ali_D,
+            
+            Exp_Con_Ali = Exp_D * Con_D * Ali_D
+        )
+} 
+
+# fn.df <- "P101_104_106_clean"
+# write_csv(df.clean, file.path(path.nesi, paste0(fn.df, ".csv")))
+# save(df.clean, file = file.path(path.nesi, paste0(fn.df, ".RData")))
+```
+
+
+### Maximum Model
+```{r maximum model for accuracy (glmm.max.acc)}
+# data filename for this model
+datafn.glmm.max.acc <- file.path(folder.nesi, "E1046_glmm_max_acc.RData")
+
+if (!file.exists(datafn.glmm.max.acc)) {
+    # fit the maximum model
+    glmm.max.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | Participant) +
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali | FaceGroup),
+                          data = df.clean,
+                          family = "binomial",
+                          verbose = TRUE,
+                          control=glmerControl(optimizer = "nloptwrap",
+                                               optCtrl=list(maxfun=1e6))
+    )
+} else {
+    load(datafn.glmm.max.acc)
+}
+
+print(summary(glmm.max.acc), corr = FALSE)
+```
+
+
+### Zero-correlation-parameter model
+```{r zcp model for accuracy (glmm.zcp.acc)}
+# data filename for this model
+datafn.glmm.zcp.acc <- file.path(folder.output, "E1046_glmm_zcp_acc.RData")
+
+if (!file.exists(datafn.glmm.zcp.acc)) {
+    # fit the zcp model
+    glmm.zcp.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || Participant) +
+                              (1 + Exp_D + Con_D + Ali_D + Exp_Con + Exp_Ali + Con_Ali + Exp_Con_Ali || FaceGroup),
+                          data = df.clean,
+                          family = "binomial",
+                          # verbose = TRUE,
+                          control=glmerControl(optimizer = "nloptwrap",
+                                               optCtrl=list(maxfun=1e6)))
+    # save glmm.zcp.acc
+    save(glmm.zcp.acc, file = datafn.glmm.zcp.acc)
+    
+} else {
+    load(datafn.glmm.zcp.acc)
+}
+
+anova(glmm.zcp.acc, glmm.max.acc)
+```
+The results show that the zero-correlation-parameter model (`glmm.zcp.acc`) fits better than the maximum model (`glmm.max.acc`). Next, Principle Component Analysis (PCA) was conducted for the random effects in the zcp model.
+
+```{r rePCA for glmm.zcp.acc}
+summary(rePCA(glmm.zcp.acc))
+```
+Results of PCA show that the proportion of variances of five face group random effects and four participant random effects are less than 1%. 
+
+```{r}
+print(summary(glmm.zcp.acc), corr = FALSE)
+```
+
+These eight random effects (`Exp_Con_Ali`, `Con_Ali`, `Exp_D`, `Ali_D`, and `Exp_Ali`, for FaceGroup; `Exp_Con_Ali`, `Exp_Ali`, `Exp_Con`, `Ali_D`, and  for Participant) were removed from the first reduced model.
+
+### Reduced model
+```{r reduced model 1 for accuracy (glmm.rdc1.acc)}
+# data filename for this model
+datafn.glmm.rdc1.acc <- file.path(folder.output, "E1046_glmm_rdc1_acc.RData")
+
+if (!file.exists(datafn.glmm.rdc1.acc)) {
+    # reduce the random effects
+    glmm.rdc1.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                               (1 + Exp_D + Con_D + Con_Ali || Participant) +
+                               (1 + Con_D + Exp_Con || FaceGroup),
+                           data = df.clean,
+                           family = "binomial",
+                           # verbose = TRUE,
+                           control=glmerControl(optimizer = "nloptwrap",
+                                                optCtrl=list(maxfun=1e6))
+    )
+    
+    # save glmm.rdc1.acc
+    save(glmm.rdc1.acc, file = datafn.glmm.rdc1.acc)
+    
+} else {
+    load(datafn.glmm.rdc1.acc)
+}
+
+anova(glmm.rdc1.acc, glmm.zcp.acc)
+```
+
+```{r rePCA for glmm.rdc1.acc}
+# PCA for random effects of glmm.rdc1.acc
+summary(rePCA(glmm.rdc1.acc))
+```
+PCA for the first reduced model show the variance proportions of two random effects are still less than 1%. Then they are removed in the second reduced model.
+
+```{r}
+print(summary(glmm.rdc1.acc), corr = FALSE)
+```
+
+
+### Extended model
+```{r extended model for accuracy (glmm.etd.acc)}
+# data filename for this model
+datafn.glmm.etd.acc <- file.path(folder.output, "E1046_glmm_etd_acc.RData")
+
+if (!file.exists(datafn.glmm.etd.acc)) {
+    # reduce the random effects
+    glmm.etd.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                               (1 + Exp_D + Con_D + Con_Ali | Participant) +
+                               (1 + Con_D + Exp_Con | FaceGroup),
+                           data = df.clean,
+                           family = "binomial",
+                           # verbose = TRUE,
+                           control=glmerControl(optCtrl=list(maxfun=1e6))
+    )
+    
+    # save glmm.etd.acc
+    save(glmm.etd.acc, file = datafn.glmm.etd.acc)
+    
+} else {
+    load(datafn.glmm.etd.acc)
+}
+
+anova(glmm.etd.acc, glmm.rdc1.acc)
+```
+
+```{r}
+summary(rePCA(glmm.etd.acc))
+```
+
+
+```{r}
+summary(glmm.etd.acc)
+```
+
+
+```{r}
+glmm.etd2.acc <- glmer(isCorrect ~ Experiment * Congruency * Alignment + 
+                               (1 + Exp_D + Con_D + Con_Ali | Participant) +
+                               (1 + Exp_Con | FaceGroup),
+                           data = df.clean,
+                           family = "binomial"
+                           # verbose = TRUE,
+                           # control=glmerControl(optCtrl=list(maxfun=1e6))
+    )
+```
+
+```{r}
+summary(glmm.etd2.acc)
+```
+
+
+
+### Optimal model
+```{r optimal model for accuracy (glmm.opt.acc)}
+glmm.opt.acc <- glmm.etd2.acc
+
+
+all.fit <- allFit(glmm.etd2.acc)
+
+```
+
+```{r}
+is.OK <- sapply(all.fit,is,"merMod")  ## nlopt NELDERMEAD failed, others succeeded
+aa.OK <- all.fit[is.OK]
+lapply(aa.OK,function(x) x@optinfo$conv$lme4$messages)
+```
+
+
+
+
+
+
+
+
+
+
+
+### Logit Mixed Model for the CFS condition
+```{r logit mixed model -- cfs}
+# build the full model (run in NeSI)
+# glmm.cfs <- glmer(isCorrect ~ Congruency * Alignment +
+#                      (1 + Congruency * Alignment | Participant) +
+#                      (1 + Congruency * Alignment | Stimuli),
+#                    data = filter(df.clean, Experiment == "CFS"),
+#                    family = "binomial",
+#                    verbose = TRUE,
+#                    control=glmerControl(optCtrl=list(maxfun=1e6))
+#                    )
+
+load(file.path(path.nesi, "P101_glmm_cfs.RData"))
+
+print(summary(glmm.cfs), corr=FALSE)
+
+```
+
+
+### Logit Mixed Model for the monocular condition
+```{r logit mixed model -- monocular}
+# build the full model (run in NeSI)
+# glmm.mono <- glmer(isCorrect ~ Congruency * Alignment +
+#                      (1 + Congruency * Alignment | Participant) +
+#                      (1 + Congruency * Alignment | Stimuli),
+#                    data = filter(df.clean, Experiment == "monocular"),
+#                    family = "binomial",
+#                    verbose = TRUE,
+#                    control=glmerControl(optCtrl=list(maxfun=1e6))
+#                    )
+
+load(file.path(path.nesi, "P101_glmm_mono.RData"))
+
+print(summary(glmm.mono), corr=FALSE)
+
+```
+
+# Versions of Packages Used
+```{r versions}
+sessionInfo()
+```
+
