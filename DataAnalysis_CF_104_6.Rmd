@@ -450,7 +450,7 @@ df.clean <- {
 ### Maximum Model
 ```{r maximum model for accuracy (glmm.max.acc)}
 # data filename for this model
-datafn.glmm.max.acc <- file.path(folder.nesi, "E1046_glmm_max_acc.RData")
+datafn.glmm.max.acc <- file.path(folder.nesi, "E1046_glmm_max_acc.RData") 
 
 if (!file.exists(datafn.glmm.max.acc)) {
     # fit the maximum model
