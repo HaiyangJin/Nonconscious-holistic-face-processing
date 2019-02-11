@@ -131,6 +131,15 @@ d.R.E1 <- { # get the hit and correct rejection rates
     select(Experiment, Participant, Congruency, Alignment, dprime, Count)
 }
 
+# remove the participants whose dprime were less than 1 in at least one condition
+rmParticipant1 <- unique(d.R.E1$Participant[(d.R.E1$dprime <= 0)]) # participants whose dprime is less than 0 
+rmParticipant2 <- unique(d.R.E1$Participant[is.na(d.R.E1$dprime)]) # dprie is missing
+
+rmLevels = levels(rmParticipant1)
+rmParticipant <- factor(rmLevels[c(rmParticipant1, rmParticipant2)], levels = rmLevels)
+
+d.R.E1 <- d.R.E1[!(d.R.E1$Participant %in% rmParticipant), ]
+
 # descriptive statistics of d for plotting
 sum.d.R.E1 <- {
   d.R.E1 %>% 
@@ -244,12 +253,14 @@ rt.SPSS.E1 <- {
     spread(Conditions, RT)
 }
 
+```
+
+```{r # save the RT for R analysis for jamovi E1}
 # save the RT for R analysis
 if (saveCSV) {
   write.csv(rt.R.E1, output.rt.R, row.names = FALSE)
   write.csv(rt.SPSS.E1, output.rt.SPSS, row.names = FALSE)
 }
-
 ```
 
 
@@ -328,19 +339,15 @@ if (saveCSV) {
     output.d.SPSS <- file.path(path.output, paste0(output.name, "_d_SPSS.csv"))
     output.rt.R <- file.path(path.output, paste0(output.name, "_rt_R.csv"))
     output.rt.SPSS <- file.path(path.output, paste0(output.name, "_rt_SPSS.csv"))
-    output.d.R <- paste(raw.dir, "/", output.name, "_d_R.csv", sep = "")
-    output.d.SPSS <- paste(raw.dir, "/", output.name, "_d_SPSS.csv", sep = "")
-    output.rt.R <- paste(raw.dir, "/", output.name, "_rt_R.csv", sep = "")
-    output.rt.SPSS <- paste(raw.dir, "/", output.name, "_rt_SPSS.csv", sep = "")
-    output.catch.acc.R <- paste(raw.dir, "/", output.name, "_catch_acc_R.csv", sep = "")
-    output.catch.acc.SPSS <- paste(raw.dir, "/", output.name, "_catch_acc_SPSS.csv", sep = "")
-    output.catch.rt.R <- paste(raw.dir, "/", output.name, "_catch_rt_R.csv", sep = "")
-    output.catch.rt.SPSS <- paste(raw.dir, "/", output.name, "_catch_rt_SPSS.csv", sep = "")
+    output.catch.acc.R <- file.path(path.output, paste0(output.name, "_catch_acc_R.csv"))
+    output.catch.acc.SPSS <- file.path(path.output, paste0(output.name, "_catch_acc_SPSS.csv"))
+    output.catch.rt.R <- file.path(path.output, paste0(output.name, "_catch_rt_R.csv"))
+    output.catch.rt.SPSS <- file.path(path.output, paste0(output.name, "_catch_rt_SPSS.csv"))
 }
 
 ```
 
-The raw data for Experiment 1 was loaded from the file named `r basename(fn.raw.E2)` in the *`r dirname(fn.raw.E2)`/* folder. 
+The raw data for Experiment 2 was loaded from the file named `r basename(fn.raw.E2)` in the *`r dirname(fn.raw.E2)`/* folder. 
 
 ## Tidying up the data
 ```{r read the raw data file and set the name for output file (E2), message = FALSE}
@@ -381,7 +388,7 @@ df.clean.E2
 ### Sensitivity d'
 ```{r calculate the sensitivity d for R analysis (E2)}
 # calculate the d'
-cf.d.R.E2 <- { # get the hit and correct rejection rates
+d.R.E2 <- { # get the hit and correct rejection rates
   df.clean.E2 %>%
     filter(Condition == "Complete") %>%  # only keep the trials for composite face task
     group_by(Experiment, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
@@ -396,13 +403,17 @@ cf.d.R.E2 <- { # get the hit and correct rejection rates
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
-rmParticipant <- unique(cf.d.R.E2$Participant[(cf.d.R.E2$dprime <= 0) | is.na(cf.d.R.E2$dprime)]) # participants whose dprime is less than 0 or missing
+rmParticipant1 <- unique(d.R.E2$Participant[(d.R.E2$dprime <= 0)]) # participants whose dprime is less than 0 
+rmParticipant2 <- unique(d.R.E2$Participant[is.na(d.R.E2$dprime)]) # dprie is missing
 
-cf.d.R.E2 <- cf.d.R.E2[!(cf.d.R.E2$Participant %in% rmParticipant), ]
+rmLevels = levels(rmParticipant1)
+rmParticipant <- factor(rmLevels[c(rmParticipant1, rmParticipant2)], levels = rmLevels)
+
+d.R.E2 <- d.R.E2[!(d.R.E2$Participant %in% rmParticipant), ]
 
 # descriptive statistics of d for plotting
 sum.d.R.E2 <- {
-  cf.d.R.E2 %>% 
+  d.R.E2 %>% 
     group_by(Experiment, Congruency, Alignment) %>% 
     summarize(Mean = mean(dprime), N = n(), SD = sd(dprime), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(dprime), Lower = Mean - SD, Upper = Mean + SD) %>% 
     ungroup()
@@ -410,7 +421,7 @@ sum.d.R.E2 <- {
 
 # d for SPSS sytle analysis
 d.SPSS.E2 <- {
-  cf.d.R.E2 %>%
+  d.R.E2 %>%
     ungroup() %>%  # ungroup the data.d.r 
     mutate(Conditions = paste(Experiment, Congruency, Alignment, sep = ".")) %>% # combine all the levels together
     select(Participant, dprime, Conditions, Count) %>% # delete the Independet Variables
@@ -418,12 +429,16 @@ d.SPSS.E2 <- {
 }
 
 ```
+Participant `r rmParticipant1` were removed due to at least one of their dprime was not larger than 0.
+    
+Participant `r rmParticipant2` were removed due to at least one of their dprime was missing.
+
 
 ```{r save data of E2 for analysis in jamovi E2}
 # save the d' for R analysis
 if (saveCSV) {
-  write.csv(cf.d.R.E2, output.d.R, row.names = FALSE)
-  write.csv(cf.d.SPSS.E2, output.d.SPSS, row.names = FALSE)
+  write.csv(d.R.E2, output.d.R, row.names = FALSE)
+  write.csv(d.SPSS.E2, output.d.SPSS, row.names = FALSE)
 }
 ```
 
@@ -449,7 +464,7 @@ d.RainPlot.E2 <- {
     # scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
     theme_bw() + # the backgroud color
-    plot_theme
+    plot_theme 
 }
 
 ```
@@ -487,18 +502,20 @@ d.ColuPlot.E2
 
 ### Correct Response Times
 ```{r calculate the correct response times for R analysis E2}
-rt.R.E2 <- {
+cf.rt.R.E2 <- {
   df.clean.E2 %>%
-    filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
-    filter(isCorrect == 1)  %>%  # only keep the correct correct
-    group_by(Experiment, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
-    summarize(RT = mean(reactionTime) * 1000 + 300, Count = n()) %>% # get RT and count for each condition
-    ungroup()
+        filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+        filter(Condition == "Complete") %>%
+        filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
+        filter(isCorrect == 1)  %>%  # only keep the correct correct
+        group_by(Experiment, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
+        summarize(RT = mean(reactionTime) * 1000, Count = n()) %>% # get RT and count for each condition
+        ungroup()
 }
 
 # descriptive statistics of RT for plotting
-sum.rt.R.E2 <- {
-  rt.R.E2 %>% 
+cf.sum.rt.R.E2 <- {
+  cf.rt.R.E2 %>% 
     select(-Count) %>% 
     group_by(Experiment, Congruency, Alignment) %>% 
     summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
@@ -506,17 +523,21 @@ sum.rt.R.E2 <- {
 }
 
 # RT for SPSS sytle analysis
-rt.SPSS.E2 <- {
-  rt.R.E2 %>%
+cf.rt.SPSS.E2 <- {
+  cf.rt.R.E2 %>%
     mutate(Conditions = paste(Experiment, Congruency, Alignment, sep = ".")) %>%
     select(Participant, Conditions, RT) %>% 
     spread(Conditions, RT)
 }
 
+```
+
+
+```{r save the RT for R analysis in jomovi E2}
 # save the RT for R analysis
 if (saveCSV) {
-  write.csv(rt.R.E2, output.rt.R, row.names = FALSE)
-  write.csv(rt.SPSS.E2, output.rt.SPSS, row.names = FALSE)
+  write.csv(cf.rt.R.E2, output.rt.R, row.names = FALSE)
+  write.csv(cf.rt.SPSS.E2, output.rt.SPSS, row.names = FALSE)
 }
 
 ```
@@ -524,15 +545,15 @@ if (saveCSV) {
 
 #### RainClound plots of RT
 ```{r rainclound plot of correct response times E2, warning = FALSE}
-knitr::kable(sum.rt.R.E2, digits = 4)
+knitr::kable(cf.sum.rt.R.E2, digits = 4)
 
 rt.RainPlot.E2 <- {
-  ggplot(data = rt.R.E2, aes(y = RT, x = Alignment, fill = Congruency)) + 
+  ggplot(data = cf.rt.R.E2, aes(y = RT, x = Alignment, fill = Congruency)) + 
     geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
     geom_point(aes(y = RT, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
     geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
-    geom_point(data = sum.rt.R.E2, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
-    geom_errorbar(data = sum.rt.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    geom_point(data = cf.sum.rt.R.E2, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = cf.sum.rt.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
     facet_grid(. ~ Experiment, switch = "both") +
     # scale_colour_grey() + # start = .1, end = .6, color for the contour
     # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -548,11 +569,15 @@ rt.RainPlot.E2 <- {
 
 ```
 
+```{r display the RainCloud plot for response times E2}
+rt.RainPlot.E2
+```
+
 #### Line plots of RT
 ```{r Plot of correct response times E2}
 
 rt.ColuPlot.E2 = {
-  ggplot(data = sum.rt.R.E2, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+  ggplot(data = cf.sum.rt.R.E2, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_point() +
     geom_line() +  # position = "dodge", alpha = .7
     geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
@@ -560,9 +585,9 @@ rt.ColuPlot.E2 = {
     coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     facet_grid(. ~ Experiment, switch = "both") +
-    labs(title = "Correct Response Times for Experiment 1", x = "Experiment", y = "Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    labs(title = "Correct Response Times for Experiment 2", x = "Experiment", y = "Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns
-    geom_text(label = c("*", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
+    geom_text(label = c("", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
     plot_theme
 }
@@ -570,6 +595,456 @@ rt.ColuPlot.E2 = {
 rt.ColuPlot.E2
 ```
 
+## Catch trials
+### Accuracy for catch trials
+```{r accuracy for catch trials E2}
+catch.acc.R.E2 <- {
+  df.clean.E2 %>%
+    filter(Condition == "CatchOnly") %>%  # only save the trials for catch
+    filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+    group_by(Experiment, Participant, Alignment) %>% 
+    summarize(Accuracy = mean(isCorrect), Count = n()) %>% 
+    ungroup()
+}
+
+catch.sum.acc.R.E2 <- {
+  catch.acc.R.E2 %>% 
+    group_by(Experiment, Alignment) %>% 
+    summarize(Mean = mean(Accuracy), N = n(), SD = sd(Accuracy), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(Accuracy), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+catch.acc.SPSS.E2 <- {
+  catch.acc.R.E2 %>% 
+    mutate(Condition = factor(paste(Experiment, Alignment, sep = "."), levels = c("CFS.aligned", "CFS.misaligned", "monocular.aligned", "monocular.misaligned", "Catch.aligned", "Catch.misaligned"))) %>% 
+    select(Participant, Condition, Accuracy) %>%
+    spread(Condition, Accuracy)
+}
+
+
+```
+
+```{r save the acc of catch trials in jamovi E2}
+# save the acc of catch trials in jamovi E2
+if (saveCSV) {
+  write.csv(catch.acc.R.E2, output.catch.acc.R, row.names = FALSE)
+  write.csv(catch.acc.SPSS.E2, output.catch.acc.SPSS, row.names = FALSE)
+}
+```
+
+
+#### RainClound plot of accuracy for catch trials
+```{r rainclound plot of accuracy for catch E2, warning=FALSE}
+knitr::kable(catch.sum.acc.R.E2, digits = 4)
+
+catch.acc.RainPlot.E2 <- {
+  ggplot(data = catch.acc.R.E2, aes(y = Accuracy, x = Alignment)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(position = position_jitter(width = .15, height = 0), size = .5, alpha = .8) +
+    geom_boxplot(width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = catch.sum.acc.R.E2, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = catch.sum.acc.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Experiment, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Accuracy for Catch Trials in Experiment 2", x = "Experiment", y = "Accuracy") +  # set the names for main, x and y axises and the legend
+    coord_cartesian(ylim = c(0, 1.05)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    geom_hline(yintercept = c(0.5, 1), linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+```{r rainclound plot of accuracy for catch trials E2}
+catch.acc.RainPlot.E2
+```
+
+
+#### Column plots of accuracy for catch trials
+```{r Plot of accuracy for catch trials E2}
+
+catch.acc.ColuPlot.E2 = {
+  ggplot(data = catch.sum.acc.R.E2, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_col() +  # position = "dodge", alpha = .7
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Experiment, switch = "both") +
+    coord_cartesian(ylim = c(0, 1.05)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(title = "Accuracy of Catch Trials in Experiment 2", x = "Experiment", y = "Accuracy") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns
+    geom_hline(yintercept = c(0.5, 1), linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    geom_text(label = c("", "", "", "", "***", "***"), color = "red", size = 6, nudge_y = 0.1, nudge_x = 0) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+catch.acc.ColuPlot.E2
+```
+
+### Response Times
+```{r calculate the correct response times of catch trials for R analysis}
+catch.rt.R.E2 <- {
+  df.clean.E2 %>%
+    filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+    filter(Condition == "CatchOnly") %>% 
+    filter(reactionTime <= 10) %>%  # remove the response times which are longer than 10s
+    filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
+    # filter(isCorrect == 1)  %>%  # only keep the correct correct
+    group_by(Experiment, Participant, Alignment) %>%  # divide the data into serveral groups 
+    summarize(RT = mean(reactionTime) * 1000, Count = n()) %>% # get RT and count for each condition
+    ungroup()
+}
+
+
+# descriptive statistics of RT for plotting
+catch.sum.rt.R.E2 <- {
+  catch.rt.R.E2 %>% 
+    select(-Count) %>% 
+    group_by(Experiment, Alignment) %>% 
+    summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# RT for SPSS sytle analysis
+catch.rt.SPSS.E2 <- {
+  catch.rt.R.E2 %>%
+    mutate(Conditions = factor(paste(Experiment, Alignment, sep = ".") , levels = c("CFS.aligned", "CFS.misaligned", "monocular.aligned", "monocular.misaligned", "Catch.aligned", "Catch.misaligned"))) %>%
+    select(Participant, Conditions, RT) %>% 
+    spread(Conditions, RT)
+}
+
+```
+
+```{r save the RT for R analysis catch trials in E2}
+# save the RT for R analysis
+if (saveCSV) {
+  write.csv(catch.rt.R.E2, output.catch.rt.R, row.names = FALSE)
+  write.csv(catch.rt.SPSS.E2, output.catch.rt.SPSS, row.names = FALSE)
+}
+```
+
+
+#### RainClound plot of response times for catch trials
+```{r rainclound plot of response times for catch trials E2, warning=FALSE}
+knitr::kable(catch.sum.rt.R.E2, digits = 4)
+
+catch.rt.RainPlot.E2 <- {
+  ggplot(data = catch.rt.R.E2, aes(y = RT, x = Alignment)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = catch.sum.rt.R.E2, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = catch.sum.rt.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Experiment, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Correct Response Times of Catch Trials for Experiment 2", x = "Alignment", y = "Response Times (ms)") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand = c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+&nbsp;
+
+```{r display the RainCloud plot of response times for catch trials}
+catch.rt.RainPlot.E2
+```
+
+#### Column plot of response times for catch trials
+```{r Plot of response times for catch trials}
+
+catch.acc.ColuPlot.E2 = {
+  ggplot(data = catch.sum.rt.R.E2, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_col() +  # position = "dodge", alpha = .7
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Experiment, switch = "both") +
+    coord_cartesian(ylim = c(0, 3200)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(title = "Accuracy of Catch Trials in Experiment 2", x = "Experiment", y = "Response Times (ms)") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns
+    # geom_hline(yintercept = c(0.5, 1), linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    geom_text(label = c("", "", "", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+catch.acc.ColuPlot.E2
+```
+
+# Experiment 3
+```{r information about the data set in E3}
+## the filename of the raw data file 
+fn.raw.E3 <- file.path(folder.data, "111_n-20_exp-2_2018-11-23-1738.csv")
+
+## input the filename of the output file (.csv)
+output.name <- "E3_111"
+
+```
+
+```{r save CSV E3, include = FALSE}
+
+# set the filenames for R and SPSS data format
+if (saveCSV) {
+    output.d.R <- file.path(path.output, paste0(output.name, "_d_R.csv"))
+    output.d.SPSS <- file.path(path.output, paste0(output.name, "_d_SPSS.csv"))
+    output.rt.R <- file.path(path.output, paste0(output.name, "_rt_R.csv"))
+    output.rt.SPSS <- file.path(path.output, paste0(output.name, "_rt_SPSS.csv"))
+}
+
+```
+
+The raw data for Experiment 3 was loaded from the file named `r basename(fn.raw.E3)` in the *`r dirname(fn.raw.E3)`/* folder. 
+
+## Tidying up the data
+```{r read the raw data file and set the name for output file (E3), message = FALSE}
+# read data file
+df.raw.E3 <- read_csv(fn.raw.E3)
+str(df.raw.E3)
+```
+
+```{r calculate the Z value for RT and clean data (E3)}
+# clean and rename the levels of independent variables
+df.clean.E3 <- {
+  df.raw.E3 %>%
+    tbl_df() %>%  # change into table data frame format
+    mutate(
+      Participant = as.factor(Participant),
+      Congruency = as.factor(Congruency),
+      Alignment = as.factor(Alignment),
+      Experiment = as.factor(Experiment),
+      Congruency = recode(Congruency, "C" = "congruent", "I" = "incongruent"), # rename the levels for Congruency
+      Alignment = recode(Alignment, "A" = "aligned", "M" = "misaligned"),
+      Experiment = recode(Experiment, "111_CF_CFS_test" = "CFS", "111_CF_monocular_test" = "monocular")
+      ) %>% # rename the levels for Alignment
+    group_by(Experiment, Participant, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
+    mutate(
+      RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
+      RT.Within3Z = ifelse(RT.Z <= 3 & RT.Z >= -3, 1, ifelse(RT.Z < -3 | RT.Z > 3, 0, NaN))
+      ) %>%  # if the Z values are between -3 and 3, will be marked as 1. 
+    ungroup()  # ungroup the data
+}
+
+df.clean.E3
+
+```
+
+## The Composite Face Task
+
+### Sensitivity d'
+```{r calculate the sensitivity d for R analysis (E3)}
+# calculate the d'
+d.R.E3 <- { # get the hit and correct rejection rates
+  df.clean.E3 %>%
+    group_by(Experiment, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
+    summarize(Accuracy = mean(isCorrect), Count = n()) %>% # get accuracy and count for each condition (hit and correct rejection)  
+    mutate(Accuracy = ifelse(Accuracy == 1, 1 - 0.5/Count, Accuracy)) %>%  # set 1 equals to 1-0.5/n
+    spread(SameDifferent, Accuracy) %>%  # spread the Accuracy into two columns based on SameDifferent
+    mutate(FA = 1 - different,
+           Z.hit = qnorm(same),
+           Z.FA = qnorm(FA),
+           dprime = Z.hit - Z.FA) %>% # get the d prime
+    select(Experiment, Participant, Congruency, Alignment, dprime, Count)
+}
+
+# remove the participants whose dprime were less than 1 in at least one condition
+rmParticipant1 <- unique(d.R.E3$Participant[(d.R.E3$dprime <= 0)]) # participants whose dprime is less than 0 
+rmParticipant2 <- unique(d.R.E3$Participant[is.na(d.R.E3$dprime)]) # dprie is missing
+
+rmLevels = levels(rmParticipant1)
+rmParticipant <- factor(rmLevels[c(rmParticipant1, rmParticipant2)], levels = rmLevels)
+
+d.R.E3 <- d.R.E3[!(d.R.E3$Participant %in% rmParticipant), ]
+
+# descriptive statistics of d for plotting
+sum.d.R.E3 <- {
+  d.R.E3 %>% 
+    group_by(Experiment, Congruency, Alignment) %>% 
+    summarize(Mean = mean(dprime), N = n(), SD = sd(dprime), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(dprime), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# d for SPSS sytle analysis
+d.SPSS.E3 <- {
+  d.R.E3 %>%
+    ungroup() %>%  # ungroup the data.d.r 
+    mutate(Conditions = paste(Experiment, Congruency, Alignment, sep = ".")) %>% # combine all the levels together
+    select(Participant, dprime, Conditions, Count) %>% # delete the Independet Variables
+    spread(Conditions, dprime)
+}
+
+```
+
+Participant `r rmParticipant1` were removed due to at least one of their dprime was not larger than 0.
+
+
+```{r save data of E3 for analysis in jamovi E3}
+# save the d' for R analysis
+if (saveCSV) {
+  write.csv(d.R.E3, output.d.R, row.names = FALSE)
+  write.csv(d.SPSS.E3, output.d.SPSS, row.names = FALSE)
+}
+```
+
+#### RainClound plots of d'
+```{r rainclound plot of sensitivity E3, warning=FALSE}
+knitr::kable(sum.d.R.E3, digits = 4)
+
+d.RainPlot.E3 <- {
+  ggplot(data = d.R.E3, aes(y = dprime, x = Alignment, fill = Congruency)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = dprime, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = dprime), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = sum.d.R.E3, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = sum.d.R.E3, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Experiment, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Sensitivity d' for Experiment 3", x = "Experiment", y = "Sensitivity", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme 
+}
+
+```
+
+&nbsp;
+
+```{r display the RainCloud plot for sensitivity (d) E3}
+d.RainPlot.E3
+```
+
+#### Line plots of d'
+```{r Plot of d E3}
+
+d.ColuPlot.E3 = {
+  ggplot(data = sum.d.R.E3, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point() +
+    geom_line() +  # position = "dodge", alpha = .7
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Experiment, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(title = "Sensitivity for Experiment 3", x = "Experiment", y = "Sensitivity", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+d.ColuPlot.E3
+```
+
+
+
+### Correct Response Times
+```{r calculate the correct response times for R analysis E3}
+cf.rt.R.E3 <- {
+  df.clean.E3 %>%
+        filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+        filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
+        filter(isCorrect == 1)  %>%  # only keep the correct correct
+        group_by(Experiment, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
+        summarize(RT = mean(reactionTime) * 1000, Count = n()) %>% # get RT and count for each condition
+        ungroup()
+}
+
+# descriptive statistics of RT for plotting
+cf.sum.rt.R.E3 <- {
+  cf.rt.R.E3 %>% 
+    select(-Count) %>% 
+    group_by(Experiment, Congruency, Alignment) %>% 
+    summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# RT for SPSS sytle analysis
+cf.rt.SPSS.E3 <- {
+  cf.rt.R.E3 %>%
+    mutate(Conditions = paste(Experiment, Congruency, Alignment, sep = ".")) %>%
+    select(Participant, Conditions, RT) %>% 
+    spread(Conditions, RT)
+}
+
+```
+
+
+```{r save the RT for R analysis in jomovi E3}
+# save the RT for R analysis
+if (saveCSV) {
+  write.csv(cf.rt.R.E3, output.rt.R, row.names = FALSE)
+  write.csv(cf.rt.SPSS.E3, output.rt.SPSS, row.names = FALSE)
+}
+
+```
+
+#### RainClound plots of RT
+```{r rainclound plot of correct response times E3, warning = FALSE}
+knitr::kable(cf.sum.rt.R.E3, digits = 4)
+
+rt.RainPlot.E3 <- {
+  ggplot(data = cf.rt.R.E3, aes(y = RT, x = Alignment, fill = Congruency)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = RT, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = cf.sum.rt.R.E3, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = cf.sum.rt.R.E3, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Experiment, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Correct Response Times for Experiment 3", x = "Alignment", y = "Response Times (ms)", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand = c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+```{r display the RainCloud plot for response times E3}
+rt.RainPlot.E3
+```
+
+#### Line plots of RT
+```{r Plot of correct response times E3}
+
+rt.ColuPlot.E3 = {
+  ggplot(data = cf.sum.rt.R.E3, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point() +
+    geom_line() +  # position = "dodge", alpha = .7
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Experiment, switch = "both") +
+    labs(title = "Correct Response Times for Experiment 3", x = "Experiment", y = "Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+rt.ColuPlot.E3
+```
 
 # Versions of Packages Used
 ```{r versions}
