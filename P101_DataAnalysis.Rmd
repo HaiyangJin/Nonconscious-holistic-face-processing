@@ -1614,6 +1614,13 @@ catch.acc.ColuPlot.E4
 
 
 # Analysis for all the four experiemnts
+```{r load libraries for lmm}
+# load libraries for lmm
+library(lme4)
+library(lmerTest)
+
+```
+
 ```{r combine the data from the four experiments}
 
 df.all <- bind_rows(list(df.clean.E1, df.clean.E2,  df.clean.E3, df.clean.E4))
@@ -1641,6 +1648,7 @@ df.cf.all
 
 
 ```{r manually set the dummy coding for random effects}
+# manually set the dummy coding for random effects
 df.cf.all <- {
     df.cf.all %>% 
         mutate(
@@ -1662,16 +1670,10 @@ if (saveData) {
 ```
 
 
-
-
 ### Accuracy
-```{r }
-library(lme4)
-library(lmerTest)
 
-```
-
-
+### Model selection
+#### Maximum model
 ```{r}
 file.max.acc <- file.path(folder.nesi, "P101_glmm_max_acc.RData")
 
@@ -1689,6 +1691,8 @@ if (!exist(file.max.acc)) {
 } else {
     load(file.max.acc)
 }
+
+print(summary(glmm.max.acc), corr = FALSE)
 ```
 
 
