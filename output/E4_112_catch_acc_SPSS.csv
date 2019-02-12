@@ -1,0 +1,5 @@
+"Participant","CFS.aligned","CFS.misaligned","monocular.aligned","monocular.misaligned","CatchOnly.aligned","CatchOnly.misaligned"
+"1205",0.6,0.6,0.2,0.2,0.6,0.7
+"1206",0.4,0,0.6,0.6,1,0.8
+"1207",0.2,0.6,0.8,0.8,1,0.8
+"1208",0.6,0.2,0.6,1,0.8,0.8
