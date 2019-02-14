@@ -1,4 +1,4 @@
-Task,Participant,Congruency,Alignment,FaceGroup,WithCatch,isCorrect,reactionTime,ExpCode,RT.Z,Task_D,Con_D,Ali_D,Task_Con,Task_Ali,Con_Ali,Task_Con_Ali
+Viewing,Participant,Congruency,Alignment,FaceGroup,WithCatch,isCorrect,reactionTime,ExpCode,RTZ,View_D,Con_D,Ali_D,View_Con,View_Ali,Con_Ali,View_Con_Ali
 CFS,603,congruent,aligned,F4,FALSE,1,0.301100529,E1,2.0462343914453553,0,0,0,0,0,0,0
 CFS,603,incongruent,aligned,F4,FALSE,1,0.175828733,E1,0.6423192501531086,0,1,0,0,0,0,0
 CFS,603,incongruent,misaligned,F1,FALSE,1,0.141455032,E1,0.4442439068478195,0,1,1,0,0,1,0
