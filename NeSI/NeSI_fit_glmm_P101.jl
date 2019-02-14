@@ -13,14 +13,16 @@ df = CSV.read("P101/P101_cf_clean.csv")
 show(df)
 
 # fit the linear mixed models
-@time glm = fit(GeneralizedLinearMixedModel,
-    @formula(isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) + 
-                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup)),
-     df,
-     Bernoulli())
+glmm_formula = @formula(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+  (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+  (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup))
 
-println(lmm_trial_full)
+@time glm1 = fit(GeneralizedLinearMixedModel, glmm_formula, df, Bernoulli())
+
+@time glm2 = fit!(GeneralizedLinearMixedModel(glmm_formula, df, Bernoulli()))
+
+
+println(glm1)
 
 # save the theta values
-CSV.write("P101_max_theta.csv", DataFrame(theta = glm.theta), writeheader = true)
+CSV.write("P101_max_theta.csv", DataFrame(theta = glm1.theta), writeheader = true)
