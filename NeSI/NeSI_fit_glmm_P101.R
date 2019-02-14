@@ -27,9 +27,9 @@ message("")
 message(paste0(strrep("#", 80)))
 message("Fitting the maximal model...")
 
-glmm.max.acc <- glmer(isCorrect ~ Task * Congruency * Alignment + ExpCode +
-                          (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali | Participant) +
-                          (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali | FaceGroup),
+glmm.max.acc <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
                       data = df.cf.all,
                       family = "binomial",
                       verbose = TRUE,
@@ -50,9 +50,9 @@ save(glmm.max.acc, file = "P101_glmm_max_acc.RData")
 # load("P101_glmm_max_acc.RData")
 # 
 # glmm.zcp.acc <- update(glmm.max.acc,
-#                        formula = isCorrect ~ Task * Congruency * Alignment + ExpCode + 
-#                            (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali || Participant) + 
-#                            (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali || FaceGroup)
+#                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+#                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) + 
+#                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || FaceGroup)
 #                        )
 # 
 # # Save the zcp model
