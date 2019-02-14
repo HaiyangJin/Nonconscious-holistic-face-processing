@@ -37,3 +37,6 @@ rsconnect/
 
 # backup files
 */backup/
+
+# julia notebook
+.ipynb_checkpoints
