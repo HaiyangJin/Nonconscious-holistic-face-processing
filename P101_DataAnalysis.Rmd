@@ -1172,7 +1172,7 @@ df.clean.E4 <- {
             ),
             ExpCode = "E4",
             WithCatch = TRUE,
-            Response = if_else(TrialType == "CF", substring("SD", thisResponse, thisResponse), thisResponse),
+            Response = if_else(TrialType == "CF", substring("SD", thisResponse, thisResponse), as.character(thisResponse)),
             thisResponse = as.character(thisResponse)
         ) %>% 
         group_by(Task, Participant, TrialType, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
@@ -1666,6 +1666,7 @@ df.cf.all <- {
 
 if (saveData) {
     save(df.cf.all, file = file.path(folder.nesi, "P101_cf_clean.RData"))
+    write_csv(df.cf.all, file.path(folder.nesi, "P101_cf_clean.csv"))
 }
 ```
 
@@ -1677,10 +1678,10 @@ if (saveData) {
 ```{r}
 file.max.acc <- file.path(folder.nesi, "P101_glmm_max_acc.RData")
 
-if (!exist(file.max.acc)) {
+if (!file.exists(file.max.acc)) {
     glmm.max.acc <- glmer(isCorrect ~ Task * Congruency * Alignment + ExpCode + 
-                              (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali | Participant) + 
-                              (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali | FaceGroup),
+                              (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali | Participant) + 
+                              (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali | FaceGroup),
                           data = df.cf.all,
                           family = "binomial",
                           # verbose = TRUE,
@@ -1693,6 +1694,69 @@ if (!exist(file.max.acc)) {
 }
 
 print(summary(glmm.max.acc), corr = FALSE)
+```
+
+### zcp model
+```{r}
+
+file.zcp.acc <- file.path(folder.output, "P101_glmm_zcp_acc.RData")
+
+if (!file.exists(file.zcp.acc)) {
+    glmm.zcp.acc <- update(glmm.max.acc,
+                           formula = isCorrect ~ Task * Congruency * Alignment + ExpCode + 
+                               (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali || Participant) + 
+                               (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali || FaceGroup),
+                           verbose = FALSE)
+
+    save(glmm.zcp.acc, file = file.zcp.acc)
+} else {
+    load(file.zcp.acc)
+}
+
+print(summary(glmm.zcp.acc), corr = FALSE)
+```
+
+
+```{r PCA for zcp model}
+summary(rePCA(glmm.zcp.acc))
+
+```
+
+
+### Reduced model 1
+```{r}
+glmm.rdc1.acc <- update(glmm.zcp.acc, 
+                        formula = isCorrect ~ Task * Congruency * Alignment + ExpCode + 
+                              (1 + Task_D + Task_Con + Task_Ali + Task_Con_Ali || Participant) + 
+                              (1 + Ali_D + Task_Con || FaceGroup),
+                        verbose = FALSE)
+
+summary(glmm.rdc1.acc)
+```
+
+```{r}
+summary(rePCA(glmm.rdc1.acc))
+```
+
+### extended model
+```{r}
+
+file.etd.acc <- file.path(folder.nesi, "P101_glmm_etd_acc.RData")
+
+if (!file.exists(file.etd.acc)) {
+    glmm.etd.acc <- update(glmm.rdc1.acc, 
+                        formula = isCorrect ~ Task * Congruency * Alignment + ExpCode + 
+                              (1 + Task_D + Task_Con + Task_Ali + Task_Con_Ali | Participant) + 
+                              (1 + Ali_D + Task_Con | FaceGroup)
+                       )
+
+    save(glmm.etd.acc, file = file.etd.acc)
+} else {
+    load(file.etd.acc)
+}
+
+print(summary(glmm.etd.acc), corr = FALSE)
+
 ```
 
 

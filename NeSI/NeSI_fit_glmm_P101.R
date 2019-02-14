@@ -21,24 +21,43 @@ message("Loading the data file...")
 load("P101_cf_clean.RData")
 
 
-#############################  Fitting the glmm model for CFS ##############################
+#############################  Fitting the maximal glmm model for CFS ##############################
 # fit the model for CFS
 message("")
 message(paste0(strrep("#", 80)))
-message("Fitting the maximum model...")
+message("Fitting the maximal model...")
 
-glmm.max.acc <- glmer(isCorrect ~ Task * Congruency * Alignment + ExpCode + 
-                          (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali | Participant) + 
-                          (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali | FaceGroup),
+glmm.max.acc <- glmer(isCorrect ~ Task * Congruency * Alignment + ExpCode +
+                          (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali | Participant) +
+                          (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali | FaceGroup),
                       data = df.cf.all,
                       family = "binomial",
-                      # verbose = TRUE,
+                      verbose = TRUE,
                       control = glmerControl(optCtrl = list(maxfun = 1e6))
-)
+                      )
 
 # Save the maximum model
 print("Saving the glmm.max.acc ...")
 save(glmm.max.acc, file = "P101_glmm_max_acc.RData")
+
+
+#############################  Fitting the zcp glmm model for CFS ##############################
+# # fit the model for CFS
+# message("")
+# message(paste0(strrep("#", 80)))
+# message("Fitting the zcp model...")
+# 
+# load("P101_glmm_max_acc.RData")
+# 
+# glmm.zcp.acc <- update(glmm.max.acc,
+#                        formula = isCorrect ~ Task * Congruency * Alignment + ExpCode + 
+#                            (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali || Participant) + 
+#                            (1 + Task_D + Con_D + Ali_D + Task_Con + Task_Ali + Con_Ali + Task_Con_Ali || FaceGroup)
+#                        )
+# 
+# # Save the zcp model
+# print("Saving the glmm.zcp.acc ...")
+# save(glmm.zcp.acc, file = "P101_glmm_zcp_acc.RData")
 
 
 # versions of packages used
