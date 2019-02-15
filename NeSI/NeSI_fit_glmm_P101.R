@@ -25,20 +25,41 @@ load("P101_cf_clean.RData")
 # fit the model for CFS
 message("")
 message(paste0(strrep("#", 80)))
-message("Fitting the maximal model...")
+# message("Fitting the maximal model...")
+# 
+# glmm.max.acc <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+#                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
+#                       data = df.cf.all,
+#                       family = "binomial",
+#                       verbose = TRUE,
+#                       control = glmerControl(optCtrl = list(maxfun = 1e6))
+#                       )
+# 
+# # Save the maximum model
+# print("Saving the glmm.max.acc ...")
+# save(glmm.max.acc, file = "P101_glmm_max_acc.RData")
 
-glmm.max.acc <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+
+###### allFit for the maximal model #####
+glmm.max.all.acc <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
                       data = df.cf.all,
-                      family = "binomial",
-                      verbose = TRUE,
-                      control = glmerControl(optCtrl = list(maxfun = 1e6))
+                      family = "binomial"
+                      # verbose = TRUE
                       )
 
-# Save the maximum model
-print("Saving the glmm.max.acc ...")
-save(glmm.max.acc, file = "P101_glmm_max_acc.RData")
+message(paste0(strrep("#", 80)))
+message("Fitting with all available optimizers...")
+allfit.max.acc <- allFit(glmm.max.all.acc,
+                         verbose = TRUE,
+                         maxfun = 1e6
+                         )
+
+# Save the allFit for the maximal model
+print("Saving the allfit.max.acc ...")
+save(allfit.max.acc, file = "P101_allfit_max_acc.RData")
 
 
 #############################  Fitting the zcp glmm model for CFS ##############################
