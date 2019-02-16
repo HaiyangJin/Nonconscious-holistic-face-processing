@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(lme4)
 library(lmerTest)
-# library(emmeans)
+library(emmeans)
 
 # folder names
 folder.data <- "data"
@@ -1619,6 +1619,7 @@ catch.acc.ColuPlot.E4
 library(lme4)
 library(lmerTest)
 
+source(file.path(folder.R, "get_pars.R"))
 ```
 
 ```{r combine the data from the four experiments}
@@ -1672,10 +1673,10 @@ if (saveData) {
 
 
 ### Accuracy
-
-### Model selection
-#### Maximum model
-```{r}
+#### Model selections
+##### Maximal model
+```{r maximal model for accuracy}
+# maximal model for accuracy
 file.max.acc <- file.path(folder.nesi, "P101_glmm_max_acc.RData")
 
 if (!file.exists(file.max.acc)) {
@@ -1696,10 +1697,28 @@ if (!file.exists(file.max.acc)) {
 print(summary(glmm.max.acc), corr = FALSE)
 ```
 
-### zcp model
-```{r}
+```{r maximal model 2 for accuracy}
+# maximal model 2 for accuarcy (starting with the parameters from maximal model)
+file.max2.acc <- file.path(folder.nesi, "P101_glmm_max2_acc.RData")
 
-file.zcp.acc <- file.path(folder.output, "P101_glmm_zcp_acc.RData")
+if (!file.exists(file.max2.acc)) {
+    pars.max.acc <- get_pars(glmm.max.acc)
+    glmm.max2.acc <- update(glmm.max.acc, start = pars.max.acc)
+
+    save(glmm.max2.acc, file = file.max2.acc)
+} else {
+    load(file.max2.acc)
+}
+
+print(summary(glmm.max2.acc), corr = FALSE)
+
+```
+
+
+##### Zero-correlation-parameter model
+```{r zcp model for accuarcy}
+# zero-correlation-parameter model for accuracy
+file.zcp.acc <- file.path(folder.nesi, "P101_glmm_zcp_acc.RData")
 
 if (!file.exists(file.zcp.acc)) {
     glmm.zcp.acc <- update(glmm.max.acc,
@@ -1707,7 +1726,7 @@ if (!file.exists(file.zcp.acc)) {
                                (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) + 
                                (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || FaceGroup),
                            verbose = FALSE)
-
+    
     save(glmm.zcp.acc, file = file.zcp.acc)
 } else {
     load(file.zcp.acc)
@@ -1716,39 +1735,85 @@ if (!file.exists(file.zcp.acc)) {
 print(summary(glmm.zcp.acc), corr = FALSE)
 ```
 
+```{r zcp model 2 for accuracy}
+# zero-correlation-parameter model 2 for accuracy
+file.zcp2.acc <- file.path(folder.nesi, "P101_glmm_zcp2_acc.RData")
 
-```{r PCA for zcp model}
-summary(rePCA(glmm.zcp.acc))
+if (!file.exists(file.zcp2.acc)) {
+    pars.zcp.acc <- get_pars(glmm.zcp.acc)
+    glmm.zcp2.acc <- update(glmm.zcp.acc, start = pars.zcp.acc)
+
+    save(glmm.zcp2.acc, file = file.zcp2.acc)
+} else {
+    load(file.zcp2.acc)
+}
+
+print(summary(glmm.zcp2.acc), corr = FALSE)
 
 ```
 
 
-### Reduced model 1
-```{r}
-glmm.rdc1.acc <- update(glmm.zcp.acc, 
+```{r PCA for zcp model}
+summary(rePCA(glmm.zcp2.acc))
+
+```
+
+
+##### Reduced model
+```{r reduced model for accuracy}
+# reduced model for accuracy
+file.rdc.acc <- file.path(folder.nesi, "P101_glmm_rdc_acc.RData")
+
+if (!file.exists(file.rdc.acc)) {
+    glmm.rdc.acc <- update(glmm.zcp.acc, 
                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
                               (1 + View_D + View_Con + View_Ali + View_Con_Ali || Participant) + 
                               (1 + Ali_D + View_Con || FaceGroup),
                         verbose = FALSE)
+    
+    save(glmm.rdc.acc, file = file.rdc.acc)
+} else {
+    load(file.rdc.acc)
+}
 
-summary(glmm.rdc1.acc)
+print(summary(glmm.rdc.acc), corr = FALSE)
+
 ```
 
-```{r}
-summary(rePCA(glmm.rdc1.acc))
+```{r reduced model 2 for accuarcy}
+# reduced model 2 for accuarcy (start from parameters of glmm.rdc.acc)
+file.rdc2.acc <- file.path(folder.nesi, "P101_glmm_rdc2_acc.RData")
+
+if (!file.exists(file.rdc2.acc)) {
+    pars.rdc.acc <- get_pars(glmm.rdc.acc)
+    
+    glmm.rdc2.acc <- update(glmm.rdc.acc, start = pars.rdc.acc)
+    
+    save(glmm.rdc2.acc, file = file.rdc2.acc)
+} else {
+    load(file.rdc2.acc)
+}
+
+print(summary(glmm.rdc2.acc), corr = FALSE)
+
 ```
 
-### extended model
-```{r}
 
+```{r}
+anova(glmm.zcp2.acc, glmm.rdc2.acc)
+```
+
+##### Extended model
+```{r extended model for accuarcy}
+# extended model for accuarcy
 file.etd.acc <- file.path(folder.nesi, "P101_glmm_etd_acc.RData")
 
 if (!file.exists(file.etd.acc)) {
-    glmm.etd.acc <- update(glmm.rdc1.acc, 
-                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                              (1 + View_D + View_Con + View_Ali + View_Con_Ali | Participant) + 
-                              (1 + Ali_D + View_Con | FaceGroup)
-                       )
+    glmm.etd.acc <- update(glmm.rdc.acc,
+                       formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                           (1 + View_D + View_Con + View_Ali + View_Con_Ali | Participant) + 
+                           (1 + Ali_D + View_Con | FaceGroup),
+                       verbose = FALSE)
 
     save(glmm.etd.acc, file = file.etd.acc)
 } else {
@@ -1759,9 +1824,102 @@ print(summary(glmm.etd.acc), corr = FALSE)
 
 ```
 
+```{r extended model 2 for accuarcy}
+# extended model 2 for accuarcy (start from parameters of glmm.etd.acc)
+file.etd2.acc <- file.path(folder.nesi, "P101_glmm_etd2_acc.RData")
 
+if (!file.exists(file.etd2.acc)) {
+    pars.etd.acc <- get_pars(glmm.etd.acc)
+    
+    glmm.etd2.acc <- update(glmm.etd.acc, start = pars.etd.acc)
+    
+    save(glmm.etd2.acc, file = file.etd2.acc)
+} else {
+    load(file.etd2.acc)
+}
+
+print(summary(glmm.etd2.acc), corr = FALSE)
+
+```
+
+```{r}
+summary(rePCA(glmm.etd2.acc))
+```
+
+```{r}
+# extended model for accuarcy
+# file.etd3.acc <- file.path(folder.nesi, "P101_glmm_etd3_acc.RData")
+# 
+# if (!file.exists(file.etd3.acc)) {
+# 
+# 
+#     save(glmm.etd3.acc, file = file.etd3.acc)
+# } else {
+#     load(file.etd3.acc)
+# }
+glmm.etd3.acc <- update(glmm.etd.acc,
+                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                            (1 + View_D + View_Con + View_Ali | Participant) + 
+                            (1 + View_Con | FaceGroup),
+                        verbose = FALSE)
+print(summary(glmm.etd3.acc), corr = FALSE)
+
+```
+
+```{r}
+pars.etd3.acc <- get_pars(glmm.etd3.acc)
+
+glmm.etd4.acc <- update(glmm.etd3.acc, start = pars.etd3.acc)
+
+summary(glmm.etd4.acc)
+```
+
+
+
+```{r}
+anova(glmm.rdc2.acc, glmm.etd4.acc)
+```
+
+##### Optimal model
+```{r}
+glmm.opt.acc <- glmm.rdc2.acc
+summary(glmm.opt.acc)
+
+```
+
+
+
+#### Estimated marginal means
+```{r}
+emm.acc <- emmeans(glmm.opt.acc, ~ Alignment | c(Congruency, Viewing))
+
+data.frame(summary(emm.acc)) %>% 
+    select(Viewing, Congruency, Alignment, everything())
+
+```
+
+
+#### Plots 
+```{r}
+emmip(glmm.opt.acc, Congruency ~ Alignment | Viewing, CIs = TRUE) +
+    
+    
+
+```
+
+
+
+#### Contrasts
+```{r}
+contrast(emm.acc, "pairwise", simple = "each", combine = TRUE )
+```
+
+```{r}
+contrast(emm.acc, interaction = "pairwise", by = "Viewing")
+```
 
 ### Correct response times
+
 
 
 
