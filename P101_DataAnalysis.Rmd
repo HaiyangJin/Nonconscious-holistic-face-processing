@@ -35,8 +35,8 @@ folder.R <- "R"
 folder.uti <- "Utilities"
 
 # do you want save the data into *.csv files
-# saveData = TRUE
-saveData = FALSE
+saveData = TRUE
+# saveData = FALSE
 
 ```
 
@@ -155,13 +155,13 @@ d.R.E1 <- { # get the hit and correct rejection rates
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
-rmParticipant1 <- unique(d.R.E1$Participant[(d.R.E1$dprime <= 0)]) # participants whose dprime is less than 0 
-rmParticipant2 <- unique(d.R.E1$Participant[is.na(d.R.E1$dprime)]) # dprie is missing
+rmParticipant1.E1 <- unique(d.R.E1$Participant[(d.R.E1$dprime <= 0)]) # participants whose dprime is less than 0 
+rmParticipant2.E1 <- unique(d.R.E1$Participant[is.na(d.R.E1$dprime)]) # dprie is missing
 
-rmLevels = levels(rmParticipant1)
-rmParticipant <- factor(rmLevels[c(rmParticipant1, rmParticipant2)], levels = rmLevels)
+rmLevels = levels(rmParticipant1.E1)
+rmParticipant.E1 <- factor(rmLevels[c(rmParticipant1.E1, rmParticipant2.E1)], levels = rmLevels)
 
-d.R.E1 <- d.R.E1[!(d.R.E1$Participant %in% rmParticipant), ]
+d.R.E1 <- d.R.E1[!(d.R.E1$Participant %in% rmParticipant.E1), ]
 
 # descriptive statistics of d for plotting
 sum.d.R.E1 <- {
@@ -401,6 +401,7 @@ df.clean.E2 <- {
             FaceGroup = if_else(FaceGroup %in% as.character(1:10), facegroups[FaceGroup], FaceGroup)
         ) %>% 
         group_by(Viewing, Participant, TrialType, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
+        filter(reactionTime > 0.2) %>% 
         mutate(
             RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
             RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
@@ -445,13 +446,13 @@ d.R.E2 <- { # get the hit and correct rejection rates
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
-rmParticipant1 <- unique(d.R.E2$Participant[(d.R.E2$dprime <= 0)]) # participants whose dprime is less than 0 
-rmParticipant2 <- unique(d.R.E2$Participant[is.na(d.R.E2$dprime)]) # dprie is missing
+rmParticipant1.E2 <- unique(d.R.E2$Participant[(d.R.E2$dprime <= 0)]) # participants whose dprime is less than 0 
+rmParticipant2.E2 <- unique(d.R.E2$Participant[is.na(d.R.E2$dprime)]) # dprie is missing
 
-rmLevels = levels(rmParticipant1)
-rmParticipant <- factor(rmLevels[c(rmParticipant1, rmParticipant2)], levels = rmLevels)
+rmLevels = levels(rmParticipant1.E2)
+rmParticipant.E2 <- factor(rmLevels[c(rmParticipant1.E2, rmParticipant2.E2)], levels = rmLevels)
 
-d.R.E2 <- d.R.E2[!(d.R.E2$Participant %in% rmParticipant), ]
+d.R.E2 <- d.R.E2[!(d.R.E2$Participant %in% rmParticipant.E2), ]
 
 # descriptive statistics of d for plotting
 sum.d.R.E2 <- {
@@ -471,9 +472,9 @@ d.SPSS.E2 <- {
 }
 
 ```
-Participant `r rmParticipant1` were removed due to at least one of their dprime was not larger than 0.
+Participant `r rmParticipant1.E2` were removed due to at least one of their dprime was not larger than 0.
 
-Participant `r rmParticipant2` were removed due to at least one of their dprime was missing.
+Participant `r rmParticipant2.E2` were removed due to at least one of their dprime was missing.
 
 
 ```{r save data of E2 for analysis in jamovi E2}
@@ -546,7 +547,7 @@ d.ColuPlot.E2
 ```{r calculate the correct response times for R analysis E2}
 cf.rt.R.E2 <- {
     df.clean.cf.E2 %>%
-        filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+        filter(!(Participant %in% rmParticipant.E2)) %>%  # remove participants
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
         filter(isCorrect == 1)  %>%  # only keep the correct correct
         group_by(Viewing, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
@@ -656,7 +657,7 @@ df.clean.catch.E2
 ```{r accuracy for catch trials E2}
 catch.acc.R.E2 <- {
     df.clean.catch.E2 %>%
-        filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+        filter(!(Participant %in% rmParticipant.E2)) %>%  # remove participants
         group_by(Viewing, Participant, Alignment) %>% 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% 
         ungroup()
@@ -745,7 +746,7 @@ catch.acc.ColuPlot.E2
 ```{r calculate the correct response times of catch trials for R analysis E2}
 catch.rt.R.E2 <- {
     df.clean.catch.E2 %>%
-        filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+        filter(!(Participant %in% rmParticipant.E2)) %>%  # remove participants
         filter(Condition == "CatchOnly") %>% 
         filter(reactionTime <= 10) %>%  # remove the response times which are longer than 10s
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
@@ -886,6 +887,7 @@ df.clean.E3 <- {
             thisResponse = as.character(thisResponse)
         ) %>% 
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
+        filter(reactionTime > 0.2) %>% 
         mutate(
             RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
             RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
@@ -931,13 +933,13 @@ d.R.E3 <- { # get the hit and correct rejection rates
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
-rmParticipant1 <- unique(d.R.E3$Participant[(d.R.E3$dprime <= 0)]) # participants whose dprime is less than 0 
-rmParticipant2 <- unique(d.R.E3$Participant[is.na(d.R.E3$dprime)]) # dprie is missing
+rmParticipant1.E3 <- unique(d.R.E3$Participant[(d.R.E3$dprime <= 0)]) # participants whose dprime is less than 0 
+rmParticipant2.E3 <- unique(d.R.E3$Participant[is.na(d.R.E3$dprime)]) # dprie is missing
 
-rmLevels = levels(rmParticipant1)
-rmParticipant <- factor(rmLevels[c(rmParticipant1, rmParticipant2)], levels = rmLevels)
+rmLevels = levels(rmParticipant1.E3)
+rmParticipant.E3 <- factor(rmLevels[c(rmParticipant1.E3, rmParticipant2.E3)], levels = rmLevels)
 
-d.R.E3 <- d.R.E3[!(d.R.E3$Participant %in% rmParticipant), ]
+d.R.E3 <- d.R.E3[!(d.R.E3$Participant %in% rmParticipant.E3), ]
 
 # descriptive statistics of d for plotting
 sum.d.R.E3 <- {
@@ -958,7 +960,7 @@ d.SPSS.E3 <- {
 
 ```
 
-Participant `r rmParticipant1` were removed due to at least one of their dprime was not larger than 0.
+Participant `r rmParticipant1.E3` were removed due to at least one of their dprime was not larger than 0.
 
 
 ```{r save data of E3 for analysis in jamovi E3}
@@ -1029,7 +1031,7 @@ d.ColuPlot.E3
 ```{r calculate the correct response times for R analysis E3}
 cf.rt.R.E3 <- {
     df.clean.cf.E3 %>%
-        filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+        filter(!(Participant %in% rmParticipant.E3)) %>%  # remove participants
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
         filter(isCorrect == 1)  %>%  # only keep the correct correct
         group_by(Viewing, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
@@ -1176,6 +1178,7 @@ df.clean.E4 <- {
             thisResponse = as.character(thisResponse)
         ) %>% 
         group_by(Viewing, Participant, TrialType, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
+        filter(reactionTime > 0.2) %>% 
         mutate(
             RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
             RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
@@ -1221,13 +1224,13 @@ d.R.E4 <- { # get the hit and correct rejection rates
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
-rmParticipant1 <- unique(d.R.E4$Participant[(d.R.E4$dprime <= 0)]) # participants whose dprime is less than 0 
-rmParticipant2 <- unique(d.R.E4$Participant[is.na(d.R.E4$dprime)]) # dprie is missing
+rmParticipant1.E4 <- unique(d.R.E4$Participant[(d.R.E4$dprime <= 0)]) # participants whose dprime is less than 0 
+rmParticipant2.E4 <- unique(d.R.E4$Participant[is.na(d.R.E4$dprime)]) # dprie is missing
 
-rmLevels = levels(rmParticipant1)
-rmParticipant <- factor(rmLevels[c(rmParticipant1, rmParticipant2)], levels = rmLevels)
+rmLevels = levels(rmParticipant1.E4)
+rmParticipant.E4 <- factor(rmLevels[c(rmParticipant1.E4, rmParticipant2.E4)], levels = rmLevels)
 
-d.R.E4 <- d.R.E4[!(d.R.E4$Participant %in% rmParticipant), ]
+d.R.E4 <- d.R.E4[!(d.R.E4$Participant %in% rmParticipant.E4), ]
 
 # descriptive statistics of d for plotting
 sum.d.R.E4 <- {
@@ -1247,9 +1250,9 @@ d.SPSS.E4 <- {
 }
 
 ```
-Participant `r rmParticipant1` were removed due to at least one of their dprime was not larger than 0.
+Participant `r rmParticipant1.E4` were removed due to at least one of their dprime was not larger than 0.
 
-Participant `r rmParticipant2` were removed due to at least one of their dprime was missing.
+Participant `r rmParticipant2.E4` were removed due to at least one of their dprime was missing.
 
 
 ```{r save data of E4 for analysis in jamovi E4}
@@ -1322,7 +1325,7 @@ d.ColuPlot.E4
 ```{r calculate the correct response times for R analysis E4}
 cf.rt.R.E4 <- {
     df.clean.cf.E4 %>%
-        filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+        filter(!(Participant %in% rmParticipant.E4)) %>%  # remove participants
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
         filter(isCorrect == 1)  %>%  # only keep the correct correct
         group_by(Viewing, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
@@ -1431,7 +1434,7 @@ df.clean.catch.E4
 ```{r accuracy for catch trials E4}
 catch.acc.R.E4 <- {
     df.clean.catch.E4 %>%
-        filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+        filter(!(Participant %in% rmParticipant.E4)) %>%  # remove participants
         group_by(Viewing, Participant, Alignment) %>% 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% 
         ungroup()
@@ -1520,7 +1523,7 @@ catch.acc.ColuPlot.E4
 ```{r calculate the correct response times of catch trials for R analysis E4}
 catch.rt.R.E4 <- {
     df.clean.catch.E4 %>%
-        filter(!(Participant %in% rmParticipant)) %>%  # remove participants
+        filter(!(Participant %in% rmParticipant.E4)) %>%  # remove participants
         filter(reactionTime <= 10) %>%  # remove the response times which are longer than 10s
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
         # filter(isCorrect == 1)  %>%  # only keep the correct correct
@@ -1630,9 +1633,12 @@ df.all
 
 ## The composite face task
 ```{r tidy up the dataframe for the composite face task}
+rmParticipant <- c(as.character(rmParticipant.E1), as.character(rmParticipant.E2), as.character(rmParticipant.E3), as.character(rmParticipant.E4))
+
 df.cf.all <- {
     df.all %>% 
         filter(TrialType == "CF") %>% 
+        filter(!(Participant %in% rmParticipant)) %>% 
         mutate(Participant = as.factor(Participant),
                Viewing = recode_factor(Viewing, "CFS" = viewing.levels[1], "monocular" = viewing.levels[2]),
                Congruency = recode_factor(Congruency, "C" = congruency.levels[1], "I" = congruency.levels[2]), # rename the levels for Congruency
@@ -1901,10 +1907,9 @@ data.frame(summary(emm.acc)) %>%
 
 #### Plots 
 ```{r}
-emmip(glmm.opt.acc, Congruency ~ Alignment | Viewing, CIs = TRUE) +
+emmip(glmm.opt.acc, Congruency ~ Alignment | Viewing, CIs = TRUE)
     
     
-
 ```
 
 
@@ -1919,7 +1924,39 @@ contrast(emm.acc, interaction = "pairwise", by = "Viewing")
 ```
 
 ### Correct response times
+```{r}
+df.cf.rt <- {
+    df.cf.all %>% 
+        filter(isCorrect == 1) %>% 
+        mutate(RT = if_else(ExpCode == "E1", reactionTime * 1000 + 300, reactionTime * 1000))
+}
+    
+```
 
+
+#### Model selection
+##### Maximal model
+```{r maximal model for correct RT }
+# maximal model for correct RT
+file.max.rt <- file.path(folder.nesi, "P101_glmm_max_rt.RData")
+
+if (!file.exists(file.max.rt)) {
+    glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode + 
+                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) + 
+                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
+                          data = df.cf.rt,
+                          family = "poisson",
+                          # verbose = TRUE,
+                          control = glmerControl(optCtrl = list(maxfun = 1e6))
+    )
+    
+    save(glmm.max.rt, file = file.max.rt)
+} else {
+    load(file.max.rt)
+}
+
+print(summary(glmm.max.rt), corr = FALSE)
+```
 
 
 
