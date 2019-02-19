@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Preparations
 ```{r load the related libraries, message=FALSE}
 ## load libraries
+library(magrittr)
 library(tidyverse)
 library(lme4)
 library(lmerTest)
@@ -37,6 +38,9 @@ folder.uti <- "Utilities"
 # do you want save the data into *.csv files
 saveData = TRUE
 # saveData = FALSE
+
+rm.Count.rate <- 0.8
+rm.RT <- 0.2
 
 ```
 
@@ -76,9 +80,9 @@ output.name <- "E1_104_106"
 
 # set the filenames for R and SPSS data format
 if (saveData) {
-    output.d.R <- file.path(folder.output, paste0(output.name, "_d_R.csv"))
+    # output.d.R <- file.path(folder.output, paste0(output.name, "_d_R.csv"))
     output.d.SPSS <- file.path(folder.output, paste0(output.name, "_d_SPSS.csv"))
-    output.rt.R <- file.path(folder.output, paste0(output.name, "_rt_R.csv"))
+    # output.rt.R <- file.path(folder.output, paste0(output.name, "_rt_R.csv"))
     output.rt.SPSS <- file.path(folder.output, paste0(output.name, "_rt_SPSS.csv"))
 }
 
@@ -122,6 +126,7 @@ df.clean.E1 <- {
 
 ```
 
+
 ## The composite face task
 ```{r data frame for CF in E1}
 df.clean.cf.E1 <- {
@@ -138,6 +143,30 @@ df.clean.cf.E1 <- {
 df.clean.cf.E1
 ```
 
+```{r check the number of remaining trials E1}
+# number of trials in each condition
+d.Count.E1 <- {
+    df.clean.cf.E1 %>%
+        group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
+        summarize(Count = n()) %>% 
+        mutate(Conditions = paste(Viewing, Congruency, Alignment, SameDifferent, sep = ".")) %>% 
+        ungroup() %>% 
+        select(Participant, Conditions, Count) 
+}
+
+d.Count.E1 %>%
+    spread(Conditions, Count)
+
+rm.count.E1 <- {
+    d.Count.E1 %>% 
+    filter(Count < max(d.Count.E1$Count) * rm.Count.rate) %$%
+    unique(Participant)
+    }
+
+```
+Participant `r rm.count.E1` were removed due to the response times of more than `r (1-rm.Count.rate)*100`% trials were smaller than `r rm.RT*1000`ms in at least one of the conditions.
+
+
 ### Sensitivity d'
 ```{r calculate the sensitivity d for R analysis (E1)}
 # calculate the d'
@@ -146,22 +175,23 @@ d.R.E1 <- { # get the hit and correct rejection rates
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% # get accuracy and count for each condition (hit and correct rejection)  
         mutate(Accuracy = if_else(Accuracy == 1, 1 - 0.5/Count, Accuracy)) %>%  # set 1 equals to 1-0.5/n
+        select(-Count) %>%  # remove Count
         spread(SameDifferent, Accuracy) %>%  # spread the Accuracy into two columns based on SameDifferent
         mutate(FA = 1 - different,
                Z.hit = qnorm(same),
                Z.FA = qnorm(FA),
                dprime = Z.hit - Z.FA) %>% # get the d prime
-        select(Viewing, Participant, Congruency, Alignment, dprime, Count)
+        select(Viewing, Participant, Congruency, Alignment, dprime)
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
-rmParticipant1.E1 <- unique(d.R.E1$Participant[(d.R.E1$dprime <= 0)]) # participants whose dprime is less than 0 
-rmParticipant2.E1 <- unique(d.R.E1$Participant[is.na(d.R.E1$dprime)]) # dprie is missing
+rm.nega.E1 <- unique(d.R.E1$Participant[(d.R.E1$dprime <= 0)]) # participants whose dprime is less than 0 
+rm.missing.E1 <- unique(d.R.E1$Participant[is.na(d.R.E1$dprime)]) # dprie is missing
 
-rmLevels = levels(rmParticipant1.E1)
-rmParticipant.E1 <- factor(rmLevels[c(rmParticipant1.E1, rmParticipant2.E1)], levels = rmLevels)
+rmLevels = levels(rm.count.E1)
+rm.E1 <- factor(rmLevels[c(rm.count.E1, rm.nega.E1, rm.missing.E1)], levels = rmLevels)
 
-d.R.E1 <- d.R.E1[!(d.R.E1$Participant %in% rmParticipant.E1), ]
+d.R.E1 <- d.R.E1[!(d.R.E1$Participant %in% rm.E1), ]
 
 # descriptive statistics of d for plotting
 sum.d.R.E1 <- {
@@ -176,7 +206,7 @@ d.SPSS.E1 <- {
     d.R.E1 %>%
         ungroup() %>%  # ungroup the data.d.r 
         mutate(Conditions = paste(Viewing, Congruency, Alignment, sep = ".")) %>% # combine all the levels together
-        select(Participant, dprime, Conditions, Count) %>% # delete the Independet Variables
+        select(Participant, dprime, Conditions) %>% # delete the Independet Variables
         spread(Conditions, dprime)
 }
 
@@ -185,7 +215,7 @@ d.SPSS.E1 <- {
 ```{r save data of E1 for analysis in jamovi E1}
 # save the d' for R analysis
 if (saveData) {
-    write.csv(d.R.E1, output.d.R, row.names = FALSE)
+    # write.csv(d.R.E1, output.d.R, row.names = FALSE)
     write.csv(d.SPSS.E1, output.d.SPSS, row.names = FALSE)
 }
 ```
@@ -281,7 +311,7 @@ rt.SPSS.E1 <- {
 ```{r # save the RT for R analysis for jamovi E1}
 # save the RT for R analysis
 if (saveData) {
-    write.csv(rt.R.E1, output.rt.R, row.names = FALSE)
+    # write.csv(rt.R.E1, output.rt.R, row.names = FALSE)
     write.csv(rt.SPSS.E1, output.rt.SPSS, row.names = FALSE)
 }
 ```
@@ -358,13 +388,13 @@ output.name <- "E2_1082"
 
 # set the filenames for R and SPSS data format
 if (saveData) {
-    output.d.R <- file.path(folder.output, paste0(output.name, "_d_R.csv"))
+    # output.d.R <- file.path(folder.output, paste0(output.name, "_d_R.csv"))
     output.d.SPSS <- file.path(folder.output, paste0(output.name, "_d_SPSS.csv"))
-    output.rt.R <- file.path(folder.output, paste0(output.name, "_rt_R.csv"))
+    # output.rt.R <- file.path(folder.output, paste0(output.name, "_rt_R.csv"))
     output.rt.SPSS <- file.path(folder.output, paste0(output.name, "_rt_SPSS.csv"))
-    output.catch.acc.R <- file.path(folder.output, paste0(output.name, "_catch_acc_R.csv"))
+    # output.catch.acc.R <- file.path(folder.output, paste0(output.name, "_catch_acc_R.csv"))
     output.catch.acc.SPSS <- file.path(folder.output, paste0(output.name, "_catch_acc_SPSS.csv"))
-    output.catch.rt.R <- file.path(folder.output, paste0(output.name, "_catch_rt_R.csv"))
+    # output.catch.rt.R <- file.path(folder.output, paste0(output.name, "_catch_rt_R.csv"))
     output.catch.rt.SPSS <- file.path(folder.output, paste0(output.name, "_catch_rt_SPSS.csv"))
 }
 
@@ -401,7 +431,7 @@ df.clean.E2 <- {
             FaceGroup = if_else(FaceGroup %in% as.character(1:10), facegroups[FaceGroup], FaceGroup)
         ) %>% 
         group_by(Viewing, Participant, TrialType, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
-        filter(reactionTime > 0.2) %>% 
+        filter(reactionTime > rm.RT) %>% 
         mutate(
             RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
             RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
@@ -411,6 +441,7 @@ df.clean.E2 <- {
 
 # df.clean.E2
 ```
+
 
 ## The composite face task
 ```{r data frame for CF in E2}
@@ -429,6 +460,31 @@ df.clean.cf.E2 <- {
 df.clean.cf.E2
 ```
 
+
+```{r check the number of remaining trials E2}
+# number of trials in each condition
+d.Count.E2 <- {
+    df.clean.cf.E2 %>%
+        group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
+        summarize(Count = n()) %>% 
+        mutate(Conditions = paste(Viewing, Congruency, Alignment, SameDifferent, sep = ".")) %>% 
+        ungroup() %>% 
+        select(Participant, Conditions, Count) 
+}
+
+d.Count.E2 %>%
+    spread(Conditions, Count)
+
+rm.count.E2 <- {
+    d.Count.E2 %>% 
+    filter(Count < max(d.Count.E2$Count) * rm.Count.rate) %$%
+    unique(Participant)
+    }
+
+```
+Participant `r rm.count.E2` were removed due to the response times of more than `r (1-rm.Count.rate)*100`% trials were smaller than `r rm.RT*1000`ms in at least one of the conditions.
+
+
 ### Sensitivity d'
 ```{r calculate the sensitivity d for R analysis (E2)}
 # calculate the d'
@@ -437,22 +493,23 @@ d.R.E2 <- { # get the hit and correct rejection rates
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% # get accuracy and count for each condition (hit and correct rejection)  
         mutate(Accuracy = if_else(Accuracy == 1, 1 - 0.5/Count, Accuracy)) %>%  # set 1 equals to 1-0.5/n
+        select(-Count) %>% # remove the count
         spread(SameDifferent, Accuracy) %>%  # spread the Accuracy into two columns based on SameDifferent
         mutate(FA = 1 - different,
                Z.hit = qnorm(same),
                Z.FA = qnorm(FA),
                dprime = Z.hit - Z.FA) %>% # get the d prime
-        select(Viewing, Participant, Congruency, Alignment, dprime, Count)
+        select(Viewing, Participant, Congruency, Alignment, dprime)
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
-rmParticipant1.E2 <- unique(d.R.E2$Participant[(d.R.E2$dprime <= 0)]) # participants whose dprime is less than 0 
-rmParticipant2.E2 <- unique(d.R.E2$Participant[is.na(d.R.E2$dprime)]) # dprie is missing
+rm.nega.E2 <- unique(d.R.E2$Participant[(d.R.E2$dprime <= 0)]) # participants whose dprime is less than 0 
+rm.missing.E2 <- unique(d.R.E2$Participant[is.na(d.R.E2$dprime)]) # dprie is missing
 
-rmLevels = levels(rmParticipant1.E2)
-rmParticipant.E2 <- factor(rmLevels[c(rmParticipant1.E2, rmParticipant2.E2)], levels = rmLevels)
+rmLevels = levels(rm.count.E2)
+rm.E2 <- factor(rmLevels[c(rm.count.E2, rm.nega.E2, rm.missing.E2)], levels = rmLevels)
 
-d.R.E2 <- d.R.E2[!(d.R.E2$Participant %in% rmParticipant.E2), ]
+d.R.E2 <- d.R.E2[!(d.R.E2$Participant %in% rm.E2), ]
 
 # descriptive statistics of d for plotting
 sum.d.R.E2 <- {
@@ -467,20 +524,18 @@ d.SPSS.E2 <- {
     d.R.E2 %>%
         ungroup() %>%  # ungroup the data.d.r 
         mutate(Conditions = paste(Viewing, Congruency, Alignment, sep = ".")) %>% # combine all the levels together
-        select(Participant, dprime, Conditions, Count) %>% # delete the Independet Variables
+        select(Participant, dprime, Conditions) %>% # delete the Independet Variables
         spread(Conditions, dprime)
 }
 
 ```
-Participant `r rmParticipant1.E2` were removed due to at least one of their dprime was not larger than 0.
-
-Participant `r rmParticipant2.E2` were removed due to at least one of their dprime was missing.
+Participant `r rm.nega.E2` were removed due to at least one of their dprime was not larger than 0.
 
 
 ```{r save data of E2 for analysis in jamovi E2}
 # save the d' for R analysis
 if (saveData) {
-    write.csv(d.R.E2, output.d.R, row.names = FALSE)
+    # write.csv(d.R.E2, output.d.R, row.names = FALSE)
     write.csv(d.SPSS.E2, output.d.SPSS, row.names = FALSE)
 }
 ```
@@ -547,7 +602,7 @@ d.ColuPlot.E2
 ```{r calculate the correct response times for R analysis E2}
 cf.rt.R.E2 <- {
     df.clean.cf.E2 %>%
-        filter(!(Participant %in% rmParticipant.E2)) %>%  # remove participants
+        filter(!(Participant %in% rm.E2)) %>%  # remove participants
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
         filter(isCorrect == 1)  %>%  # only keep the correct correct
         group_by(Viewing, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
@@ -578,7 +633,7 @@ cf.rt.SPSS.E2 <- {
 ```{r save the RT for R analysis in jomovi E2}
 # save the RT for R analysis
 if (saveData) {
-    write.csv(cf.rt.R.E2, output.rt.R, row.names = FALSE)
+    # write.csv(cf.rt.R.E2, output.rt.R, row.names = FALSE)
     write.csv(cf.rt.SPSS.E2, output.rt.SPSS, row.names = FALSE)
 }
 
@@ -657,7 +712,7 @@ df.clean.catch.E2
 ```{r accuracy for catch trials E2}
 catch.acc.R.E2 <- {
     df.clean.catch.E2 %>%
-        filter(!(Participant %in% rmParticipant.E2)) %>%  # remove participants
+        filter(!(Participant %in% rm.E2)) %>%  # remove participants
         group_by(Viewing, Participant, Alignment) %>% 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% 
         ungroup()
@@ -683,7 +738,7 @@ catch.acc.SPSS.E2 <- {
 ```{r save the acc of catch trials in jamovi E2}
 # save the acc of catch trials in jamovi E2
 if (saveData) {
-    write.csv(catch.acc.R.E2, output.catch.acc.R, row.names = FALSE)
+    # write.csv(catch.acc.R.E2, output.catch.acc.R, row.names = FALSE)
     write.csv(catch.acc.SPSS.E2, output.catch.acc.SPSS, row.names = FALSE)
 }
 ```
@@ -746,7 +801,7 @@ catch.acc.ColuPlot.E2
 ```{r calculate the correct response times of catch trials for R analysis E2}
 catch.rt.R.E2 <- {
     df.clean.catch.E2 %>%
-        filter(!(Participant %in% rmParticipant.E2)) %>%  # remove participants
+        filter(!(Participant %in% rm.E2)) %>%  # remove participants
         filter(Condition == "CatchOnly") %>% 
         filter(reactionTime <= 10) %>%  # remove the response times which are longer than 10s
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
@@ -779,7 +834,7 @@ catch.rt.SPSS.E2 <- {
 ```{r save the RT for R analysis catch trials in E2}
 # save the RT for R analysis
 if (saveData) {
-    write.csv(catch.rt.R.E2, output.catch.rt.R, row.names = FALSE)
+    # write.csv(catch.rt.R.E2, output.catch.rt.R, row.names = FALSE)
     write.csv(catch.rt.SPSS.E2, output.catch.rt.SPSS, row.names = FALSE)
 }
 ```
@@ -853,9 +908,9 @@ output.name <- "E3_111"
 
 # set the filenames for R and SPSS data format
 if (saveData) {
-    output.d.R <- file.path(folder.output, paste0(output.name, "_d_R.csv"))
+    # output.d.R <- file.path(folder.output, paste0(output.name, "_d_R.csv"))
     output.d.SPSS <- file.path(folder.output, paste0(output.name, "_d_SPSS.csv"))
-    output.rt.R <- file.path(folder.output, paste0(output.name, "_rt_R.csv"))
+    # output.rt.R <- file.path(folder.output, paste0(output.name, "_rt_R.csv"))
     output.rt.SPSS <- file.path(folder.output, paste0(output.name, "_rt_SPSS.csv"))
 }
 
@@ -887,7 +942,7 @@ df.clean.E3 <- {
             thisResponse = as.character(thisResponse)
         ) %>% 
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
-        filter(reactionTime > 0.2) %>% 
+        filter(reactionTime > rm.RT) %>% 
         mutate(
             RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
             RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
@@ -898,6 +953,7 @@ df.clean.E3 <- {
 df.clean.E3
 
 ```
+
 
 ## The composite face task
 ```{r data frame for CF in E3}
@@ -916,6 +972,30 @@ df.clean.cf.E3 <- {
 df.clean.cf.E3
 ```
 
+```{r check the number of remaining trials E3}
+# number of trials in each condition
+d.Count.E3 <- {
+    df.clean.cf.E3 %>%
+        group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
+        summarize(Count = n()) %>% 
+        mutate(Conditions = paste(Viewing, Congruency, Alignment, SameDifferent, sep = ".")) %>% 
+        ungroup() %>% 
+        select(Participant, Conditions, Count) 
+}
+
+d.Count.E3 %>%
+    spread(Conditions, Count)
+
+rm.count.E3 <- {
+    d.Count.E3 %>% 
+    filter(Count < max(d.Count.E3$Count) * rm.Count.rate) %$%
+    unique(Participant)
+    }
+
+```
+Participant `r rm.count.E3` were removed due to the response times of more than `r (1-rm.Count.rate)*100`% trials were smaller than `r rm.RT*1000`ms in at least one of the conditions.
+
+
 ### Sensitivity d'
 ```{r calculate the sensitivity d for R analysis (E3)}
 # calculate the d'
@@ -924,22 +1004,23 @@ d.R.E3 <- { # get the hit and correct rejection rates
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% # get accuracy and count for each condition (hit and correct rejection)  
         mutate(Accuracy = if_else(Accuracy == 1, 1 - 0.5/Count, Accuracy)) %>%  # set 1 equals to 1-0.5/n
+        select(-Count) %>%  # remove Count
         spread(SameDifferent, Accuracy) %>%  # spread the Accuracy into two columns based on SameDifferent
         mutate(FA = 1 - different,
                Z.hit = qnorm(same),
                Z.FA = qnorm(FA),
                dprime = Z.hit - Z.FA) %>% # get the d prime
-        select(Viewing, Participant, Congruency, Alignment, dprime, Count)
+        select(Viewing, Participant, Congruency, Alignment, dprime)
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
-rmParticipant1.E3 <- unique(d.R.E3$Participant[(d.R.E3$dprime <= 0)]) # participants whose dprime is less than 0 
-rmParticipant2.E3 <- unique(d.R.E3$Participant[is.na(d.R.E3$dprime)]) # dprie is missing
+rm.nega.E3 <- unique(d.R.E3$Participant[(d.R.E3$dprime <= 0)]) # participants whose dprime is less than 0 
+rm.missing.E3 <- unique(d.R.E3$Participant[is.na(d.R.E3$dprime)]) # dprie is missing
 
-rmLevels = levels(rmParticipant1.E3)
-rmParticipant.E3 <- factor(rmLevels[c(rmParticipant1.E3, rmParticipant2.E3)], levels = rmLevels)
+rmLevels = levels(rm.count.E3)
+rm.E3 <- factor(rmLevels[unique(c(rm.count.E3, rm.nega.E3, rm.missing.E3))], levels = rmLevels)
 
-d.R.E3 <- d.R.E3[!(d.R.E3$Participant %in% rmParticipant.E3), ]
+d.R.E3 <- d.R.E3[!(d.R.E3$Participant %in% rm.E3), ]
 
 # descriptive statistics of d for plotting
 sum.d.R.E3 <- {
@@ -954,19 +1035,19 @@ d.SPSS.E3 <- {
     d.R.E3 %>%
         ungroup() %>%  # ungroup the data.d.r 
         mutate(Conditions = paste(Viewing, Congruency, Alignment, sep = ".")) %>% # combine all the levels together
-        select(Participant, dprime, Conditions, Count) %>% # delete the Independet Variables
+        select(Participant, dprime, Conditions) %>% # delete the Independet Variables
         spread(Conditions, dprime)
 }
 
 ```
 
-Participant `r rmParticipant1.E3` were removed due to at least one of their dprime was not larger than 0.
+Participant `r rm.nega.E3` were removed due to at least one of their dprime was not larger than 0.
 
 
 ```{r save data of E3 for analysis in jamovi E3}
 # save the d' for R analysis
 if (saveData) {
-    write.csv(d.R.E3, output.d.R, row.names = FALSE)
+    # write.csv(d.R.E3, output.d.R, row.names = FALSE)
     write.csv(d.SPSS.E3, output.d.SPSS, row.names = FALSE)
 }
 ```
@@ -1031,7 +1112,7 @@ d.ColuPlot.E3
 ```{r calculate the correct response times for R analysis E3}
 cf.rt.R.E3 <- {
     df.clean.cf.E3 %>%
-        filter(!(Participant %in% rmParticipant.E3)) %>%  # remove participants
+        filter(!(Participant %in% rm.E3)) %>%  # remove participants
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
         filter(isCorrect == 1)  %>%  # only keep the correct correct
         group_by(Viewing, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
@@ -1062,7 +1143,7 @@ cf.rt.SPSS.E3 <- {
 ```{r save the RT for R analysis in jomovi E3}
 # save the RT for R analysis
 if (saveData) {
-    write.csv(cf.rt.R.E3, output.rt.R, row.names = FALSE)
+    # write.csv(cf.rt.R.E3, output.rt.R, row.names = FALSE)
     write.csv(cf.rt.SPSS.E3, output.rt.SPSS, row.names = FALSE)
 }
 
@@ -1135,13 +1216,13 @@ output.name <- "E4_112"
 
 # set the filenames for R and SPSS data format
 if (saveData) {
-    output.d.R <- file.path(folder.output, paste0(output.name, "_d_R.csv"))
+    # output.d.R <- file.path(folder.output, paste0(output.name, "_d_R.csv"))
     output.d.SPSS <- file.path(folder.output, paste0(output.name, "_d_SPSS.csv"))
-    output.rt.R <- file.path(folder.output, paste0(output.name, "_rt_R.csv"))
+    # output.rt.R <- file.path(folder.output, paste0(output.name, "_rt_R.csv"))
     output.rt.SPSS <- file.path(folder.output, paste0(output.name, "_rt_SPSS.csv"))
-    output.catch.acc.R <- file.path(folder.output, paste0(output.name, "_catch_acc_R.csv"))
+    # output.catch.acc.R <- file.path(folder.output, paste0(output.name, "_catch_acc_R.csv"))
     output.catch.acc.SPSS <- file.path(folder.output, paste0(output.name, "_catch_acc_SPSS.csv"))
-    output.catch.rt.R <- file.path(folder.output, paste0(output.name, "_catch_rt_R.csv"))
+    # output.catch.rt.R <- file.path(folder.output, paste0(output.name, "_catch_rt_R.csv"))
     output.catch.rt.SPSS <- file.path(folder.output, paste0(output.name, "_catch_rt_SPSS.csv"))
 }
 
@@ -1178,7 +1259,7 @@ df.clean.E4 <- {
             thisResponse = as.character(thisResponse)
         ) %>% 
         group_by(Viewing, Participant, TrialType, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
-        filter(reactionTime > 0.2) %>% 
+        filter(reactionTime > rm.RT) %>% 
         mutate(
             RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
             RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
@@ -1189,6 +1270,7 @@ df.clean.E4 <- {
 df.clean.E4
 
 ```
+
 
 ## The composite face task
 ```{r data frame for CF in E4}
@@ -1207,6 +1289,29 @@ df.clean.cf.E4 <- {
 df.clean.cf.E4
 ```
 
+```{r check the number of remaining trials E4}
+# number of trials in each condition
+d.Count.E4 <- {
+    df.clean.cf.E4 %>%
+        group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
+        summarize(Count = n()) %>% 
+        mutate(Conditions = paste(Viewing, Congruency, Alignment, SameDifferent, sep = ".")) %>% 
+        ungroup() %>% 
+        select(Participant, Conditions, Count) 
+}
+
+d.Count.E4 %>%
+    spread(Conditions, Count)
+
+rm.count.E4 <- {
+    d.Count.E4 %>% 
+    filter(Count < max(d.Count.E4$Count) * rm.Count.rate) %$%
+    unique(Participant)
+    }
+
+```
+Participant `r rm.count.E4` were removed due to the response times of more than `r (1-rm.Count.rate)*100`% trials were smaller than `r rm.RT*1000`ms in at least one of the conditions.
+
 ### Sensitivity d'
 ```{r calculate the sensitivity d for R analysis (E4)}
 # calculate the d'
@@ -1215,22 +1320,23 @@ d.R.E4 <- { # get the hit and correct rejection rates
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% # get accuracy and count for each condition (hit and correct rejection)  
         mutate(Accuracy = if_else(Accuracy == 1, 1 - 0.5/Count, Accuracy)) %>%  # set 1 equals to 1-0.5/n
+        select(-Count) %>%  # remove Count
         spread(SameDifferent, Accuracy) %>%  # spread the Accuracy into two columns based on SameDifferent
         mutate(FA = 1 - different,
                Z.hit = qnorm(same),
                Z.FA = qnorm(FA),
                dprime = Z.hit - Z.FA) %>% # get the d prime
-        select(Viewing, Participant, Congruency, Alignment, dprime, Count)
+        select(Viewing, Participant, Congruency, Alignment, dprime)
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
-rmParticipant1.E4 <- unique(d.R.E4$Participant[(d.R.E4$dprime <= 0)]) # participants whose dprime is less than 0 
-rmParticipant2.E4 <- unique(d.R.E4$Participant[is.na(d.R.E4$dprime)]) # dprie is missing
+rm.nega.E4 <- unique(d.R.E4$Participant[(d.R.E4$dprime <= 0)]) # participants whose dprime is less than 0 
+rm.missing.E4 <- unique(d.R.E4$Participant[is.na(d.R.E4$dprime)]) # dprie is missing
 
-rmLevels = levels(rmParticipant1.E4)
-rmParticipant.E4 <- factor(rmLevels[c(rmParticipant1.E4, rmParticipant2.E4)], levels = rmLevels)
+rmLevels = levels(rm.count.E4)
+rm.E4 <- factor(rmLevels[unique(c(rm.count.E4, rm.nega.E4, rm.missing.E4))], levels = rmLevels)
 
-d.R.E4 <- d.R.E4[!(d.R.E4$Participant %in% rmParticipant.E4), ]
+d.R.E4 <- d.R.E4[!(d.R.E4$Participant %in% rm.E4), ]
 
 # descriptive statistics of d for plotting
 sum.d.R.E4 <- {
@@ -1245,20 +1351,20 @@ d.SPSS.E4 <- {
     d.R.E4 %>%
         ungroup() %>%  # ungroup the data.d.r 
         mutate(Conditions = paste(Viewing, Congruency, Alignment, sep = ".")) %>% # combine all the levels together
-        select(Participant, dprime, Conditions, Count) %>% # delete the Independet Variables
+        select(Participant, dprime, Conditions) %>% # delete the Independet Variables
         spread(Conditions, dprime)
 }
 
 ```
-Participant `r rmParticipant1.E4` were removed due to at least one of their dprime was not larger than 0.
+Participant `r rm.nega.E4` were removed due to at least one of their dprime was not larger than 0.
 
-Participant `r rmParticipant2.E4` were removed due to at least one of their dprime was missing.
+Participant `r rm.missing.E4` were removed due to at least one of their dprime was missing.
 
 
 ```{r save data of E4 for analysis in jamovi E4}
 # save the d' for R analysis
 if (saveData) {
-    write.csv(d.R.E4, output.d.R, row.names = FALSE)
+    # write.csv(d.R.E4, output.d.R, row.names = FALSE)
     write.csv(d.SPSS.E4, output.d.SPSS, row.names = FALSE)
 }
 ```
@@ -1325,7 +1431,7 @@ d.ColuPlot.E4
 ```{r calculate the correct response times for R analysis E4}
 cf.rt.R.E4 <- {
     df.clean.cf.E4 %>%
-        filter(!(Participant %in% rmParticipant.E4)) %>%  # remove participants
+        filter(!(Participant %in% rm.E4)) %>%  # remove participants
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
         filter(isCorrect == 1)  %>%  # only keep the correct correct
         group_by(Viewing, Participant, Congruency, Alignment) %>%  # divide the data into serveral groups 
@@ -1356,7 +1462,7 @@ cf.rt.SPSS.E4 <- {
 ```{r save the RT for R analysis in jomovi E4}
 # save the RT for R analysis
 if (saveData) {
-    write.csv(cf.rt.R.E4, output.rt.R, row.names = FALSE)
+    # write.csv(cf.rt.R.E4, output.rt.R, row.names = FALSE)
     write.csv(cf.rt.SPSS.E4, output.rt.SPSS, row.names = FALSE)
 }
 
@@ -1434,7 +1540,7 @@ df.clean.catch.E4
 ```{r accuracy for catch trials E4}
 catch.acc.R.E4 <- {
     df.clean.catch.E4 %>%
-        filter(!(Participant %in% rmParticipant.E4)) %>%  # remove participants
+        filter(!(Participant %in% rm.E4)) %>%  # remove participants
         group_by(Viewing, Participant, Alignment) %>% 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% 
         ungroup()
@@ -1460,7 +1566,7 @@ catch.acc.SPSS.E4 <- {
 ```{r save the acc of catch trials in jamovi E4}
 # save the acc of catch trials in jamovi E4
 if (saveData) {
-    write.csv(catch.acc.R.E4, output.catch.acc.R, row.names = FALSE)
+    # write.csv(catch.acc.R.E4, output.catch.acc.R, row.names = FALSE)
     write.csv(catch.acc.SPSS.E4, output.catch.acc.SPSS, row.names = FALSE)
 }
 ```
@@ -1523,7 +1629,7 @@ catch.acc.ColuPlot.E4
 ```{r calculate the correct response times of catch trials for R analysis E4}
 catch.rt.R.E4 <- {
     df.clean.catch.E4 %>%
-        filter(!(Participant %in% rmParticipant.E4)) %>%  # remove participants
+        filter(!(Participant %in% rm.E4)) %>%  # remove participants
         filter(reactionTime <= 10) %>%  # remove the response times which are longer than 10s
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
         # filter(isCorrect == 1)  %>%  # only keep the correct correct
@@ -1555,7 +1661,7 @@ catch.rt.SPSS.E4 <- {
 ```{r save the RT for R analysis catch trials in E4}
 # save the RT for R analysis
 if (saveData) {
-    write.csv(catch.rt.R.E4, output.catch.rt.R, row.names = FALSE)
+    # write.csv(catch.rt.R.E4, output.catch.rt.R, row.names = FALSE)
     write.csv(catch.rt.SPSS.E4, output.catch.rt.SPSS, row.names = FALSE)
 }
 ```
@@ -1633,7 +1739,9 @@ df.all
 
 ## The composite face task
 ```{r tidy up the dataframe for the composite face task}
-rmParticipant <- c(as.character(rmParticipant.E1), as.character(rmParticipant.E2), as.character(rmParticipant.E3), as.character(rmParticipant.E4))
+rmParticipant <- c(as.character(rm.E1), as.character(rm.E2), as.character(rm.E3), as.character(rm.E4))
+
+rmParticipant
 
 df.cf.all <- {
     df.all %>% 
@@ -1673,7 +1781,7 @@ df.cf.all <- {
 
 if (saveData) {
     save(df.cf.all, file = file.path(folder.nesi, "P101_cf_clean.RData"))
-    write_csv(df.cf.all, file.path(folder.nesi, "P101_cf_clean.csv"))
+    # write_csv(df.cf.all, file.path(folder.nesi, "P101_cf_clean.csv"))
 }
 ```
 
@@ -1863,27 +1971,28 @@ summary(rePCA(glmm.etd2.acc))
 # } else {
 #     load(file.etd3.acc)
 # }
-glmm.etd3.acc <- update(glmm.etd.acc,
-                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                            (1 + View_D + View_Con + View_Ali | Participant) + 
-                            (1 + View_Con | FaceGroup),
-                        verbose = FALSE)
-print(summary(glmm.etd3.acc), corr = FALSE)
+
+# glmm.etd3.acc <- update(glmm.etd.acc,
+#                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                             (1 + View_D + View_Con + View_Ali | Participant) + 
+#                             (1 + View_Con | FaceGroup),
+#                         verbose = FALSE)
+# print(summary(glmm.etd3.acc), corr = FALSE)
 
 ```
 
 ```{r}
-pars.etd3.acc <- get_pars(glmm.etd3.acc)
-
-glmm.etd4.acc <- update(glmm.etd3.acc, start = pars.etd3.acc)
-
-summary(glmm.etd4.acc)
+# pars.etd3.acc <- get_pars(glmm.etd3.acc)
+# 
+# glmm.etd4.acc <- update(glmm.etd3.acc, start = pars.etd3.acc)
+# 
+# summary(glmm.etd4.acc)
 ```
 
 
 
 ```{r}
-anova(glmm.rdc2.acc, glmm.etd4.acc)
+# anova(glmm.rdc2.acc, glmm.etd4.acc)
 ```
 
 ##### Optimal model
@@ -1938,27 +2047,25 @@ df.cf.rt <- {
 ##### Maximal model
 ```{r maximal model for correct RT }
 # maximal model for correct RT
-file.max.rt <- file.path(folder.nesi, "P101_glmm_max_rt.RData")
-
-if (!file.exists(file.max.rt)) {
-    glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode + 
-                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) + 
-                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
-                          data = df.cf.rt,
-                          family = "poisson",
-                          # verbose = TRUE,
-                          control = glmerControl(optCtrl = list(maxfun = 1e6))
-    )
-    
-    save(glmm.max.rt, file = file.max.rt)
-} else {
-    load(file.max.rt)
-}
-
-print(summary(glmm.max.rt), corr = FALSE)
+# file.max.rt <- file.path(folder.nesi, "P101_glmm_max_rt.RData")
+# 
+# if (!file.exists(file.max.rt)) {
+#     glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode + 
+#                               (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) + 
+#                               (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
+#                           data = df.cf.rt,
+#                           family = "poisson",
+#                           # verbose = TRUE,
+#                           control = glmerControl(optCtrl = list(maxfun = 1e6))
+#     )
+#     
+#     save(glmm.max.rt, file = file.max.rt)
+# } else {
+#     load(file.max.rt)
+# }
+# 
+# print(summary(glmm.max.rt), corr = FALSE)
 ```
-
-
 
 
 # Versions of Packages Used
