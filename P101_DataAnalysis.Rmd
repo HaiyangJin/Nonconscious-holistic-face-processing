@@ -5,12 +5,13 @@ date:  "`r format(Sys.time(), '%d-%m-%Y')`"
 knit: ""
 output: 
   html_document:
-    number_sections: true
-    toc: true
-    toc_depth: 4
-    toc_float: true
-    includes:
-        after_body: Utilities/footer.html
+      df_print: paged
+      number_sections: true
+      toc: true
+      toc_depth: 4
+      toc_float: true
+      includes:
+          after_body: Utilities/footer.html
 version: "5.0"
 ---
 
@@ -122,8 +123,7 @@ df.clean.E1 <- {
         ungroup()  # ungroup the data
 }
 
-# df.clean.E1
-
+# head(df.clean.E1)
 ```
 
 
@@ -140,7 +140,7 @@ df.clean.cf.E1 <- {
         )
 }
 
-df.clean.cf.E1
+head(df.clean.cf.E1)
 ```
 
 ```{r check the number of remaining trials E1}
@@ -149,7 +149,7 @@ d.Count.E1 <- {
     df.clean.cf.E1 %>%
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
         summarize(Count = n()) %>% 
-        mutate(Conditions = paste(Viewing, Congruency, Alignment, SameDifferent, sep = ".")) %>% 
+        mutate(Conditions = paste(substr(Viewing, 1,3), substr(Congruency, 1, 1), substr(Alignment,1,1), substr(SameDifferent,1,1), sep = ".")) %>% 
         ungroup() %>% 
         select(Participant, Conditions, Count) 
 }
@@ -439,7 +439,7 @@ df.clean.E2 <- {
         ungroup()  # ungroup the data
 }
 
-# df.clean.E2
+# head(df.clean.E2)
 ```
 
 
@@ -457,17 +457,17 @@ df.clean.cf.E2 <- {
         )
 }
 
-df.clean.cf.E2
+head(df.clean.cf.E2)
 ```
 
 
-```{r check the number of remaining trials E2}
+```{r check the number of remaining trials E2 cf}
 # number of trials in each condition
 d.Count.E2 <- {
     df.clean.cf.E2 %>%
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
         summarize(Count = n()) %>% 
-        mutate(Conditions = paste(Viewing, Congruency, Alignment, SameDifferent, sep = ".")) %>% 
+        mutate(Conditions = paste(substr(Viewing, 1,3), substr(Congruency, 1, 1), substr(Alignment,1,1), substr(SameDifferent,1,1), sep = ".")) %>% 
         ungroup() %>% 
         select(Participant, Conditions, Count) 
 }
@@ -701,10 +701,28 @@ df.clean.catch.E2 <- {
             Participant = as.factor(Participant),
             Viewing = recode_factor(Viewing, "CFS" = viewing.levels[1], "monocular" = viewing.levels[2], "CatchOnly" = viewing.levels[3]),
             Alignment = recode_factor(Alignment, "A" = alignment.levels[1], "M" = alignment.levels[2])
-        )
+        ) %>% 
+        filter(!(Participant %in% rm.E2))  # remove participants
 }
 
-df.clean.catch.E2
+head(df.clean.catch.E2)
+```
+
+
+```{r check the number of remaining trials E2 catch}
+# number of trials in each condition
+d.Count.E2 <- {
+    df.clean.catch.E2 %>%
+        group_by(Viewing, Participant, Alignment) %>%  # divide the data into serveral groups 
+        summarize(Count = n()) %>% 
+        mutate(Conditions = paste(Viewing, Alignment, sep = ".")) %>% 
+        ungroup() %>% 
+        select(Participant, Conditions, Count) 
+}
+
+d.Count.E2 %>%
+    spread(Conditions, Count)
+
 ```
 
 
@@ -712,7 +730,6 @@ df.clean.catch.E2
 ```{r accuracy for catch trials E2}
 catch.acc.R.E2 <- {
     df.clean.catch.E2 %>%
-        filter(!(Participant %in% rm.E2)) %>%  # remove participants
         group_by(Viewing, Participant, Alignment) %>% 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% 
         ungroup()
@@ -801,7 +818,6 @@ catch.acc.ColuPlot.E2
 ```{r calculate the correct response times of catch trials for R analysis E2}
 catch.rt.R.E2 <- {
     df.clean.catch.E2 %>%
-        filter(!(Participant %in% rm.E2)) %>%  # remove participants
         filter(Condition == "CatchOnly") %>% 
         filter(reactionTime <= 10) %>%  # remove the response times which are longer than 10s
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
@@ -950,8 +966,7 @@ df.clean.E3 <- {
         ungroup()  # ungroup the data
 }
 
-df.clean.E3
-
+# head(df.clean.E3)
 ```
 
 
@@ -969,7 +984,7 @@ df.clean.cf.E3 <- {
         )
 }
 
-df.clean.cf.E3
+head(df.clean.cf.E3)
 ```
 
 ```{r check the number of remaining trials E3}
@@ -978,7 +993,7 @@ d.Count.E3 <- {
     df.clean.cf.E3 %>%
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
         summarize(Count = n()) %>% 
-        mutate(Conditions = paste(Viewing, Congruency, Alignment, SameDifferent, sep = ".")) %>% 
+        mutate(Conditions = paste(substr(Viewing, 1,3), substr(Congruency, 1, 1), substr(Alignment,1,1), substr(SameDifferent,1,1), sep = ".")) %>% 
         ungroup() %>% 
         select(Participant, Conditions, Count) 
 }
@@ -1267,8 +1282,7 @@ df.clean.E4 <- {
         ungroup()  # ungroup the data
 }
 
-df.clean.E4
-
+# head(df.clean.E4)
 ```
 
 
@@ -1286,16 +1300,16 @@ df.clean.cf.E4 <- {
         )
 }
 
-df.clean.cf.E4
+head(df.clean.cf.E4)
 ```
 
-```{r check the number of remaining trials E4}
+```{r check the number of remaining trials E4 cf}
 # number of trials in each condition
 d.Count.E4 <- {
     df.clean.cf.E4 %>%
         group_by(Viewing, Participant, Congruency, Alignment, SameDifferent) %>%  # divide the data into serveral groups 
         summarize(Count = n()) %>% 
-        mutate(Conditions = paste(Viewing, Congruency, Alignment, SameDifferent, sep = ".")) %>% 
+        mutate(Conditions = paste(substr(Viewing, 1,3), substr(Congruency, 1, 1), substr(Alignment,1,1), substr(SameDifferent,1,1), sep = ".")) %>% 
         ungroup() %>% 
         select(Participant, Conditions, Count) 
 }
@@ -1530,17 +1544,35 @@ df.clean.catch.E4 <- {
             Participant = as.factor(Participant),
             Viewing = recode_factor(Viewing, "CFS" = viewing.levels[1], "monocular" = viewing.levels[2], "CatchOnly" = viewing.levels[3]),
             Alignment = recode_factor(Alignment, "A" = alignment.levels[1], "M" = alignment.levels[2])
-        )
+        ) %>% 
+        filter(!(Participant %in% rm.E4))  # remove participants
 }
 
 df.clean.catch.E4
 ```
 
+
+```{r check the number of remaining trials E4 catch}
+# number of trials in each condition
+d.Count.E4 <- {
+    df.clean.catch.E4 %>%
+        group_by(Viewing, Participant, Alignment) %>%  # divide the data into serveral groups 
+        summarize(Count = n()) %>% 
+        mutate(Conditions = paste(Viewing, Alignment, sep = ".")) %>% 
+        ungroup() %>% 
+        select(Participant, Conditions, Count) 
+}
+
+d.Count.E4 %>%
+    spread(Conditions, Count)
+
+```
+
+
 ### Accuracy for catch trials
 ```{r accuracy for catch trials E4}
 catch.acc.R.E4 <- {
     df.clean.catch.E4 %>%
-        filter(!(Participant %in% rm.E4)) %>%  # remove participants
         group_by(Viewing, Participant, Alignment) %>% 
         summarize(Accuracy = mean(isCorrect), Count = n()) %>% 
         ungroup()
@@ -1629,7 +1661,6 @@ catch.acc.ColuPlot.E4
 ```{r calculate the correct response times of catch trials for R analysis E4}
 catch.rt.R.E4 <- {
     df.clean.catch.E4 %>%
-        filter(!(Participant %in% rm.E4)) %>%  # remove participants
         filter(reactionTime <= 10) %>%  # remove the response times which are longer than 10s
         filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
         # filter(isCorrect == 1)  %>%  # only keep the correct correct
@@ -1734,7 +1765,7 @@ source(file.path(folder.R, "get_pars.R"))
 ```{r combine the data from the four experiments}
 
 df.all <- bind_rows(list(df.clean.E1, df.clean.E2,  df.clean.E3, df.clean.E4))
-df.all
+head(df.all)
 ```
 
 ## The composite face task
@@ -1757,7 +1788,7 @@ df.cf.all <- {
         select(Viewing, Participant, Congruency, Alignment, FaceGroup, WithCatch, isCorrect, reactionTime, ExpCode, RT.Z)
 }
 
-df.cf.all
+head(df.cf.all)
 
 ```
 
