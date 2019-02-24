@@ -194,7 +194,7 @@ rm.E1 <- factor(rmLevels[c(rm.count.E1, rm.nega.E1, rm.missing.E1)], levels = rm
 d.R.E1 <- d.R.E1[!(d.R.E1$Participant %in% rm.E1), ]
 
 # descriptive statistics of d for plotting
-sum.d.R.E1 <- {
+desc.d.R.E1 <- {
     d.R.E1 %>% 
         group_by(Viewing, Congruency, Alignment) %>% 
         summarize(Mean = mean(dprime), N = n(), SD = sd(dprime), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(dprime), Lower = Mean - SD, Upper = Mean + SD) %>% 
@@ -223,15 +223,15 @@ if (saveData) {
 
 #### RainClound plots of d'
 ```{r rainclound plot of sensitivity E1, warning=FALSE}
-knitr::kable(sum.d.R.E1, digits = 4)
+knitr::kable(desc.d.R.E1, digits = 4)
 
 d.RainPlot.E1 <- {
     ggplot(data = d.R.E1, aes(y = dprime, x = Alignment, fill = Congruency)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(aes(y = dprime, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(aes(y = dprime), width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = sum.d.R.E1, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = sum.d.R.E1, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = desc.d.R.E1, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = desc.d.R.E1, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -258,7 +258,7 @@ d.RainPlot.E1
 ```{r Plot of d E1}
 
 d.ColuPlot.E1 = {
-    ggplot(data = sum.d.R.E1, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = desc.d.R.E1, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_point() +
         geom_line() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
@@ -290,7 +290,7 @@ rt.R.E1 <- {
 }
 
 # descriptive statistics of RT for plotting
-sum.rt.R.E1 <- {
+desc.rt.R.E1 <- {
     rt.R.E1 %>% 
         select(-Count) %>% 
         group_by(Viewing, Congruency, Alignment) %>% 
@@ -319,15 +319,15 @@ if (saveData) {
 
 #### RainClound plots of RT
 ```{r rainclound plot of correct response times E1, warning = FALSE}
-knitr::kable(sum.rt.R.E1, digits = 4)
+knitr::kable(desc.rt.R.E1, digits = 4)
 
 rt.RainPlot.E1 <- {
     ggplot(data = rt.R.E1, aes(y = RT, x = Alignment, fill = Congruency)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(aes(y = RT, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = sum.rt.R.E1, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = sum.rt.R.E1, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = desc.rt.R.E1, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = desc.rt.R.E1, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -355,7 +355,7 @@ rt.RainPlot.E1
 ```{r Plot of correct response times E1}
 
 rt.ColuPlot.E1 = {
-    ggplot(data = sum.rt.R.E1, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = desc.rt.R.E1, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_point() +
         geom_line() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
@@ -512,7 +512,7 @@ rm.E2 <- factor(rmLevels[c(rm.count.E2, rm.nega.E2, rm.missing.E2)], levels = rm
 d.R.E2 <- d.R.E2[!(d.R.E2$Participant %in% rm.E2), ]
 
 # descriptive statistics of d for plotting
-sum.d.R.E2 <- {
+desc.d.R.E2 <- {
     d.R.E2 %>% 
         group_by(Viewing, Congruency, Alignment) %>% 
         summarize(Mean = mean(dprime), N = n(), SD = sd(dprime), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(dprime), Lower = Mean - SD, Upper = Mean + SD) %>% 
@@ -543,15 +543,15 @@ if (saveData) {
 
 #### RainClound plots of d'
 ```{r rainclound plot of sensitivity E2, warning=FALSE}
-knitr::kable(sum.d.R.E2, digits = 4)
+knitr::kable(desc.d.R.E2, digits = 4)
 
 d.RainPlot.E2 <- {
     ggplot(data = d.R.E2, aes(y = dprime, x = Alignment, fill = Congruency)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(aes(y = dprime, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(aes(y = dprime), width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = sum.d.R.E2, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = sum.d.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = desc.d.R.E2, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = desc.d.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -578,7 +578,7 @@ d.RainPlot.E2
 ```{r Plot of d E2}
 
 d.ColuPlot.E2 = {
-    ggplot(data = sum.d.R.E2, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = desc.d.R.E2, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_point() +
         geom_line() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
@@ -611,7 +611,7 @@ cf.rt.R.E2 <- {
 }
 
 # descriptive statistics of RT for plotting
-cf.sum.rt.R.E2 <- {
+cf.desc.rt.R.E2 <- {
     cf.rt.R.E2 %>% 
         select(-Count) %>% 
         group_by(Viewing, Congruency, Alignment) %>% 
@@ -642,15 +642,15 @@ if (saveData) {
 
 #### RainClound plots of RT
 ```{r rainclound plot of correct response times E2, warning = FALSE}
-knitr::kable(cf.sum.rt.R.E2, digits = 4)
+knitr::kable(cf.desc.rt.R.E2, digits = 4)
 
 rt.RainPlot.E2 <- {
     ggplot(data = cf.rt.R.E2, aes(y = RT, x = Alignment, fill = Congruency)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(aes(y = RT, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = cf.sum.rt.R.E2, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = cf.sum.rt.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = cf.desc.rt.R.E2, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = cf.desc.rt.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -674,7 +674,7 @@ rt.RainPlot.E2
 ```{r Plot of correct response times E2}
 
 rt.ColuPlot.E2 = {
-    ggplot(data = cf.sum.rt.R.E2, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = cf.desc.rt.R.E2, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_point() +
         geom_line() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
@@ -735,7 +735,7 @@ catch.acc.R.E2 <- {
         ungroup()
 }
 
-catch.sum.acc.R.E2 <- {
+catch.desc.acc.R.E2 <- {
     catch.acc.R.E2 %>% 
         group_by(Viewing, Alignment) %>% 
         summarize(Mean = mean(Accuracy), N = n(), SD = sd(Accuracy), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(Accuracy), Lower = Mean - SD, Upper = Mean + SD) %>% 
@@ -763,15 +763,15 @@ if (saveData) {
 
 #### RainClound plot of accuracy
 ```{r rainclound plot of accuracy for catch E2, warning=FALSE}
-knitr::kable(catch.sum.acc.R.E2, digits = 4)
+knitr::kable(catch.desc.acc.R.E2, digits = 4)
 
 catch.acc.RainPlot.E2 <- {
     ggplot(data = catch.acc.R.E2, aes(y = Accuracy, x = Alignment)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(position = position_jitter(width = .15, height = 0), size = .5, alpha = .8) +
         geom_boxplot(width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = catch.sum.acc.R.E2, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = catch.sum.acc.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = catch.desc.acc.R.E2, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = catch.desc.acc.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -796,7 +796,7 @@ catch.acc.RainPlot.E2
 ```{r Plot of accuracy for catch trials E2}
 
 catch.acc.ColuPlot.E2 = {
-    ggplot(data = catch.sum.acc.R.E2, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = catch.desc.acc.R.E2, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_col() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
                       show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
@@ -829,7 +829,7 @@ catch.rt.R.E2 <- {
 
 
 # descriptive statistics of RT for plotting
-catch.sum.rt.R.E2 <- {
+catch.desc.rt.R.E2 <- {
     catch.rt.R.E2 %>% 
         select(-Count) %>% 
         group_by(Viewing, Alignment) %>% 
@@ -858,15 +858,15 @@ if (saveData) {
 
 #### RainClound plot of response times
 ```{r rainclound plot of response times for catch trials E2, warning=FALSE}
-knitr::kable(catch.sum.rt.R.E2, digits = 4)
+knitr::kable(catch.desc.rt.R.E2, digits = 4)
 
 catch.rt.RainPlot.E2 <- {
     ggplot(data = catch.rt.R.E2, aes(y = RT, x = Alignment)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = catch.sum.rt.R.E2, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = catch.sum.rt.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = catch.desc.rt.R.E2, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = catch.desc.rt.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -892,7 +892,7 @@ catch.rt.RainPlot.E2
 ```{r Plot of response times for catch trials E2}
 
 catch.acc.ColuPlot.E2 = {
-    ggplot(data = catch.sum.rt.R.E2, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = catch.desc.rt.R.E2, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_col() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
                       show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
@@ -1038,7 +1038,7 @@ rm.E3 <- factor(rmLevels[unique(c(rm.count.E3, rm.nega.E3, rm.missing.E3))], lev
 d.R.E3 <- d.R.E3[!(d.R.E3$Participant %in% rm.E3), ]
 
 # descriptive statistics of d for plotting
-sum.d.R.E3 <- {
+desc.d.R.E3 <- {
     d.R.E3 %>% 
         group_by(Viewing, Congruency, Alignment) %>% 
         summarize(Mean = mean(dprime), N = n(), SD = sd(dprime), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(dprime), Lower = Mean - SD, Upper = Mean + SD) %>% 
@@ -1069,15 +1069,15 @@ if (saveData) {
 
 #### RainClound plots of d'
 ```{r rainclound plot of sensitivity E3, warning=FALSE}
-knitr::kable(sum.d.R.E3, digits = 4)
+knitr::kable(desc.d.R.E3, digits = 4)
 
 d.RainPlot.E3 <- {
     ggplot(data = d.R.E3, aes(y = dprime, x = Alignment, fill = Congruency)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(aes(y = dprime, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(aes(y = dprime), width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = sum.d.R.E3, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = sum.d.R.E3, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = desc.d.R.E3, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = desc.d.R.E3, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -1103,7 +1103,7 @@ d.RainPlot.E3
 ```{r Plot of d E3}
 
 d.ColuPlot.E3 = {
-    ggplot(data = sum.d.R.E3, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = desc.d.R.E3, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_point() +
         geom_line() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
@@ -1136,7 +1136,7 @@ cf.rt.R.E3 <- {
 }
 
 # descriptive statistics of RT for plotting
-cf.sum.rt.R.E3 <- {
+cf.desc.rt.R.E3 <- {
     cf.rt.R.E3 %>% 
         select(-Count) %>% 
         group_by(Viewing, Congruency, Alignment) %>% 
@@ -1166,15 +1166,15 @@ if (saveData) {
 
 #### RainClound plots of RT
 ```{r rainclound plot of correct response times E3, warning = FALSE}
-knitr::kable(cf.sum.rt.R.E3, digits = 4)
+knitr::kable(cf.desc.rt.R.E3, digits = 4)
 
 rt.RainPlot.E3 <- {
     ggplot(data = cf.rt.R.E3, aes(y = RT, x = Alignment, fill = Congruency)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(aes(y = RT, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = cf.sum.rt.R.E3, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = cf.sum.rt.R.E3, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = cf.desc.rt.R.E3, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = cf.desc.rt.R.E3, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -1198,7 +1198,7 @@ rt.RainPlot.E3
 ```{r Plot of correct response times E3}
 
 rt.ColuPlot.E3 = {
-    ggplot(data = cf.sum.rt.R.E3, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = cf.desc.rt.R.E3, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_point() +
         geom_line() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
@@ -1353,7 +1353,7 @@ rm.E4 <- factor(rmLevels[unique(c(rm.count.E4, rm.nega.E4, rm.missing.E4))], lev
 d.R.E4 <- d.R.E4[!(d.R.E4$Participant %in% rm.E4), ]
 
 # descriptive statistics of d for plotting
-sum.d.R.E4 <- {
+desc.d.R.E4 <- {
     d.R.E4 %>% 
         group_by(Viewing, Congruency, Alignment) %>% 
         summarize(Mean = mean(dprime), N = n(), SD = sd(dprime), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(dprime), Lower = Mean - SD, Upper = Mean + SD) %>% 
@@ -1386,15 +1386,15 @@ if (saveData) {
 
 #### RainClound plots of d'
 ```{r rainclound plot of sensitivity E4, warning=FALSE}
-knitr::kable(sum.d.R.E4, digits = 4)
+knitr::kable(desc.d.R.E4, digits = 4)
 
 d.RainPlot.E4 <- {
     ggplot(data = d.R.E4, aes(y = dprime, x = Alignment, fill = Congruency)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(aes(y = dprime, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(aes(y = dprime), width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = sum.d.R.E4, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = sum.d.R.E4, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = desc.d.R.E4, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = desc.d.R.E4, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -1421,7 +1421,7 @@ d.RainPlot.E4
 ```{r Plot of d E4}
 
 d.ColuPlot.E4 = {
-    ggplot(data = sum.d.R.E4, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = desc.d.R.E4, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_point() +
         geom_line() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
@@ -1454,7 +1454,7 @@ cf.rt.R.E4 <- {
 }
 
 # descriptive statistics of RT for plotting
-cf.sum.rt.R.E4 <- {
+cf.desc.rt.R.E4 <- {
     cf.rt.R.E4 %>% 
         select(-Count) %>% 
         group_by(Viewing, Congruency, Alignment) %>% 
@@ -1485,15 +1485,15 @@ if (saveData) {
 
 #### RainClound plots of RT
 ```{r rainclound plot of correct response times E4, warning = FALSE}
-knitr::kable(cf.sum.rt.R.E4, digits = 4)
+knitr::kable(cf.desc.rt.R.E4, digits = 4)
 
 rt.RainPlot.E4 <- {
     ggplot(data = cf.rt.R.E4, aes(y = RT, x = Alignment, fill = Congruency)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(aes(y = RT, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = cf.sum.rt.R.E4, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = cf.sum.rt.R.E4, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = cf.desc.rt.R.E4, aes(y = Mean, x = Alignment, color = Congruency), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = cf.desc.rt.R.E4, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -1517,7 +1517,7 @@ rt.RainPlot.E4
 ```{r Plot of correct response times E4}
 
 rt.ColuPlot.E4 = {
-    ggplot(data = cf.sum.rt.R.E4, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = cf.desc.rt.R.E4, aes(y = Mean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_point() +
         geom_line() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
@@ -1578,7 +1578,7 @@ catch.acc.R.E4 <- {
         ungroup()
 }
 
-catch.sum.acc.R.E4 <- {
+catch.desc.acc.R.E4 <- {
     catch.acc.R.E4 %>% 
         group_by(Viewing, Alignment) %>% 
         summarize(Mean = mean(Accuracy), N = n(), SD = sd(Accuracy), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(Accuracy), Lower = Mean - SD, Upper = Mean + SD) %>% 
@@ -1606,15 +1606,15 @@ if (saveData) {
 
 #### RainClound plot of accuracy
 ```{r rainclound plot of accuracy for catch E4, warning=FALSE}
-knitr::kable(catch.sum.acc.R.E4, digits = 4)
+knitr::kable(catch.desc.acc.R.E4, digits = 4)
 
 catch.acc.RainPlot.E4 <- {
     ggplot(data = catch.acc.R.E4, aes(y = Accuracy, x = Alignment)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(position = position_jitter(width = .15, height = 0), size = .5, alpha = .8) +
         geom_boxplot(width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = catch.sum.acc.R.E4, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = catch.sum.acc.R.E4, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = catch.desc.acc.R.E4, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = catch.desc.acc.R.E4, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -1639,7 +1639,7 @@ catch.acc.RainPlot.E4
 ```{r Plot of accuracy for catch trials E4}
 
 catch.acc.ColuPlot.E4 = {
-    ggplot(data = catch.sum.acc.R.E4, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = catch.desc.acc.R.E4, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_col() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
                       show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
@@ -1671,7 +1671,7 @@ catch.rt.R.E4 <- {
 
 
 # descriptive statistics of RT for plotting
-catch.sum.rt.R.E4 <- {
+catch.desc.rt.R.E4 <- {
     catch.rt.R.E4 %>% 
         select(-Count) %>% 
         group_by(Viewing, Alignment) %>% 
@@ -1700,15 +1700,15 @@ if (saveData) {
 
 #### RainClound plot of response times
 ```{r rainclound plot of response times for catch trials E4, warning=FALSE}
-knitr::kable(catch.sum.rt.R.E4, digits = 4)
+knitr::kable(catch.desc.rt.R.E4, digits = 4)
 
 catch.rt.RainPlot.E4 <- {
     ggplot(data = catch.rt.R.E4, aes(y = RT, x = Alignment)) + 
         geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
         geom_point(position = position_jitter(width = .15), size = .5, alpha = .8) +
         geom_boxplot(width = .2, outlier.shape = NA, alpha = .7) +
-        geom_point(data = catch.sum.rt.R.E4, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
-        geom_errorbar(data = catch.sum.rt.R.E4, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+        geom_point(data = catch.desc.rt.R.E4, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+        geom_errorbar(data = catch.desc.rt.R.E4, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
         facet_grid(. ~ Viewing, switch = "both") +
         # scale_colour_grey() + # start = .1, end = .6, color for the contour
         # scale_fill_grey() + # start = .3, end = .6, color for the fill
@@ -1734,7 +1734,7 @@ catch.rt.RainPlot.E4
 ```{r Plot of response times for catch trials E4}
 
 catch.acc.ColuPlot.E4 = {
-    ggplot(data = catch.sum.rt.R.E4, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    ggplot(data = catch.desc.rt.R.E4, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
         geom_col() +  # position = "dodge", alpha = .7
         geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
                       show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
