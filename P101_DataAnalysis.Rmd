@@ -1822,7 +1822,7 @@ if (saveData) {
 ##### Maximal model
 ```{r maximal model for accuracy}
 # maximal model for accuracy
-file.max.acc <- file.path(folder.nesi, "P101_glmm_max_acc.RData")
+file.max.acc <- file.path(folder.nesi, "P101_acc_glmm_max.RData")
 
 if (!file.exists(file.max.acc)) {
     glmm.max.acc <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
@@ -1844,7 +1844,7 @@ print(summary(glmm.max.acc), corr = FALSE)
 
 ```{r maximal model 2 for accuracy}
 # maximal model 2 for accuarcy (starting with the parameters from maximal model)
-file.max2.acc <- file.path(folder.nesi, "P101_glmm_max2_acc.RData")
+file.max2.acc <- file.path(folder.nesi, "P101_acc_glmm_max2.RData")
 
 if (!file.exists(file.max2.acc)) {
     pars.max.acc <- get_pars(glmm.max.acc)
@@ -1863,7 +1863,7 @@ print(summary(glmm.max2.acc), corr = FALSE)
 ##### Zero-correlation-parameter model
 ```{r zcp model for accuarcy}
 # zero-correlation-parameter model for accuracy
-file.zcp.acc <- file.path(folder.nesi, "P101_glmm_zcp_acc.RData")
+file.zcp.acc <- file.path(folder.nesi, "P101_acc_glmm_zcp.RData")
 
 if (!file.exists(file.zcp.acc)) {
     glmm.zcp.acc <- update(glmm.max.acc,
@@ -1882,7 +1882,7 @@ print(summary(glmm.zcp.acc), corr = FALSE)
 
 ```{r zcp model 2 for accuracy}
 # zero-correlation-parameter model 2 for accuracy
-file.zcp2.acc <- file.path(folder.nesi, "P101_glmm_zcp2_acc.RData")
+file.zcp2.acc <- file.path(folder.nesi, "P101_acc_glmm_zcp2.RData")
 
 if (!file.exists(file.zcp2.acc)) {
     pars.zcp.acc <- get_pars(glmm.zcp.acc)
@@ -1907,7 +1907,7 @@ summary(rePCA(glmm.zcp2.acc))
 ##### Reduced model
 ```{r reduced model for accuracy}
 # reduced model for accuracy
-file.rdc.acc <- file.path(folder.nesi, "P101_glmm_rdc_acc.RData")
+file.rdc.acc <- file.path(folder.nesi, "P101_acc_glmm_rdc.RData")
 
 if (!file.exists(file.rdc.acc)) {
     glmm.rdc.acc <- update(glmm.zcp.acc, 
@@ -1927,7 +1927,7 @@ print(summary(glmm.rdc.acc), corr = FALSE)
 
 ```{r reduced model 2 for accuarcy}
 # reduced model 2 for accuarcy (start from parameters of glmm.rdc.acc)
-file.rdc2.acc <- file.path(folder.nesi, "P101_glmm_rdc2_acc.RData")
+file.rdc2.acc <- file.path(folder.nesi, "P101_acc_glmm_rdc2.RData")
 
 if (!file.exists(file.rdc2.acc)) {
     pars.rdc.acc <- get_pars(glmm.rdc.acc)
@@ -1951,7 +1951,7 @@ anova(glmm.zcp2.acc, glmm.rdc2.acc)
 ##### Extended model
 ```{r extended model for accuarcy}
 # extended model for accuarcy
-file.etd.acc <- file.path(folder.nesi, "P101_glmm_etd_acc.RData")
+file.etd.acc <- file.path(folder.nesi, "P101_acc_glmm_etd.RData")
 
 if (!file.exists(file.etd.acc)) {
     glmm.etd.acc <- update(glmm.rdc.acc,
@@ -1971,7 +1971,7 @@ print(summary(glmm.etd.acc), corr = FALSE)
 
 ```{r extended model 2 for accuarcy}
 # extended model 2 for accuarcy (start from parameters of glmm.etd.acc)
-file.etd2.acc <- file.path(folder.nesi, "P101_glmm_etd2_acc.RData")
+file.etd2.acc <- file.path(folder.nesi, "P101_acc_glmm_etd2.RData")
 
 if (!file.exists(file.etd2.acc)) {
     pars.etd.acc <- get_pars(glmm.etd.acc)
@@ -1993,7 +1993,7 @@ summary(rePCA(glmm.etd2.acc))
 
 ```{r}
 # extended model for accuarcy
-# file.etd3.acc <- file.path(folder.nesi, "P101_glmm_etd3_acc.RData")
+# file.etd3.acc <- file.path(folder.nesi, "P101_acc_glmm_etd3.RData")
 # 
 # if (!file.exists(file.etd3.acc)) {
 # 
@@ -2078,7 +2078,7 @@ df.cf.rt <- {
 ##### Maximal model
 ```{r maximal model for correct RT }
 # maximal model for correct RT
-# file.max.rt <- file.path(folder.nesi, "P101_glmm_max_rt.RData")
+file.max.rt <- file.path(folder.nesi, "P101_rt_glmm_max.RData")
 # 
 # if (!file.exists(file.max.rt)) {
 #     glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode + 
@@ -2103,7 +2103,7 @@ df.cf.rt <- {
 #     load(file.max.rt)
 # }
 # 
-# print(summary(glmm.max.rt), corr = FALSE)
+print(summary(lmm.max.rt), corr = FALSE)
 ```
 
 
