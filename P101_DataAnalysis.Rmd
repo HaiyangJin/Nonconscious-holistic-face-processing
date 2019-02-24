@@ -2089,6 +2089,14 @@ df.cf.rt <- {
 #                           # verbose = TRUE,
 #                           control = glmerControl(optCtrl = list(maxfun = 1e6))
 #     )
+    lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
+                          data = df.cf.rt,
+                          REML = FALSE,
+                          # verbose = TRUE,
+                          control = lmerControl(optCtrl = list(maxfun = 1e6))
+    )
 #     
 #     save(glmm.max.rt, file = file.max.rt)
 # } else {
