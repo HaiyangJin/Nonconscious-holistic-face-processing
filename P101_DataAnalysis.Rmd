@@ -70,7 +70,7 @@ facegroups <- c(paste0("F", 1:5), paste0("M", 1:5))
 # Experiment 1
 ```{r information about the data set in E1}
 ## the filename of the raw data file 
-fn.raw.E1 <- file.path(folder.data, "104_106_n-20_2017-05-04-1446.csv")
+fn.raw.E1 <- file.path(folder.data, "E104_106_n-20_2017-05-04-1446.csv")
 
 ## input the filename of the output file (.csv)
 output.name <- "E1_104_106"
@@ -377,7 +377,7 @@ rt.ColuPlot.E1
 # Experiment 2
 ```{r information about the data set in E2}
 ## the filename of the raw data file 
-fn.raw.E2 <- file.path(folder.data, "1082_n-34_exp-3_2018-04-17-1639.csv")
+fn.raw.E2 <- file.path(folder.data, "E1082_n-34_exp-3_2018-04-17-1639.csv")
 
 ## input the filename of the output file (.csv)
 output.name <- "E2_1082"
@@ -913,7 +913,7 @@ catch.acc.ColuPlot.E2
 # Experiment 3
 ```{r information about the data set in E3}
 ## the filename of the raw data file 
-fn.raw.E3 <- file.path(folder.data, "111_n-20_exp-2_2018-11-23-1738.csv")
+fn.raw.E3 <- file.path(folder.data, "E111_n-21_exp-2_2019-02-25-1002.csv")
 
 ## input the filename of the output file (.csv)
 output.name <- "E3_111"
