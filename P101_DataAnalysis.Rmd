@@ -2109,6 +2109,7 @@ print(summary(lmm.max.rt), corr = FALSE)
 
 # Versions of Packages Used
 ```{r versions}
+rstudioapi::versionInfo()
 sessionInfo()
 ```
 
