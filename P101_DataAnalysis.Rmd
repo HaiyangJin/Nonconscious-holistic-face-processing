@@ -913,7 +913,7 @@ catch.acc.ColuPlot.E2
 # Experiment 3
 ```{r information about the data set in E3}
 ## the filename of the raw data file 
-fn.raw.E3 <- file.path(folder.data, "E111_n-21_exp-2_2019-02-25-1002.csv")
+fn.raw.E3 <- file.path(folder.data, "E111_n-22_exp-2_2019-02-25-1437.csv")
 
 ## input the filename of the output file (.csv)
 output.name <- "E3_111"
