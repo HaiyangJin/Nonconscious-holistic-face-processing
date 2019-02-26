@@ -2067,7 +2067,7 @@ emmip(glmm.opt.acc, Congruency ~ Alignment | Viewing, CIs = TRUE)
 
 #### Contrasts
 ```{r}
-contrast(emm.acc, "pairwise", simple = "each", combine = TRUE )
+contrast(emm.acc, "pairwise", simple = "each", combine = TRUE, adjust = "bonferroni")
 ```
 
 ```{r}
