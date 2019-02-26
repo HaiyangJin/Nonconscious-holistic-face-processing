@@ -1829,7 +1829,7 @@ if (saveData) {
 
 
 ### Accuracy
-#### Model selections
+#### Logit mixed model
 ##### Maximal model
 ```{r maximal model for accuracy}
 # maximal model for accuracy
@@ -2085,7 +2085,7 @@ df.cf.rt <- {
 ```
 
 
-#### Model selection
+#### Log mixed model
 ##### Maximal model
 ```{r maximal model for correct RT }
 # maximal model for correct RT
@@ -2117,6 +2117,35 @@ lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
 print(summary(lmm.max.rt), corr = FALSE)
 ```
 
+##### The zero-correlation-parameter model
+```{r zcp model for correct RT }
+# zcp model for correct RT
+file.zcp.rt <- file.path(folder.nesi, "P101_rt_glmm_zcp.RData")
+
+if (!file.exists(file.zcp.rt)) {
+    glmm.zcp.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
+                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || FaceGroup),
+                          data = df.cf.rt,
+                          family = "poisson",
+                          # verbose = TRUE,
+                          control = glmerControl(optCtrl = list(maxfun = 1e6))
+    )
+# lmm.zcp.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+#                      (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+#                      (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
+#                    data = df.cf.rt,
+#                    REML = FALSE,
+#                    # verbose = TRUE,
+#                    control = lmerControl(optCtrl = list(maxfun = 1e6))
+# )
+
+} else {
+    load(file.zcp.rt)
+}
+
+print(summary(lmm.zcp.rt), corr = FALSE)
+```
 
 # Versions of Packages Used
 ```{r versions}

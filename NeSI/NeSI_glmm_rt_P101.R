@@ -26,23 +26,23 @@ df.cf.rt <- {
 }
 
 #############################  Fitting the maximal glmm model for RT ##############################
-# fit the model for RT
-message("")
-message(paste0(strrep("#", 80)))
-message("Fitting the maximal model...")
-
-glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
-                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
-                      data = df.cf.rt,
-                      family = "poisson",
-                      verbose = TRUE,
-                      control = glmerControl(optCtrl = list(maxfun = 1e6))
-                      )
-
-# Save the maximal model
-print("Saving the glmm.max.rt ...")
-save(glmm.max.rt, file = "P101_glmm_max_rt.RData")
+# # fit the model for RT
+# message("")
+# message(paste0(strrep("#", 80)))
+# message("Fitting the maximal model...")
+# 
+# glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+#                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+#                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
+#                       data = df.cf.rt,
+#                       family = "poisson",
+#                       verbose = TRUE,
+#                       control = glmerControl(optCtrl = list(maxfun = 1e6))
+#                       )
+# 
+# # Save the maximal model
+# print("Saving the glmm.max.rt ...")
+# save(glmm.max.rt, file = "P101_glmm_max_rt.RData")
 
 ########### restart glmm.max from the current parameters ##########
 # load("P101_glmm_max_rt.RData")
@@ -56,7 +56,7 @@ save(glmm.max.rt, file = "P101_glmm_max_rt.RData")
 
 
 ###### allFit for the maximal model #####
-# glmm.max.rt <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+# glmm.max.rt <- glmer(RT ~ Viewing * Congruency * Alignment + ExpCode +
 #                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
 #                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
 #                       data = df.cf.rt,
@@ -78,21 +78,21 @@ save(glmm.max.rt, file = "P101_glmm_max_rt.RData")
 
 #############################  Fitting the zcp glmm model for RT ##############################
 # fit the model for RT
-# message("")
-# message(paste0(strrep("#", 80)))
-# message("Fitting the zcp model...")
-# 
-# load("P101_glmm_max_rt.RData")
-# 
-# glmm.zcp.rt <- update(glmm.max.rt,
-#                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
-#                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || FaceGroup)
-#                        )
-# 
-# # Save the zcp model
-# print("Saving the glmm.zcp.rt ...")
-# save(glmm.zcp.rt, file = "P101_glmm_zcp_rt.RData")
+message("")
+message(paste0(strrep("#", 80)))
+message("Fitting the zcp model...")
+
+load("P101_glmm_max_rt.RData")
+
+glmm.zcp.rt <- update(glmm.max.rt,
+                       formula = RT ~ Viewing * Congruency * Alignment + ExpCode +
+                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
+                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || FaceGroup)
+                       )
+
+# Save the zcp model
+print("Saving the glmm.zcp.rt ...")
+save(glmm.zcp.rt, file = "P101_glmm_zcp_rt.RData")
 
 ########### restart glmm.zcp from the current parameters ##########
 # load("P101_glmm_zcp_rt.RData")
@@ -114,7 +114,7 @@ save(glmm.max.rt, file = "P101_glmm_max_rt.RData")
 # load("P101_glmm_zcp_rt.RData")
 # 
 # glmm.rdc.rt <- update(glmm.zcp.rt,
-#                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                        formula = RT ~ Viewing * Congruency * Alignment + ExpCode +
 #                            (1 + View_D + View_Con + View_Ali + View_Con_Ali || Participant) + 
 #                            (1 + Ali_D + View_Con || FaceGroup)
 #                        )
@@ -143,7 +143,7 @@ save(glmm.max.rt, file = "P101_glmm_max_rt.RData")
 # load("P101_glmm_rdc_rt.RData")
 # 
 # glmm.etd.rt <- update(glmm.rdc.rt,
-#                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                        formula = RT ~ Viewing * Congruency * Alignment + ExpCode +
 #                            (1 + View_D + View_Con + View_Ali + View_Con_Ali | Participant) + 
 #                            (1 + Ali_D + View_Con | FaceGroup)
 # )
