@@ -488,7 +488,7 @@ d.Count.cf.E2 %>%
 
 rm.count.E2 <- {
   d.Count.cf.E2 %>% 
-    filter(Count < max(d.Count.E2$Count) * rm.Count.rate) %$%
+    filter(Count < max(d.Count.cf.E2$Count) * rm.Count.rate) %$%
     unique(Participant)
 }
 
@@ -1330,7 +1330,7 @@ d.Count.cf.E4 %>%
 
 rm.count.E4 <- {
   d.Count.cf.E4 %>% 
-    filter(Count < max(d.Count.E4$Count) * rm.Count.rate) %$%
+    filter(Count < max(d.Count.cf.E4$Count) * rm.Count.rate) %$%
     unique(Participant)
 }
 
