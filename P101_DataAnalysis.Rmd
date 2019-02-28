@@ -51,6 +51,7 @@ This is the data analysis for all the four experiments. At first, the data analy
 # load R files
 source(file.path(folder.R, "geom_flat_violin.R"))
 source(file.path(folder.R, "plot_theme.R"))
+source(file.path(folder.R, "dummy_coding_P101.R"))
 
 ```
 
@@ -181,7 +182,8 @@ d.R.E1 <- { # get the hit and correct rejection rates
            Z.hit = qnorm(same),
            Z.FA = qnorm(FA),
            dprime = Z.hit - Z.FA) %>% # get the d prime
-    select(Viewing, Participant, Congruency, Alignment, dprime)
+    select(Viewing, Participant, Congruency, Alignment, dprime) %>% 
+    ungroup()
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
@@ -510,7 +512,8 @@ d.R.E2 <- { # get the hit and correct rejection rates
            Z.hit = qnorm(same),
            Z.FA = qnorm(FA),
            dprime = Z.hit - Z.FA) %>% # get the d prime
-    select(Viewing, Participant, Congruency, Alignment, dprime)
+    select(Viewing, Participant, Congruency, Alignment, dprime) %>% 
+    ungroup()
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
@@ -1036,7 +1039,8 @@ d.R.E3 <- { # get the hit and correct rejection rates
            Z.hit = qnorm(same),
            Z.FA = qnorm(FA),
            dprime = Z.hit - Z.FA) %>% # get the d prime
-    select(Viewing, Participant, Congruency, Alignment, dprime)
+    select(Viewing, Participant, Congruency, Alignment, dprime) %>% 
+    ungroup()
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
@@ -1351,7 +1355,8 @@ d.R.E4 <- { # get the hit and correct rejection rates
            Z.hit = qnorm(same),
            Z.FA = qnorm(FA),
            dprime = Z.hit - Z.FA) %>% # get the d prime
-    select(Viewing, Participant, Congruency, Alignment, dprime)
+    select(Viewing, Participant, Congruency, Alignment, dprime) %>% 
+    ungroup()
 }
 
 # remove the participants whose dprime were less than 1 in at least one condition
@@ -2073,6 +2078,93 @@ contrast(emm.acc, "pairwise", simple = "each", combine = TRUE, adjust = "bonferr
 ```{r}
 contrast(emm.acc, interaction = "pairwise", by = "Viewing")
 ```
+
+
+### Sensitivity d'
+```{r}
+# combine d' data
+d.R.E1 %<>% mutate(ExpCode = "E1", isCatch = 0, Participant = as.character(Participant))
+d.R.E2 %<>% mutate(ExpCode = "E2", isCatch = 1, Participant = as.character(Participant))
+d.R.E3 %<>% mutate(ExpCode = "E3", isCatch = 0, Participant = as.character(Participant))
+d.R.E4 %<>% mutate(ExpCode = "E4", isCatch = 1, Participant = as.character(Participant))
+
+d.R.all <- {
+    bind_rows(d.R.E1, d.R.E2, d.R.E3, d.R.E4)
+}
+
+d.R.all <- dummy_coding_P101(d.R.all)
+
+```
+
+```{r}
+lmm.max.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali | Participant), 
+                  data = d.R.all)
+
+print(summary(lmm.max.d), corr = FALSE)
+```
+
+
+```{r}
+lmm.zcp.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali || Participant), 
+                  data = d.R.all)
+
+print(summary(lmm.zcp.d), corr = FALSE)
+```
+
+```{r}
+summary(rePCA(lmm.zcp.d))
+```
+
+```{r}
+lmm.rdc.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                    (1 + View_D + Con_D + Con_Ali || Participant), 
+                  data = d.R.all)
+
+print(summary(lmm.rdc.d), corr = FALSE)
+```
+
+
+```{r}
+lmm.rdc1.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                    (1 + View_D + Con_D + Con_Ali + View_Con_Ali || Participant), 
+                  data = d.R.all)
+
+print(summary(lmm.rdc1.d), corr = FALSE)
+```
+
+
+```{r}
+lmm.etd.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                    (1 + View_D + Con_D + Con_Ali | Participant), 
+                  data = d.R.all)
+
+print(summary(lmm.etd.d), corr = FALSE)
+```
+
+```{r}
+anova(lmm.etd.d, lmm.rdc.d)
+```
+
+```{r}
+emm.d.all <- emmeans(lmm.etd.d, ~ Alignment | c(Congruency, Viewing))
+data.frame(summary(emm.d.all)) %>% 
+  select(Viewing, Congruency, Alignment, everything())
+```
+
+
+```{r}
+emmip(emm.d.all, Congruency ~ Alignment | Viewing, CIs = TRUE)
+
+```
+
+
+```{r}
+contrast(emm.d.all, "pairwise", simple = "each", combine = TRUE, adjust = "bonferroni")
+```
+
+
 
 ### Correct response times
 ```{r}
