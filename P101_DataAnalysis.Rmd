@@ -47,11 +47,13 @@ rm.RT <- 0.2
 
 This is the data analysis for all the four experiments. At first, the data analysis were conducted separately for each experiment. Next, the data of four experiments were analyzed together.
 
-```{r}
-# load R files
-source(file.path(folder.R, "geom_flat_violin.R"))
-source(file.path(folder.R, "plot_theme.R"))
-source(file.path(folder.R, "dummy_coding_P101.R"))
+```{r include=FALSE}
+# load R files in the R folder
+# source(file.path(folder.R, "geom_flat_violin.R"))
+# source(file.path(folder.R, "plot_theme.R"))
+# source(file.path(folder.R, "dummy_coding_P101.R"))
+
+sapply(list.files(folder.R, "*.R", full.names = TRUE, recursive = TRUE), source)
 
 ```
 
@@ -65,7 +67,6 @@ sameDifferent.levels <- c("same", "different")
 facegroups <- c(paste0("F", 1:5), paste0("M", 1:5))
 
 ```
-
 
 
 # Experiment 1
@@ -1811,20 +1812,7 @@ head(df.cf.all)
 
 ```{r manually set the dummy coding for random effects}
 # manually set the dummy coding for random effects
-df.cf.all <- {
-  df.cf.all %>% 
-    mutate(
-      View_D = if_else(Viewing == viewing.levels[1], 0, if_else(Viewing == viewing.levels[2], 1, NaN)),
-      Con_D = if_else(Congruency == congruency.levels[1], 0, if_else(Congruency == congruency.levels[2], 1, NaN)),
-      Ali_D = if_else(Alignment == alignment.levels[1], 0, if_else(Alignment == alignment.levels[2], 1, NaN)),
-      
-      View_Con = View_D * Con_D, 
-      View_Ali = View_D * Ali_D,
-      Con_Ali = Con_D * Ali_D,
-      
-      View_Con_Ali = View_D * Con_D * Ali_D
-    )
-}
+df.cf.all %<>% dummy_coding_P101()
 
 if (saveData) {
   save(df.cf.all, file = file.path(folder.nesi, "P101_cf_clean.RData"))
@@ -1833,7 +1821,7 @@ if (saveData) {
 ```
 
 
-### Accuracy
+### Response
 #### Logit mixed model
 ##### Maximal model
 ```{r maximal model for accuracy}
@@ -1841,16 +1829,17 @@ if (saveData) {
 file.max.acc <- file.path(folder.nesi, "P101_acc_glmm_max.RData")
 
 if (!file.exists(file.max.acc)) {
+
   glmm.max.acc <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) + 
-                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
+                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant), 
                         data = df.cf.all,
                         family = "binomial",
                         # verbose = TRUE,
-                        control = glmerControl(optCtrl = list(maxfun = 1e6))
-  )
+                        control = glmerControl(optCtrl = list(maxfun = 1e6)))
+
+  pars.max.acc <- get_pars(glmm.max.acc)
+  glmm.max1.acc <- update(glmm.max.acc, start = pars.max.acc)
   
-  save(glmm.max.acc, file = file.max.acc)
 } else {
   load(file.max.acc)
 }
@@ -1860,102 +1849,79 @@ print(summary(glmm.max.acc), corr = FALSE)
 
 ```{r maximal model 2 for accuracy}
 # maximal model 2 for accuarcy (starting with the parameters from maximal model)
-file.max2.acc <- file.path(folder.nesi, "P101_acc_glmm_max2.RData")
 
-if (!file.exists(file.max2.acc)) {
-  pars.max.acc <- get_pars(glmm.max.acc)
-  glmm.max2.acc <- update(glmm.max.acc, start = pars.max.acc)
-  
-  save(glmm.max2.acc, file = file.max2.acc)
-} else {
-  load(file.max2.acc)
-}
-
-print(summary(glmm.max2.acc), corr = FALSE)
+print(summary(glmm.max1.acc), corr = FALSE)
 
 ```
-
 
 ##### Zero-correlation-parameter model
 ```{r zcp model for accuarcy}
 # zero-correlation-parameter model for accuracy
-file.zcp.acc <- file.path(folder.nesi, "P101_acc_glmm_zcp.RData")
-
-if (!file.exists(file.zcp.acc)) {
-  glmm.zcp.acc <- update(glmm.max.acc,
-                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) + 
-                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || FaceGroup),
-                         verbose = FALSE)
-  
-  save(glmm.zcp.acc, file = file.zcp.acc)
-} else {
-  load(file.zcp.acc)
-}
-
-print(summary(glmm.zcp.acc), corr = FALSE)
+# file.zcp.acc <- file.path(folder.nesi, "P101_acc_glmm_zcp.RData")
+# 
+# if (!file.exists(file.zcp.acc)) {
+#   glmm.zcp.acc <- update(glmm.max.acc,
+#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+#                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant),
+#                          verbose = FALSE)
+#   
+#   pars.zcp.acc <- get_pars(glmm.zcp.acc)
+#   glmm.zcp2.acc <- update(glmm.zcp.acc, start = pars.zcp.acc)
+#   
+# } else {
+#   load(file.zcp.acc)
+# }
+# 
+# print(summary(glmm.zcp.acc), corr = FALSE)
 ```
 
 ```{r zcp model 2 for accuracy}
-# zero-correlation-parameter model 2 for accuracy
-file.zcp2.acc <- file.path(folder.nesi, "P101_acc_glmm_zcp2.RData")
-
-if (!file.exists(file.zcp2.acc)) {
-  pars.zcp.acc <- get_pars(glmm.zcp.acc)
-  glmm.zcp2.acc <- update(glmm.zcp.acc, start = pars.zcp.acc)
-  
-  save(glmm.zcp2.acc, file = file.zcp2.acc)
-} else {
-  load(file.zcp2.acc)
-}
-
-print(summary(glmm.zcp2.acc), corr = FALSE)
+# print(summary(glmm.zcp1.acc), corr = FALSE)
 
 ```
 
 
 ```{r PCA for zcp model}
-summary(rePCA(glmm.zcp2.acc))
+summary(rePCA(glmm.zcp1.acc))
 
 ```
 
 
 ##### Reduced model
 ```{r reduced model for accuracy}
-# reduced model for accuracy
-file.rdc.acc <- file.path(folder.nesi, "P101_acc_glmm_rdc.RData")
-
-if (!file.exists(file.rdc.acc)) {
-  glmm.rdc.acc <- update(glmm.zcp.acc, 
-                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                           (1 + View_D + View_Con + View_Ali + View_Con_Ali || Participant) + 
-                           (1 + Ali_D + View_Con || FaceGroup),
-                         verbose = FALSE)
-  
-  save(glmm.rdc.acc, file = file.rdc.acc)
-} else {
-  load(file.rdc.acc)
-}
-
-print(summary(glmm.rdc.acc), corr = FALSE)
+# # reduced model for accuracy
+# file.rdc.acc <- file.path(folder.nesi, "P101_acc_glmm_rdc.RData")
+# 
+# if (!file.exists(file.rdc.acc)) {
+#   glmm.rdc.acc <- update(glmm.zcp.acc, 
+#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+#                            (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant),
+#                          verbose = FALSE)
+#   
+#   save(glmm.rdc.acc, file = file.rdc.acc)
+# } else {
+#   load(file.rdc.acc)
+# }
+# 
+# print(summary(glmm.rdc.acc), corr = FALSE)
 
 ```
 
 ```{r reduced model 2 for accuarcy}
-# reduced model 2 for accuarcy (start from parameters of glmm.rdc.acc)
-file.rdc2.acc <- file.path(folder.nesi, "P101_acc_glmm_rdc2.RData")
-
-if (!file.exists(file.rdc2.acc)) {
-  pars.rdc.acc <- get_pars(glmm.rdc.acc)
-  
-  glmm.rdc2.acc <- update(glmm.rdc.acc, start = pars.rdc.acc)
-  
-  save(glmm.rdc2.acc, file = file.rdc2.acc)
-} else {
-  load(file.rdc2.acc)
-}
-
-print(summary(glmm.rdc2.acc), corr = FALSE)
+# # reduced model 2 for accuarcy (start from parameters of glmm.rdc.acc)
+# file.rdc2.acc <- file.path(folder.nesi, "P101_acc_glmm_rdc2.RData")
+# 
+# if (!file.exists(file.rdc2.acc)) {
+#   pars.rdc.acc <- get_pars(glmm.rdc.acc)
+#   
+#   glmm.rdc2.acc <- update(glmm.rdc.acc, start = pars.rdc.acc)
+#   
+#   save(glmm.rdc2.acc, file = file.rdc2.acc)
+# } else {
+#   load(file.rdc2.acc)
+# }
+# 
+# print(summary(glmm.rdc2.acc), corr = FALSE)
 
 ```
 
@@ -1966,40 +1932,40 @@ anova(glmm.zcp2.acc, glmm.rdc2.acc)
 
 ##### Extended model
 ```{r extended model for accuarcy}
-# extended model for accuarcy
-file.etd.acc <- file.path(folder.nesi, "P101_acc_glmm_etd.RData")
-
-if (!file.exists(file.etd.acc)) {
-  glmm.etd.acc <- update(glmm.rdc.acc,
-                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                           (1 + View_D + View_Con + View_Ali + View_Con_Ali | Participant) + 
-                           (1 + Ali_D + View_Con | FaceGroup),
-                         verbose = FALSE)
-  
-  save(glmm.etd.acc, file = file.etd.acc)
-} else {
-  load(file.etd.acc)
-}
-
-print(summary(glmm.etd.acc), corr = FALSE)
+# # extended model for accuarcy
+# file.etd.acc <- file.path(folder.nesi, "P101_acc_glmm_etd.RData")
+# 
+# if (!file.exists(file.etd.acc)) {
+#   glmm.etd.acc <- update(glmm.rdc.acc,
+#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                            (1 + View_D + View_Con + View_Ali + View_Con_Ali | Participant) + 
+#                            (1 + Ali_D + View_Con | FaceGroup),
+#                          verbose = FALSE)
+#   
+#   save(glmm.etd.acc, file = file.etd.acc)
+# } else {
+#   load(file.etd.acc)
+# }
+# 
+# print(summary(glmm.etd.acc), corr = FALSE)
 
 ```
 
 ```{r extended model 2 for accuarcy}
-# extended model 2 for accuarcy (start from parameters of glmm.etd.acc)
-file.etd2.acc <- file.path(folder.nesi, "P101_acc_glmm_etd2.RData")
-
-if (!file.exists(file.etd2.acc)) {
-  pars.etd.acc <- get_pars(glmm.etd.acc)
-  
-  glmm.etd2.acc <- update(glmm.etd.acc, start = pars.etd.acc)
-  
-  save(glmm.etd2.acc, file = file.etd2.acc)
-} else {
-  load(file.etd2.acc)
-}
-
-print(summary(glmm.etd2.acc), corr = FALSE)
+# # extended model 2 for accuarcy (start from parameters of glmm.etd.acc)
+# file.etd2.acc <- file.path(folder.nesi, "P101_acc_glmm_etd2.RData")
+# 
+# if (!file.exists(file.etd2.acc)) {
+#   pars.etd.acc <- get_pars(glmm.etd.acc)
+#   
+#   glmm.etd2.acc <- update(glmm.etd.acc, start = pars.etd.acc)
+#   
+#   save(glmm.etd2.acc, file = file.etd2.acc)
+# } else {
+#   load(file.etd2.acc)
+# }
+# 
+# print(summary(glmm.etd2.acc), corr = FALSE)
 
 ```
 
@@ -2044,8 +2010,8 @@ summary(rePCA(glmm.etd2.acc))
 
 ##### Optimal model
 ```{r}
-glmm.opt.acc <- glmm.rdc2.acc
-summary(glmm.opt.acc)
+# glmm.opt.acc <- glmm.rdc2.acc
+# summary(glmm.opt.acc)
 
 ```
 
@@ -2096,49 +2062,53 @@ d.R.all <- dummy_coding_P101(d.R.all)
 
 ```
 
+#### The maximal model
 ```{r}
 lmm.max.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
                     (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali | Participant), 
-                  data = d.R.all)
+                  data = d.R.all,
+                  REML = FALSE)
 
 print(summary(lmm.max.d), corr = FALSE)
 ```
 
-
+#### The zero-correlation-parameter model
 ```{r}
-lmm.zcp.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali || Participant), 
-                  data = d.R.all)
+lmm.zcp.d <- update(lmm.max.d,
+                    formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali || Participant))
 
 print(summary(lmm.zcp.d), corr = FALSE)
 ```
 
+
+#### The reduced model
 ```{r}
 summary(rePCA(lmm.zcp.d))
 ```
 
 ```{r}
-lmm.rdc.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                    (1 + View_D + Con_D + Con_Ali || Participant), 
-                  data = d.R.all)
+lmm.rdc.d <- update(lmm.zcp.d,
+                    formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                      (1 + View_D + Con_D + Con_Ali || Participant))
 
 print(summary(lmm.rdc.d), corr = FALSE)
 ```
 
 
 ```{r}
-lmm.rdc1.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                    (1 + View_D + Con_D + Con_Ali + View_Con_Ali || Participant), 
-                  data = d.R.all)
+lmm.rdc1.d <- update(lmm.rdc.d, 
+                     formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                       (1 + View_D + Con_D + Con_Ali + View_Con_Ali || Participant))
 
 print(summary(lmm.rdc1.d), corr = FALSE)
 ```
 
-
+#### The extended model
 ```{r}
-lmm.etd.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                    (1 + View_D + Con_D + Con_Ali | Participant), 
-                  data = d.R.all)
+lmm.etd.d <- update(lmm.rdc.d,
+                    formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                    (1 + View_D + Con_D + Con_Ali | Participant))
 
 print(summary(lmm.etd.d), corr = FALSE)
 ```
@@ -2147,8 +2117,24 @@ print(summary(lmm.etd.d), corr = FALSE)
 anova(lmm.etd.d, lmm.rdc.d)
 ```
 
+#### The optimal model
 ```{r}
-emm.d.all <- emmeans(lmm.etd.d, ~ Alignment | c(Congruency, Viewing))
+lmm.opt.d <- update(lmm.etd.d,
+                    REML = TRUE)
+
+summary(lmm.opt.d)
+```
+
+
+#### Disgnostic plots
+```{r}
+qqplot_lmer(lmm.opt.d)
+```
+
+#### Estimated marginal means
+
+```{r}
+emm.d.all <- emmeans(lmm.opt.d, ~ Alignment | c(Congruency, Viewing))
 data.frame(summary(emm.d.all)) %>% 
   select(Viewing, Congruency, Alignment, everything())
 ```
@@ -2177,35 +2163,130 @@ df.cf.rt <- {
 ```
 
 
+#### Linear mixed model
+##### The maximal model
+```{r maximal model for correct RT }
+# maximal model for correct RT
+file.max.rt <- file.path(folder.nesi, "P101_rt_lmm_max.RData")
+
+if (!file.exists(file.max.rt)) {
+  lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+                       (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant),
+                     data = df.cf.rt,
+                     REML = FALSE,
+                     # verbose = TRUE,
+                     control = lmerControl(optCtrl = list(maxfun = 1e6))
+  )
+    save(lmm.max.rt, file = file.max.rt)
+} else {
+    load(file.max.rt)
+}
+
+print(summary(lmm.max.rt), corr = FALSE)
+```
+
+##### The zcp model
+```{r zcp model for correct RT }
+# zcp model for correct RT
+file.zcp.rt <- file.path(folder.nesi, "P101_rt_lmm_zcp.RData")
+
+if (!file.exists(file.zcp.rt)) {
+  lmm.zcp.rt <- update(lmm.max.rt,
+                       formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+                         (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant))
+} else {
+    load(file.zcp.rt)
+}
+
+print(summary(lmm.zcp.rt), corr = FALSE)
+```
+
+##### The reduced model
+```{r}
+
+# zcp model for correct RT
+file.zcp.rt.step <- file.path(folder.nesi, "P101_rt_lmm_zcp_step.RData")
+
+if (!file.exists(file.zcp.rt.step)) {
+  lmm.zcp.rt.step <- step(lmm.zcp.rt, reduce.fixed = FALSE)
+} else {
+    load(file.zcp.rt.step)
+}
+
+lmm.zcp.rt.step
+
+```
+
+
+```{r}
+lmm.rdc.rt <- get_model(lmm.zcp.rt.step)
+
+print(summary(lmm.rdc.rt), corr = FALSE)
+```
+
+##### The extended model
+```{r etd model for correct RT }
+# extended model for correct RT
+file.etd.rt <- file.path(folder.nesi, "P101_rt_lmm_etd.RData")
+
+if (!file.exists(file.etd.rt)) {
+  lmm.etd.rt <- update(lmm.zcp.rt,
+                       formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+                         (1 + View_D | Participant),
+                       verbose = FALSE)
+} else {
+    load(file.etd.rt)
+}
+
+print(summary(lmm.etd.rt), corr = FALSE)
+```
+
+```{r}
+anova(lmm.etd.rt, lmm.rdc.rt)
+```
+
+##### The optimal model
+```{r}
+lmm.opt.rt <- update(lmm.etd.rt,
+                     REML = TRUE,
+                     verbose = FALSE)
+
+summary(lmm.opt.rt)
+
+```
+
+
+##### Check the residuals
+```{r}
+qqnorm(residuals(lmm.opt.rt))
+```
+
+```{r}
+qqplot_lmer(lmm.opt.rt)
+```
+Generalized linear mixed (log) model has to be used for RT. 
+
+
 #### Log mixed model
 ##### Maximal model
 ```{r maximal model for correct RT }
 # maximal model for correct RT
 file.max.rt <- file.path(folder.nesi, "P101_rt_glmm_max.RData")
-# 
-# if (!file.exists(file.max.rt)) {
-#     glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode + 
-#                               (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) + 
-#                               (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
-#                           data = df.cf.rt,
-#                           family = "poisson",
-#                           # verbose = TRUE,
-#                           control = glmerControl(optCtrl = list(maxfun = 1e6))
-#     )
-lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                     (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
-                     (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
-                   data = df.cf.rt,
-                   REML = FALSE,
-                   # verbose = TRUE,
-                   control = lmerControl(optCtrl = list(maxfun = 1e6))
-)
-#     
-#     save(glmm.max.rt, file = file.max.rt)
-# } else {
-#     load(file.max.rt)
-# }
-# 
+
+if (!file.exists(file.max.rt)) {
+    glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant),
+                          data = df.cf.rt,
+                          family = "poisson",
+                          # verbose = TRUE,
+                          control = glmerControl(optCtrl = list(maxfun = 1e6))
+    )
+
+    save(glmm.max.rt, file = file.max.rt)
+} else {
+    load(file.max.rt)
+}
+
 print(summary(lmm.max.rt), corr = FALSE)
 ```
 
@@ -2216,21 +2297,12 @@ file.zcp.rt <- file.path(folder.nesi, "P101_rt_glmm_zcp.RData")
 
 if (!file.exists(file.zcp.rt)) {
     glmm.zcp.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
-                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || FaceGroup),
+                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant),
                           data = df.cf.rt,
                           family = "poisson",
                           # verbose = TRUE,
                           control = glmerControl(optCtrl = list(maxfun = 1e6))
     )
-# lmm.zcp.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-#                      (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
-#                      (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | FaceGroup),
-#                    data = df.cf.rt,
-#                    REML = FALSE,
-#                    # verbose = TRUE,
-#                    control = lmerControl(optCtrl = list(maxfun = 1e6))
-# )
 
 } else {
     load(file.zcp.rt)
