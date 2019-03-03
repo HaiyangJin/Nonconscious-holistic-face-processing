@@ -1823,6 +1823,86 @@ if (saveData) {
 
 ### Response
 #### Logit mixed model
+##### Build up
+```{r}
+
+glmm.rsp1 <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+                        (1 | Participant), 
+                      data = df.cf.all,
+                      family = "binomial",
+                      # verbose = TRUE,
+                      control = glmerControl(optCtrl = list(maxfun = 1e6)))
+
+glmm.rsp2 <- re_fit(glmm.rsp1)
+
+print(summary(glmm.rsp2), corr = FALSE)
+
+```
+
+```{r}
+glmm.rsp3 <- update(glmm.rsp2,
+                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+                        (1 + View_D | Participant),
+                    start = NULL)
+
+glmm.rsp4 <- re_fit(glmm.rsp3)
+
+anova(glmm.rsp4, glmm.rsp2)
+```
+
+```{r}
+glmm.rsp5 <- update(glmm.rsp4,
+                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+                        (1 + View_D + Con_D | Participant),
+                    start = NULL)
+
+glmm.rsp6 <- re_fit(glmm.rsp5)
+
+anova(glmm.rsp6, glmm.rsp4)
+```
+
+```{r}
+glmm.rsp7 <- update(glmm.rsp4,
+                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+                        (1 + View_D + Ali_D | Participant),
+                    start = NULL)
+
+glmm.rsp8 <- re_fit(glmm.rsp7)
+
+anova(glmm.rsp6, glmm.rsp4)
+```
+
+```{r}
+glmm.rsp9 <- update(glmm.rsp4,
+                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+                        (1 + Con_D + Ali_D | Participant),
+                    start = NULL)
+
+glmm.rsp10 <- re_fit(glmm.rsp9)
+
+anova(glmm.rsp10, glmm.rsp4)
+```
+
+
+```{r}
+glmm.rsp11 <- update(glmm.rsp4,
+                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+                        (1 + View_D + Con_D + Ali_D | Participant),
+                    start = NULL)
+
+glmm.rsp12 <- re_fit(glmm.rsp11)
+
+anova(glmm.rsp10, glmm.rsp4)
+```
+
+
+
+
+
+
+
+
+
 ##### Maximal model
 ```{r maximal model for accuracy}
 # maximal model for accuracy
