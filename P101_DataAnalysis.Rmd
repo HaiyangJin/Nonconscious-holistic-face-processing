@@ -1936,53 +1936,41 @@ print(summary(glmm.max.resp), corr = FALSE)
 ##### Zero-correlation-parameter model
 ```{r zcp model for responses}
 # zero-correlation-parameter model for responses
-# file.zcp.resp <- file.path(folder.nesi, "P101_resp_glmm_zcp.RData")
-# 
-# if (!file.exists(file.zcp.resp)) {
-#   glmm.zcp.resp <- update(glmm.max.resp,
-#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant),
-#                          verbose = FALSE)
-# 
-#   pars.zcp.resp <- get_pars(glmm.zcp.resp)
-#   glmm.zcp2.resp <- update(glmm.zcp.resp, start = pars.zcp.resp)
-# 
-# } else {
-#   load(file.zcp.resp)
-# }
-# 
-# print(summary(glmm.zcp.resp), corr = FALSE)
-```
+file.zcp.resp <- file.path(folder.nesi, "P101_resp_glmm_zcp.RData")
 
-```{r zcp model 2 for responses}
-# print(summary(glmm.zcp1.resp), corr = FALSE)
+if (!file.exists(file.zcp.resp)) {
+  glmm.zcp.resp <- update(glmm.max.resp,
+                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant),
+                         verbose = FALSE)
+  
+  glmm.zcp1.resp <- re_fit(glmm.zcp.resp)
 
-```
+} else {
+  load(file.zcp.resp)
+}
 
-
-```{r PCA for zcp model}
-summary(rePCA(glmm.zcp1.resp))
-
+print(summary(glmm.zcp1.resp), corr = FALSE)
 ```
 
 
 ##### Reduced model
 ```{r reduced model for responses}
-# # reduced model for responses
-# file.rdc.resp <- file.path(folder.nesi, "P101_resp_glmm_rdc.RData")
-# 
-# if (!file.exists(file.rdc.resp)) {
-#   glmm.rdc.resp <- update(glmm.zcp.resp, 
-#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-#                            (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant),
-#                          verbose = FALSE)
-#   
-#   save(glmm.rdc.resp, file = file.rdc.resp)
-# } else {
-#   load(file.rdc.resp)
-# }
-# 
-# print(summary(glmm.rdc.resp), corr = FALSE)
+# reduced model for responses
+file.rdc.resp <- file.path(folder.nesi, "P101_resp_glmm_rdc.RData")
+
+if (!file.exists(file.rdc.resp)) {
+  glmm.rdc.resp <- update(glmm.zcp.resp,
+                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                           (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant),
+                         verbose = FALSE)
+
+  save(glmm.rdc.resp, file = file.rdc.resp)
+} else {
+  load(file.rdc.resp)
+}
+
+print(summary(glmm.rdc.resp), corr = FALSE)
 
 ```
 

@@ -21,49 +21,36 @@ message("Loading the data file...")
 load("P101_cf_clean.RData")
 
 #############################  Fitting the maximal glmm model for response ##############################
-# fit the model for response
-message("")
-message(paste0(strrep("#", 80)))
-message("Fitting the glmm.max.resp model...")
-
-glmm.max.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant),
-                      data = df.cf.all,
-                      family = "binomial",
-                      verbose = TRUE,
-                      control = glmerControl(optCtrl = list(maxfun = 1e6))
-                      )
-
-# Save the maximal model
-print("Saving the glmm.max.resp ...")
-save(glmm.max.resp, file = "P101_resp_glmm_max.RData")
-
-########### restart glmm.max from the current parameters ##########
-# load("P101_glmm_max_resp.RData")
-# source("get_pars.R")
-# pars.max.resp <- get_pars(glmm.max.resp)
-# glmm.max2.resp <- update(glmm.max.resp, start = pars.max.resp)
+# # fit the model for response
+# message("")
+# message(paste0(strrep("#", 80)))
+# message("Fitting the glmm.max.resp model...")
 # 
-# # Save the maximal2 model
-# print("Saving the glmm.max2.resp ...")
-# save(glmm.max2.resp, file = "P101_glmm_max2_resp.RData")
+# glmm.max.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant),
+#                       data = df.cf.all,
+#                       family = "binomial",
+#                       verbose = TRUE,
+#                       control = glmerControl(optCtrl = list(maxfun = 1e6))
+#                       )
+# 
+# # Save the maximal model
+# print("Saving the glmm.max.resp ...")
+# save(glmm.max.resp, file = "P101_resp_glmm_max.RData")
 
 
 #############################  Fitting the zcp glmm model for response ##############################
-# fit the model for response
+# # fit the model for response
 # message("")
 # message(paste0(strrep("#", 80)))
 # message("Fitting the zcp model...")
 # 
 # load("P101_resp_glmm_max.RData")
-# 
 # glmm.zcp.resp <- update(glmm.max.resp,
 #                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
 #                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant))
-# 
 # source("get_pars.R")
-# pars.zcp.resp <- get_pars(glmm.zcp.resp)
-# glmm.zcp1.resp <- update(glmm.zcp.resp, start = pars.zcp.resp)
+# glmm.zcp1.resp <- re_fit(glmm.zcp.resp)
 # 
 # # Save the zcp2 model
 # print("Saving the glmm.zcp2.resp ...")
@@ -71,30 +58,19 @@ save(glmm.max.resp, file = "P101_resp_glmm_max.RData")
 
 
 #############################  Fitting the reduced glmm model for response ##############################
-# # fit the model for response
-# message("")
-# message(paste0(strrep("#", 80)))
-# message("Fitting the reduced model...")
-# 
-# load("P101_glmm_zcp_resp.RData")
-# 
-# glmm.rdc.resp <- update(glmm.zcp.resp,
-#                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-#                          (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant))
-# 
-# # Save the rdc model
-# print("Saving the glmm.rdc.resp ...")
-# save(glmm.rdc.resp, file = "P101_glmm_rdc_resp.RData")
-# 
-# ########### restart glmm.rdc from the current parameters ##########
-# source("get_pars.R")
-# pars.rdc.resp <- get_pars(glmm.rdc.resp)
-# glmm.rdc2.resp <- update(glmm.rdc.resp, start = pars.rdc.resp)
-# 
-# # Save the rdc2 model
-# print("Saving the glmm.rdc2.resp ...")
-# save(glmm.rdc2.resp, file = "P101_glmm_rdc2_resp.RData")
+# fit the model for response
+message("")
+message(paste0(strrep("#", 80)))
+message("Fitting the reduced model...")
 
+load("P101_resp_glmm_zcp.RData")
+glmm.rdc.resp <- update(glmm.zcp.resp,
+                       formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                         (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant))
+
+# Save the rdc model
+print("Saving the glmm.rdc.resp ...")
+save(glmm.rdc.resp, file = "P101_glmm_rdc_resp.RData")
 
 
 #############################  Fitting the extended glmm model for response ##############################
