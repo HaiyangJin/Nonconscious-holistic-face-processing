@@ -82,14 +82,15 @@ message("Fitting the extended model...")
 load("P101_resp_glmm_rdc.RData")
 glmm.etd.resp <- update(glmm.rdc.resp,
                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                          (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant))
+                          (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
+                        control = glmerControl(optCtrl = list(maxfun = 1e6)))
 
 source("get_pars.R")
 glmm.etd1.resp <- re_fit(glmm.etd.resp)
 
 # Save the etd model
 print("Saving the glmm.etd.resp ...")
-save(glmm.etd.resp, file = "P101_resp_glmm_etd.RData")
+save(glmm.etd.resp, glmm.etd1.resp, file = "P101_resp_glmm_etd.RData")
 
 
 #############################  Fitting the extended glmm model for (allFit) response ##############################

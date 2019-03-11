@@ -1985,14 +1985,14 @@ if (!file.exists(file.etd.resp)) {
   glmm.etd.resp <- update(glmm.rdc.resp,
                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
                            (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
-                         verbose = FALSE)
+                         verbose = FALSE,
+                         control = glmerControl(optCtrl = list(maxfun = 1e6)))
 
 } else {
   load(file.etd.resp)
 }
 
 print(summary(glmm.etd.resp), corr = FALSE)
-glmm.etd.resp@optinfo$optimizer
 ```
 
 
@@ -2008,7 +2008,7 @@ if (!file.exists(file.etd.resp.allFit)) {
   )
   
   glmm.etd.resp.allFit <- allFit(glmm.etd0.resp,
-                                 control = glmerControl(optCtrl = list(maxfun = 1e6)))
+                                 maxfun = 1e6)
   
 } else {
   load(file.etd.resp.allFit)
