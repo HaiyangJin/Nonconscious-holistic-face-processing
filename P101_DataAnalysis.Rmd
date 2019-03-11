@@ -1992,7 +1992,7 @@ if (!file.exists(file.etd.resp)) {
 }
 
 print(summary(glmm.etd.resp), corr = FALSE)
-
+glmm.etd.resp@optinfo$optimizer
 ```
 
 
@@ -2014,7 +2014,9 @@ if (!file.exists(file.etd.resp.allFit)) {
   load(file.etd.resp.allFit)
 }
 
-# print(summary(glmm.etd.resp.allFit), corr = FALSE)
+allFit.etd.resp <- summary(glmm.etd.resp.allFit)
+
+allFit.etd.resp
 
 ```
 

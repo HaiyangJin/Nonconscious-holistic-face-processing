@@ -74,43 +74,43 @@ load("P101_cf_clean.RData")
 
 
 #############################  Fitting the extended glmm model for response ##############################
-# # fit the model for response
-# message("")
-# message(paste0(strrep("#", 80)))
-# message("Fitting the extended model...")
-# 
-# load("P101_resp_glmm_rdc.RData")
-# glmm.etd.resp <- update(glmm.rdc.resp,
-#                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                           (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant))
-# 
-# source("get_pars.R")
-# glmm.etd1.resp <- re_fit(glmm.etd.resp)
-# 
-# # Save the etd model
-# print("Saving the glmm.etd.resp ...")
-# save(glmm.etd.resp, file = "P101_resp_glmm_etd.RData")
-
-#############################  Fitting the extended glmm model for (allFit) response ##############################
 # fit the model for response
 message("")
 message(paste0(strrep("#", 80)))
-message("allFitting the extended model...")
+message("Fitting the extended model...")
 
-glmm.etd0.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                          (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
-                      data = df.cf.all,
-                      family = "binomial",
-                      verbose = TRUE
-                      )
+load("P101_resp_glmm_rdc.RData")
+glmm.etd.resp <- update(glmm.rdc.resp,
+                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                          (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant))
 
-glmm.etd.resp.allFit <- allFit(glmm.etd0.resp,
-                               control = glmerControl(optCtrl = list(maxfun = 1e6)))
+source("get_pars.R")
+glmm.etd1.resp <- re_fit(glmm.etd.resp)
 
 # Save the etd model
 print("Saving the glmm.etd.resp ...")
-save(glmm.etd.resp.allFit, file = "P101_resp_glmm_etd_allFit.RData")
+save(glmm.etd.resp, file = "P101_resp_glmm_etd.RData")
 
+
+#############################  Fitting the extended glmm model for (allFit) response ##############################
+# # fit the model for response
+# message("")
+# message(paste0(strrep("#", 80)))
+# message("allFitting the extended model...")
+# 
+# glmm.etd0.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                           (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
+#                       data = df.cf.all,
+#                       family = "binomial",
+#                       verbose = TRUE
+#                       )
+# 
+# glmm.etd.resp.allFit <- allFit(glmm.etd0.resp,
+#                                maxfun = 1e6)
+# 
+# # Save the etd model
+# print("Saving the glmm.etd.resp ...")
+# save(glmm.etd.resp.allFit, file = "P101_resp_glmm_etd_allFit.RData")
 
 
 # versions of packages used
