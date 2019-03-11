@@ -58,47 +58,59 @@ load("P101_cf_clean.RData")
 
 
 #############################  Fitting the reduced glmm model for response ##############################
-# fit the model for response
-message("")
-message(paste0(strrep("#", 80)))
-message("Fitting the reduced model...")
-
-load("P101_resp_glmm_zcp.RData")
-glmm.rdc.resp <- update(glmm.zcp.resp,
-                       formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                         (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant))
-
-# Save the rdc model
-print("Saving the glmm.rdc.resp ...")
-save(glmm.rdc.resp, file = "P101_glmm_rdc_resp.RData")
+# # fit the model for response
+# message("")
+# message(paste0(strrep("#", 80)))
+# message("Fitting the reduced model...")
+# 
+# load("P101_resp_glmm_zcp.RData")
+# glmm.rdc.resp <- update(glmm.zcp.resp,
+#                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                          (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant))
+# 
+# # Save the rdc model
+# print("Saving the glmm.rdc.resp ...")
+# save(glmm.rdc.resp, file = "P101_resp_glmm_rdc.RData")
 
 
 #############################  Fitting the extended glmm model for response ##############################
 # # fit the model for response
 # message("")
 # message(paste0(strrep("#", 80)))
-# message("Fitting the reduced model...")
+# message("Fitting the extended model...")
 # 
-# load("P101_glmm_rdc_resp.RData")
-# 
+# load("P101_resp_glmm_rdc.RData")
 # glmm.etd.resp <- update(glmm.rdc.resp,
-#                        formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                            (1 + View_D + View_Con + View_Ali + View_Con_Ali | Participant) + 
-#                            (1 + Ali_D + View_Con | FaceGroup)
-# )
+#                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                           (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant))
+# 
+# source("get_pars.R")
+# glmm.etd1.resp <- re_fit(glmm.etd.resp)
 # 
 # # Save the etd model
 # print("Saving the glmm.etd.resp ...")
-# save(glmm.etd.resp, file = "P101_glmm_etd_resp.RData")
-# 
-# ########### restart glmm.etd from the current parameters ##########
-# source("get_pars.R")
-# pars.etd.resp <- get_pars(glmm.etd.resp)
-# glmm.etd2.resp <- update(glmm.etd.resp, start = pars.etd.resp)
-# 
-# # Save the etd2 model
-# print("Saving the glmm.etd2.resp ...")
-# save(glmm.etd2.resp, file = "P101_glmm_etd2_resp.RData")
+# save(glmm.etd.resp, file = "P101_resp_glmm_etd.RData")
+
+#############################  Fitting the extended glmm model for (allFit) response ##############################
+# fit the model for response
+message("")
+message(paste0(strrep("#", 80)))
+message("allFitting the extended model...")
+
+glmm.etd0.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                          (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
+                      data = df.cf.all,
+                      family = "binomial",
+                      verbose = TRUE
+                      )
+
+glmm.etd.resp.allFit <- allFit(glmm.etd0.resp,
+                               control = glmerControl(optCtrl = list(maxfun = 1e6)))
+
+# Save the etd model
+print("Saving the glmm.etd.resp ...")
+save(glmm.etd.resp.allFit, file = "P101_resp_glmm_etd_allFit.RData")
+
 
 
 # versions of packages used

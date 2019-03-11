@@ -1896,13 +1896,6 @@ anova(glmm.rsp10, glmm.rsp4)
 ```
 
 
-
-
-
-
-
-
-
 ##### Maximal model
 ```{r maximal model for responses}
 # maximal model for responses
@@ -1953,6 +1946,10 @@ if (!file.exists(file.zcp.resp)) {
 print(summary(glmm.zcp1.resp), corr = FALSE)
 ```
 
+```{r}
+summary(rePCA(glmm.zcp1.resp))
+```
+
 
 ##### Reduced model
 ```{r reduced model for responses}
@@ -1974,71 +1971,53 @@ print(summary(glmm.rdc.resp), corr = FALSE)
 
 ```
 
-```{r reduced model 2 for responses}
-# # reduced model 2 for responses (start from parameters of glmm.rdc.resp)
-# file.rdc2.resp <- file.path(folder.nesi, "P101_resp_glmm_rdc2.RData")
-# 
-# if (!file.exists(file.rdc2.resp)) {
-#   pars.rdc.resp <- get_pars(glmm.rdc.resp)
-#   
-#   glmm.rdc2.resp <- update(glmm.rdc.resp, start = pars.rdc.resp)
-#   
-#   save(glmm.rdc2.resp, file = file.rdc2.resp)
-# } else {
-#   load(file.rdc2.resp)
-# }
-# 
-# print(summary(glmm.rdc2.resp), corr = FALSE)
-
-```
-
-
 ```{r}
-anova(glmm.zcp2.resp, glmm.rdc2.resp)
+anova(glmm.rdc.resp, glmm.zcp1.resp)
 ```
+
 
 ##### Extended model
 ```{r extended model for respuarcy}
-# # extended model for respuarcy
-# file.etd.resp <- file.path(folder.nesi, "P101_resp_glmm_etd.RData")
-# 
-# if (!file.exists(file.etd.resp)) {
-#   glmm.etd.resp <- update(glmm.rdc.resp,
-#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                            (1 + View_D + View_Con + View_Ali + View_Con_Ali | Participant) + 
-#                            (1 + Ali_D + View_Con | FaceGroup),
-#                          verbose = FALSE)
-#   
-#   save(glmm.etd.resp, file = file.etd.resp)
-# } else {
-#   load(file.etd.resp)
-# }
-# 
-# print(summary(glmm.etd.resp), corr = FALSE)
+# extended model for respuarcy
+file.etd.resp <- file.path(folder.nesi, "P101_resp_glmm_etd.RData")
+
+if (!file.exists(file.etd.resp)) {
+  glmm.etd.resp <- update(glmm.rdc.resp,
+                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                           (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
+                         verbose = FALSE)
+
+} else {
+  load(file.etd.resp)
+}
+
+print(summary(glmm.etd.resp), corr = FALSE)
 
 ```
 
-```{r extended model 2 for respuarcy}
-# # extended model 2 for respuarcy (start from parameters of glmm.etd.resp)
-# file.etd2.resp <- file.path(folder.nesi, "P101_resp_glmm_etd2.RData")
-# 
-# if (!file.exists(file.etd2.resp)) {
-#   pars.etd.resp <- get_pars(glmm.etd.resp)
-#   
-#   glmm.etd2.resp <- update(glmm.etd.resp, start = pars.etd.resp)
-#   
-#   save(glmm.etd2.resp, file = file.etd2.resp)
-# } else {
-#   load(file.etd2.resp)
-# }
-# 
-# print(summary(glmm.etd2.resp), corr = FALSE)
-
-```
 
 ```{r}
-summary(rePCA(glmm.etd2.resp))
+file.etd.resp.allFit <- file.path(folder.nesi, "P101_resp_glmm_etd_allFit.RData")
+
+if (!file.exists(file.etd.resp.allFit)) {
+  glmm.etd0.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                            (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
+                          data = df.cf.all,
+                          family = "binomial",
+                          verbose = TRUE
+  )
+  
+  glmm.etd.resp.allFit <- allFit(glmm.etd0.resp,
+                                 control = glmerControl(optCtrl = list(maxfun = 1e6)))
+  
+} else {
+  load(file.etd.resp.allFit)
+}
+
+# print(summary(glmm.etd.resp.allFit), corr = FALSE)
+
 ```
+
 
 ##### Optimal model
 ```{r}
@@ -2305,17 +2284,17 @@ Generalized linear mixed (log) model has to be used for RT.
 file.max.rt <- file.path(folder.nesi, "P101_rt_glmm_max.RData")
 
 if (!file.exists(file.max.rt)) {
-    glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                              (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant),
-                          data = df.cf.rt,
-                          family = "poisson",
-                          # verbose = TRUE,
-                          control = glmerControl(optCtrl = list(maxfun = 1e6))
-    )
-
-    save(glmm.max.rt, file = file.max.rt)
+  glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+                         (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant),
+                       data = df.cf.rt,
+                       family = "poisson",
+                       # verbose = TRUE,
+                       control = glmerControl(optCtrl = list(maxfun = 1e6))
+  )
+  
+  save(glmm.max.rt, file = file.max.rt)
 } else {
-    load(file.max.rt)
+  load(file.max.rt)
 }
 
 print(summary(lmm.max.rt), corr = FALSE)
