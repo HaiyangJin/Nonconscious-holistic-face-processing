@@ -36,7 +36,7 @@ glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
                       data = df.cf.rt,
                       family = "poisson",
                       verbose = TRUE,
-                      control = glmerControl(optCtrl = list(maxfun = 1e6))
+                      control = glmerControl(optimizer = "bobyqa" , optCtrl = list(maxfun = 1e6))
                       )
 
 # Save the glmm.max.rt model
