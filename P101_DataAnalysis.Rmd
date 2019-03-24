@@ -1236,7 +1236,7 @@ rt.ColuPlot.E3
 # Experiment 4
 ```{r information about the data set in E4}
 ## the filename of the raw data file 
-fn.raw.E4 <- file.path(folder.data, "Statistics_n-4_exp-3_2019-02-12-0924.csv")
+fn.raw.E4 <- file.path(folder.data, "Statistics_n-23_exp-3_2019-03-22-1051.csv")
 
 ## input the filename of the output file (.csv)
 output.name <- "E4_112"
@@ -1916,7 +1916,7 @@ if (!file.exists(file.max.resp)) {
   load(file.max.resp)
 }
 
-print(summary(glmm.max.resp), corr = FALSE)
+print(summary(glmm.max1.resp), corr = FALSE)
 ```
 
 ```{r maximal model 2 for responses}
@@ -2299,7 +2299,7 @@ if (!file.exists(file.max.rt)) {
   load(file.max.rt)
 }
 
-print(summary(lmm.max.rt), corr = FALSE)
+print(summary(glmm.max.rt), corr = FALSE)
 ```
 
 ##### The zero-correlation-parameter model
