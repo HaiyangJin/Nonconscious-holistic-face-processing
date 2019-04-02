@@ -1236,7 +1236,7 @@ rt.ColuPlot.E3
 # Experiment 4
 ```{r information about the data set in E4}
 ## the filename of the raw data file 
-fn.raw.E4 <- file.path(folder.data, "Statistics_n-23_exp-3_2019-03-22-1051.csv")
+fn.raw.E4 <- file.path(folder.data, "E112_n-31_exp-3_2019-04-02-1609.csv")
 
 ## input the filename of the output file (.csv)
 output.name <- "E4_112"
@@ -1781,7 +1781,7 @@ source(file.path(folder.R, "get_pars.R"))
 
 ```{r combine the data from the four experiments}
 
-df.all <- bind_rows(list(df.clean.E1, df.clean.E2,  df.clean.E3, df.clean.E4))
+df.all <- bind_rows(list(df.clean.E1, df.clean.E2, df.clean.E3, df.clean.E4))
 head(df.all)
 ```
 
@@ -1825,74 +1825,74 @@ if (saveData) {
 #### Logit mixed model
 ##### Build up
 ```{r}
-
-glmm.rsp1 <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                        (1 | Participant), 
-                      data = df.cf.all,
-                      family = "binomial",
-                      # verbose = TRUE,
-                      control = glmerControl(optCtrl = list(maxfun = 1e6)))
-
-glmm.rsp2 <- re_fit(glmm.rsp1)
-
-print(summary(glmm.rsp2), corr = FALSE)
+# 
+# glmm.rsp1 <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+#                         (1 | Participant), 
+#                       data = df.cf.all,
+#                       family = "binomial",
+#                       # verbose = TRUE,
+#                       control = glmerControl(optCtrl = list(maxfun = 1e6)))
+# 
+# glmm.rsp2 <- re_fit(glmm.rsp1)
+# 
+# print(summary(glmm.rsp2), corr = FALSE)
 
 ```
 
 ```{r}
-glmm.rsp3 <- update(glmm.rsp2,
-                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                        (1 + View_D | Participant),
-                    start = NULL)
-
-glmm.rsp4 <- re_fit(glmm.rsp3)
-
-anova(glmm.rsp4, glmm.rsp2)
+# glmm.rsp3 <- update(glmm.rsp2,
+#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+#                         (1 + View_D | Participant),
+#                     start = NULL)
+# 
+# glmm.rsp4 <- re_fit(glmm.rsp3)
+# 
+# anova(glmm.rsp4, glmm.rsp2)
 ```
 
 ```{r}
-glmm.rsp5 <- update(glmm.rsp4,
-                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                        (1 + View_D + Con_D | Participant),
-                    start = NULL)
-
-glmm.rsp6 <- re_fit(glmm.rsp5)
-
-anova(glmm.rsp6, glmm.rsp4)
+# glmm.rsp5 <- update(glmm.rsp4,
+#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+#                         (1 + View_D + Con_D | Participant),
+#                     start = NULL)
+# 
+# glmm.rsp6 <- re_fit(glmm.rsp5)
+# 
+# anova(glmm.rsp6, glmm.rsp4)
 ```
 
 ```{r}
-glmm.rsp7 <- update(glmm.rsp4,
-                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                        (1 + View_D + Ali_D | Participant),
-                    start = NULL)
-
-glmm.rsp8 <- re_fit(glmm.rsp7)
-
-anova(glmm.rsp6, glmm.rsp4)
+# glmm.rsp7 <- update(glmm.rsp4,
+#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+#                         (1 + View_D + Ali_D | Participant),
+#                     start = NULL)
+# 
+# glmm.rsp8 <- re_fit(glmm.rsp7)
+# 
+# anova(glmm.rsp6, glmm.rsp4)
 ```
 
 ```{r}
-glmm.rsp9 <- update(glmm.rsp4,
-                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                        (1 + Con_D + Ali_D | Participant),
-                    start = NULL)
-
-glmm.rsp10 <- re_fit(glmm.rsp9)
-
-anova(glmm.rsp10, glmm.rsp4)
+# glmm.rsp9 <- update(glmm.rsp4,
+#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+#                         (1 + Con_D + Ali_D | Participant),
+#                     start = NULL)
+# 
+# glmm.rsp10 <- re_fit(glmm.rsp9)
+# 
+# anova(glmm.rsp10, glmm.rsp4)
 ```
 
 
 ```{r}
-glmm.rsp11 <- update(glmm.rsp4,
-                    formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                        (1 + View_D + Con_D + Ali_D | Participant),
-                    start = NULL)
-
-glmm.rsp12 <- re_fit(glmm.rsp11)
-
-anova(glmm.rsp10, glmm.rsp4)
+# glmm.rsp11 <- update(glmm.rsp4,
+#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
+#                         (1 + View_D + Con_D + Ali_D | Participant),
+#                     start = NULL)
+# 
+# glmm.rsp12 <- re_fit(glmm.rsp11)
+# 
+# anova(glmm.rsp10, glmm.rsp4)
 ```
 
 
@@ -1928,95 +1928,95 @@ print(summary(glmm.max1.resp), corr = FALSE)
 
 ##### Zero-correlation-parameter model
 ```{r zcp model for responses}
-# zero-correlation-parameter model for responses
-file.zcp.resp <- file.path(folder.nesi, "P101_resp_glmm_zcp.RData")
-
-if (!file.exists(file.zcp.resp)) {
-  glmm.zcp.resp <- update(glmm.max.resp,
-                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant),
-                         verbose = FALSE)
-  
-  glmm.zcp1.resp <- re_fit(glmm.zcp.resp)
-
-} else {
-  load(file.zcp.resp)
-}
-
-print(summary(glmm.zcp1.resp), corr = FALSE)
+# # zero-correlation-parameter model for responses
+# file.zcp.resp <- file.path(folder.nesi, "P101_resp_glmm_zcp.RData")
+# 
+# if (!file.exists(file.zcp.resp)) {
+#   glmm.zcp.resp <- update(glmm.max.resp,
+#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant),
+#                          verbose = FALSE)
+#   
+#   glmm.zcp1.resp <- re_fit(glmm.zcp.resp)
+# 
+# } else {
+#   load(file.zcp.resp)
+# }
+# 
+# print(summary(glmm.zcp1.resp), corr = FALSE)
 ```
 
 ```{r}
-summary(rePCA(glmm.zcp1.resp))
+# summary(rePCA(glmm.zcp1.resp))
 ```
 
 
 ##### Reduced model
 ```{r reduced model for responses}
-# reduced model for responses
-file.rdc.resp <- file.path(folder.nesi, "P101_resp_glmm_rdc.RData")
-
-if (!file.exists(file.rdc.resp)) {
-  glmm.rdc.resp <- update(glmm.zcp.resp,
-                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                           (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant),
-                         verbose = FALSE)
-
-  save(glmm.rdc.resp, file = file.rdc.resp)
-} else {
-  load(file.rdc.resp)
-}
-
-print(summary(glmm.rdc.resp), corr = FALSE)
+# # reduced model for responses
+# file.rdc.resp <- file.path(folder.nesi, "P101_resp_glmm_rdc.RData")
+# 
+# if (!file.exists(file.rdc.resp)) {
+#   glmm.rdc.resp <- update(glmm.zcp.resp,
+#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                            (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant),
+#                          verbose = FALSE)
+# 
+#   save(glmm.rdc.resp, file = file.rdc.resp)
+# } else {
+#   load(file.rdc.resp)
+# }
+# 
+# print(summary(glmm.rdc.resp), corr = FALSE)
 
 ```
 
 ```{r}
-anova(glmm.rdc.resp, glmm.zcp1.resp)
+# anova(glmm.rdc.resp, glmm.zcp1.resp)
 ```
 
 
 ##### Extended model
 ```{r extended model for respuarcy}
-# extended model for respuarcy
-file.etd.resp <- file.path(folder.nesi, "P101_resp_glmm_etd.RData")
-
-if (!file.exists(file.etd.resp)) {
-  glmm.etd.resp <- update(glmm.rdc.resp,
-                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                           (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
-                         verbose = FALSE,
-                         control = glmerControl(optCtrl = list(maxfun = 1e6)))
-
-} else {
-  load(file.etd.resp)
-}
-
-print(summary(glmm.etd.resp), corr = FALSE)
+# # extended model for respuarcy
+# file.etd.resp <- file.path(folder.nesi, "P101_resp_glmm_etd.RData")
+# 
+# if (!file.exists(file.etd.resp)) {
+#   glmm.etd.resp <- update(glmm.rdc.resp,
+#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                            (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
+#                          verbose = FALSE,
+#                          control = glmerControl(optCtrl = list(maxfun = 1e6)))
+# 
+# } else {
+#   load(file.etd.resp)
+# }
+# 
+# print(summary(glmm.etd.resp), corr = FALSE)
 ```
 
 
 ```{r}
-file.etd.resp.allFit <- file.path(folder.nesi, "P101_resp_glmm_etd_allFit.RData")
-
-if (!file.exists(file.etd.resp.allFit)) {
-  glmm.etd0.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                            (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
-                          data = df.cf.all,
-                          family = "binomial",
-                          verbose = TRUE
-  )
-  
-  glmm.etd.resp.allFit <- allFit(glmm.etd0.resp,
-                                 maxfun = 1e6)
-  
-} else {
-  load(file.etd.resp.allFit)
-}
-
-allFit.etd.resp <- summary(glmm.etd.resp.allFit)
-
-allFit.etd.resp
+# file.etd.resp.allFit <- file.path(folder.nesi, "P101_resp_glmm_etd_allFit.RData")
+# 
+# if (!file.exists(file.etd.resp.allFit)) {
+#   glmm.etd0.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                             (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
+#                           data = df.cf.all,
+#                           family = "binomial",
+#                           verbose = TRUE
+#   )
+#   
+#   glmm.etd.resp.allFit <- allFit(glmm.etd0.resp,
+#                                  maxfun = 1e6)
+#   
+# } else {
+#   load(file.etd.resp.allFit)
+# }
+# 
+# allFit.etd.resp <- summary(glmm.etd.resp.allFit)
+# 
+# allFit.etd.resp
 
 ```
 
@@ -2031,17 +2031,17 @@ allFit.etd.resp
 
 #### Estimated marginal means
 ```{r}
-emm.resp <- emmeans(glmm.opt.resp, ~ Alignment | c(Congruency, Viewing))
-
-data.frame(summary(emm.resp)) %>% 
-  select(Viewing, Congruency, Alignment, everything())
+# emm.resp <- emmeans(glmm.opt.resp, ~ Alignment | c(Congruency, Viewing))
+# 
+# data.frame(summary(emm.resp)) %>% 
+#   select(Viewing, Congruency, Alignment, everything())
 
 ```
 
 
 #### Plots 
 ```{r}
-emmip(glmm.opt.resp, Congruency ~ Alignment | Viewing, CIs = TRUE)
+# emmip(glmm.opt.resp, Congruency ~ Alignment | Viewing, CIs = TRUE)
 
 
 ```
@@ -2050,11 +2050,11 @@ emmip(glmm.opt.resp, Congruency ~ Alignment | Viewing, CIs = TRUE)
 
 #### Contrasts
 ```{r}
-contrast(emm.resp, "pairwise", simple = "each", combine = TRUE, adjust = "bonferroni")
+# contrast(emm.resp, "pairwise", simple = "each", combine = TRUE, adjust = "bonferroni")
 ```
 
 ```{r}
-contrast(emm.resp, interaction = "pairwise", by = "Viewing")
+# contrast(emm.resp, interaction = "pairwise", by = "Viewing")
 ```
 
 
@@ -2081,6 +2081,8 @@ lmm.max.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
                   data = d.R.all,
                   REML = FALSE)
 
+lmm.max.d <- refit(lmm.max.d)
+
 print(summary(lmm.max.d), corr = FALSE)
 ```
 
@@ -2104,17 +2106,11 @@ lmm.rdc.d <- update(lmm.zcp.d,
                     formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
                       (1 + View_D + Con_D + Con_Ali || Participant))
 
+lmm.rdc.d <- refit(lmm.rdc.d)
+
 print(summary(lmm.rdc.d), corr = FALSE)
 ```
 
-
-```{r}
-lmm.rdc1.d <- update(lmm.rdc.d, 
-                     formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                       (1 + View_D + Con_D + Con_Ali + View_Con_Ali || Participant))
-
-print(summary(lmm.rdc1.d), corr = FALSE)
-```
 
 #### The extended model
 ```{r}
@@ -2133,6 +2129,8 @@ anova(lmm.etd.d, lmm.rdc.d)
 ```{r}
 lmm.opt.d <- update(lmm.etd.d,
                     REML = TRUE)
+
+lmm.opt.d <- refit(lmm.opt.d)
 
 summary(lmm.opt.d)
 ```
@@ -2160,6 +2158,10 @@ emmip(emm.d.all, Congruency ~ Alignment | Viewing, CIs = TRUE)
 
 ```{r}
 contrast(emm.d.all, "pairwise", simple = "each", combine = TRUE, adjust = "bonferroni")
+```
+
+```{r}
+contrast(emm.d.all, interaction = "pairwise", by = "Viewing")
 ```
 
 
