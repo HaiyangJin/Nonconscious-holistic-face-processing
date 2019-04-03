@@ -1789,8 +1789,6 @@ head(df.all)
 ```{r tidy up the dataframe for the composite face task}
 rmParticipant <- c(as.character(rm.E1), as.character(rm.E2), as.character(rm.E3), as.character(rm.E4))
 
-rmParticipant
-
 df.cf.all <- {
   df.all %>% 
     filter(TrialType == "CF") %>% 
@@ -1820,6 +1818,7 @@ if (saveData) {
 }
 ```
 
+Participants `r rmParticipant` were removed due to distinctive reasons.
 
 ### Responses
 #### Logit mixed model
@@ -1919,12 +1918,6 @@ if (!file.exists(file.max.resp)) {
 print(summary(glmm.max1.resp), corr = FALSE)
 ```
 
-```{r maximal model 2 for responses}
-# maximal model 2 for responses (starting with the parameters from maximal model)
-
-# print(summary(glmm.max1.resp), corr = FALSE)
-
-```
 
 ##### Zero-correlation-parameter model
 ```{r zcp model for responses}
@@ -2076,15 +2069,21 @@ d.R.all <- dummy_coding_P101(d.R.all)
 
 #### The maximal model
 ```{r}
-lmm.max.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali | Participant), 
+lmm.max.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode + 
+                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + View_Con_Ali | Participant), 
                   data = d.R.all,
-                  REML = FALSE)
+                  REML = FALSE,
+                  control = lmerControl(optimizer = "bobyqa"))
 
-lmm.max.d <- refit(lmm.max.d)
+lmm.max1.d <- re_fit(lmm.max.d)
 
-print(summary(lmm.max.d), corr = FALSE)
+print(summary(lmm.max.d), corr = TRUE)
 ```
+
+```{r}
+summary(rePCA(lmm.max.d))
+```
+
 
 #### The zero-correlation-parameter model
 ```{r}
@@ -2106,9 +2105,11 @@ lmm.rdc.d <- update(lmm.zcp.d,
                     formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
                       (1 + View_D + Con_D + Con_Ali || Participant))
 
-lmm.rdc.d <- refit(lmm.rdc.d)
-
 print(summary(lmm.rdc.d), corr = FALSE)
+```
+
+```{r}
+anova(lmm.rdc.d, lmm.zcp.d)
 ```
 
 
@@ -2116,7 +2117,7 @@ print(summary(lmm.rdc.d), corr = FALSE)
 ```{r}
 lmm.etd.d <- update(lmm.rdc.d,
                     formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                    (1 + View_D + Con_D + Con_Ali | Participant))
+                    (1 + View_D + Con_D + Con_Ali  | Participant))
 
 print(summary(lmm.etd.d), corr = FALSE)
 ```
@@ -2246,7 +2247,7 @@ file.etd.rt <- file.path(folder.nesi, "P101_rt_lmm_etd.RData")
 if (!file.exists(file.etd.rt)) {
   lmm.etd.rt <- update(lmm.zcp.rt,
                        formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                         (1 + View_D | Participant),
+                         (1 + View_D + Con_D + Ali_D | Participant),
                        verbose = FALSE)
 } else {
     load(file.etd.rt)
@@ -2256,12 +2257,28 @@ print(summary(lmm.etd.rt), corr = FALSE)
 ```
 
 ```{r}
-anova(lmm.etd.rt, lmm.rdc.rt)
+summary(rePCA(lmm.etd.rt))
+```
+One of the random effects did not contribute to the variances of the whole model. The variance of `Ali_D` was the smallest and its corresponding fixed effect was not significant. Therefore, the random effect of `Ali_D` was removed from the model.
+
+```{r}
+lmm.etd1.rt <- update(lmm.etd.rt,
+                       formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+                         (1 + View_D + Con_D | Participant),
+                       verbose = FALSE)
+```
+
+
+
+
+
+```{r}
+anova(lmm.etd1.rt, lmm.rdc.rt)
 ```
 
 ##### The optimal model
 ```{r}
-lmm.opt.rt <- update(lmm.etd.rt,
+lmm.opt.rt <- update(lmm.etd1.rt,
                      REML = TRUE,
                      verbose = FALSE)
 
