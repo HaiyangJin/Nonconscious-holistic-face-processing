@@ -1,0 +1,250 @@
+Fitting model for P101_DataAnalysis.Rmd...
+The corresponding *.out file is 2979304.out
+Setting the current working directory...
+
+Loading the libraries...
+── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 2.2.1     ✔ purrr   0.2.5
+✔ tibble  1.4.2     ✔ dplyr   0.7.8
+✔ tidyr   0.8.0     ✔ stringr 1.3.1
+✔ readr   1.1.1     ✔ forcats 0.3.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+Loading required package: Matrix
+
+Attaching package: ‘Matrix’
+
+The following object is masked from ‘package:tidyr’:
+
+    expand
+
+
+Attaching package: ‘lmerTest’
+
+The following object is masked from ‘package:lme4’:
+
+    lmer
+
+The following object is masked from ‘package:stats’:
+
+    step
+
+
+Loading the data file...
+
+################################################################################
+Fitting the reduced model...
+start par. =  1 1 1 1 1 1 1 1 1 fn =  26408.63 
+At return
+eval: 463 fn:      23837.369 par: 2.33433e-09 0.0628024 0.0894218 0.151107 0.170410 0.249885 0.280505 0.322639 0.336380
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  26066.43 
+At return
+eval: 679 fn:      23169.240 par: 5.04205e-08 0.0584036 8.57444e-07 0.0250587 0.156579 0.235685 0.0742800 0.113801 0.373048
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  25898.7 
+At return
+eval: 382 fn:      22837.092 par: 3.14970e-07 0.0587499 5.82321e-06 4.51367e-08 0.0623362 0.0827924 0.0526126 0.319663 0.412549
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  25839.79 
+At return
+eval: 355 fn:      22836.201 par:  0.00000 0.0590584  0.00000 2.51088e-07 0.0838645 0.0706644 0.0585052 0.322267 0.412488
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  25952.53 
+At return
+eval: 347 fn:      22836.225 par: 4.26732e-07 0.0591054  0.00000  0.00000 0.0587231 0.0538131 0.0651210 0.321366 0.409434
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  25901.67 
+At return
+eval: 367 fn:      22835.633 par:  0.00000 0.0590160 2.52226e-07 3.98869e-07 0.0684765 0.0633045 0.0591560 0.317866 0.408906
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  25908.41 
+At return
+eval: 428 fn:      22835.102 par:  0.00000 0.0590623 2.22554e-06 0.0612169 0.0698508 0.0532436 0.0589015 0.319974 0.409898
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  25986.46 
+At return
+eval: 321 fn:      22835.102 par:  0.00000 0.0590624  0.00000 0.0612171 0.0698514 0.0532438 0.0589017 0.319973 0.409898
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  25309.64 
+At return
+eval: 283 fn:      22846.060 par: 0.0253132 1.36674e-06  0.00000 0.0602683 0.0701499 0.0531441 0.0573653 0.319259 0.409478
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  25417.31 
+At return
+eval: 598 fn:      22835.102 par: 0.0590624 1.00841e-07 1.75461e-07 0.0612181 0.0698514 0.0532434 0.0589016 0.319974 0.409898
+singular fit
+start par. =  1 1 1 1 1 1 1 1 1 fn =  25986.46 
+At return
+eval: 321 fn:      22835.102 par:  0.00000 0.0590624  0.00000 0.0612171 0.0698514 0.0532438 0.0589017 0.319973 0.409898
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  26368.05 
+At return
+eval: 209 fn:      23837.680 par:  0.00000 0.0628008 0.162034 0.177988 0.252200 0.284552 0.325690 0.337303
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  26064.81 
+At return
+eval: 304 fn:      23169.240 par: 4.34297e-08 0.0584035 0.0250563 0.156579 0.235685 0.0742796 0.113802 0.373048
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  25802.51 
+At return
+eval: 360 fn:      22837.092 par:  0.00000 0.0587501  0.00000 0.0623366 0.0827932 0.0526120 0.319662 0.412549
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  25730.65 
+At return
+eval: 294 fn:      22836.201 par: 3.64351e-07 0.0590585 4.39031e-07 0.0838651 0.0706635 0.0585052 0.322267 0.412488
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  25826.24 
+At return
+eval: 380 fn:      22836.225 par: 2.95832e-07 0.0591052  0.00000 0.0587238 0.0538129 0.0651206 0.321366 0.409434
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  25786.84 
+At return
+eval: 247 fn:      22835.633 par: 4.52655e-08 0.0590158 2.18501e-07 0.0684763 0.0633049 0.0591559 0.317866 0.408907
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  25775.78 
+At return
+eval: 296 fn:      22835.102 par: 1.95816e-07 0.0590623 0.0612199 0.0698504 0.0532426 0.0589017 0.319974 0.409898
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  25217.25 
+At return
+eval: 235 fn:      22846.060 par: 0.0253143 2.86522e-07 0.0602666 0.0701495 0.0531450 0.0573653 0.319260 0.409478
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  25323.93 
+At return
+eval: 366 fn:      22835.102 par: 0.0590622 3.37324e-08 0.0612180 0.0698517 0.0532436 0.0589014 0.319974 0.409898
+singular fit
+start par. =  1 1 1 1 1 1 1 1 fn =  25323.93 
+At return
+eval: 366 fn:      22835.102 par: 0.0590622 3.37324e-08 0.0612180 0.0698517 0.0532436 0.0589014 0.319974 0.409898
+singular fit
+start par. =  1 1 1 1 1 1 1 fn =  25697.44 
+At return
+eval: 266 fn:      23837.680 par: 0.0628008 0.162033 0.177988 0.252200 0.284552 0.325689 0.337303
+start par. =  1 1 1 1 1 1 1 fn =  25393.8 
+At return
+eval: 359 fn:      23169.240 par: 0.0584036 0.0250561 0.156579 0.235686 0.0742803 0.113802 0.373047
+start par. =  1 1 1 1 1 1 1 fn =  25136.04 
+At return
+eval: 276 fn:      22837.092 par: 0.0587501 3.53772e-07 0.0623359 0.0827927 0.0526130 0.319662 0.412549
+singular fit
+start par. =  1 1 1 1 1 1 1 fn =  25064.3 
+At return
+eval: 216 fn:      22836.201 par: 0.0590588  0.00000 0.0838659 0.0706629 0.0585046 0.322268 0.412488
+singular fit
+start par. =  1 1 1 1 1 1 1 fn =  25160.63 
+At return
+eval: 345 fn:      22836.225 par: 0.0591055  0.00000 0.0587243 0.0538131 0.0651212 0.321367 0.409434
+singular fit
+start par. =  1 1 1 1 1 1 1 fn =  25124.08 
+At return
+eval: 540 fn:      22835.633 par: 0.0590158  0.00000 0.0684762 0.0633046 0.0591560 0.317866 0.408906
+singular fit
+start par. =  1 1 1 1 1 1 1 fn =  25106.44 
+At return
+eval: 284 fn:      22835.102 par: 0.0590623 0.0612183 0.0698506 0.0532433 0.0589021 0.319974 0.409898
+start par. =  1 1 1 1 1 1 1 fn =  24262.46 
+At return
+eval: 173 fn:      22846.201 par: 0.409444 0.319224 0.0572183 0.0532199 0.0700669 0.0602922 9.21155e-08
+singular fit
+start par. =  1 1 1 1 1 1 1 fn =  25106.44 
+At return
+eval: 284 fn:      22835.102 par: 0.0590623 0.0612183 0.0698506 0.0532433 0.0589021 0.319974 0.409898
+start par. =  1 1 1 1 1 1 fn =  25593.58 
+At return
+eval: 177 fn:      23847.468 par: 0.0629461 0.185840 0.254966 0.257063 0.292731 0.348275
+start par. =  1 1 1 1 1 1 fn =  25174.4 
+At return
+eval: 221 fn:      23169.258 par: 0.0584171 0.156703 0.235164 0.0761219 0.114368 0.372899
+start par. =  1 1 1 1 1 1 fn =  24884.54 
+At return
+eval: 252 fn:      22837.092 par: 0.0587499 0.0623369 0.0827926 0.0526123 0.319662 0.412549
+start par. =  1 1 1 1 1 1 fn =  24821.26 
+At return
+eval: 265 fn:      22836.201 par: 0.0590586 0.0838652 0.0706634 0.0585049 0.322268 0.412487
+start par. =  1 1 1 1 1 1 fn =  24941.84 
+At return
+eval: 331 fn:      22836.225 par: 0.0591054 0.0587250 0.0538121 0.0651211 0.321365 0.409433
+start par. =  1 1 1 1 1 1 fn =  24906.65 
+At return
+eval: 272 fn:      22835.633 par: 0.0590158 0.0684759 0.0633043 0.0591555 0.317866 0.408906
+start par. =  1 1 1 1 1 1 fn =  24043.41 
+At return
+eval: 181 fn:      22846.201 par: 0.409444 0.319224 0.0572183 0.0532196 0.0700673 0.0602935
+start par. =  1 1 1 1 1 1 fn =  24906.65 
+At return
+eval: 272 fn:      22835.633 par: 0.0590158 0.0684759 0.0633043 0.0591555 0.317866 0.408906
+start par. =  1 1 1 1 1 fn =  25504.52 
+At return
+eval: 160 fn:      23866.694 par: 0.0630095 0.273650 0.216728 0.312069 0.330069
+start par. =  1 1 1 1 1 fn =  25047.97 
+At return
+eval: 189 fn:      23200.510 par: 0.0582062 0.264003 0.0604492 0.132535 0.371645
+start par. =  1 1 1 1 1 fn =  24683.61 
+At return
+eval: 226 fn:      22837.662 par: 0.0586984 0.0817772 0.0631173 0.317495 0.411561
+start par. =  1 1 1 1 1 fn =  24605.84 
+At return
+eval: 236 fn:      22839.140 par: 0.0589329 0.0675957 0.0587986 0.317615 0.412195
+start par. =  1 1 1 1 1 fn =  24739.88 
+At return
+eval: 236 fn:      22836.678 par: 0.0590597 0.0630648 0.0651461 0.319316 0.408527
+start par. =  1 1 1 1 1 fn =  23841.85 
+At return
+eval: 113 fn:      22846.701 par: 0.408480 0.317178 0.0574721 0.0630329 0.0687297
+start par. =  1 1 1 1 1 fn =  24739.88 
+At return
+eval: 236 fn:      22836.678 par: 0.0590597 0.0630648 0.0651461 0.319316 0.408527
+start par. =  1 1 1 1 fn =  25516.47 
+At return
+eval: 122 fn:      23936.259 par: 0.0637823 0.236961 0.236430 0.305596
+start par. =  1 1 1 1 fn =  25154.27 
+At return
+eval: 158 fn:      23345.179 par: 0.0576845 0.0560086 0.0589594 0.373845
+start par. =  1 1 1 1 fn =  24451.58 
+At return
+eval: 152 fn:      22840.308 par: 0.0586374 0.0625882 0.319022 0.411504
+start par. =  1 1 1 1 fn =  24438.12 
+At return
+eval: 169 fn:      22840.138 par: 0.0589747 0.0646654 0.319027 0.411825
+start par. =  1 1 1 1 fn =  23672.87 
+At return
+eval: 163 fn:      22847.776 par: 0.408109 0.318641 0.0637200 0.0627835
+[1] "Saving the lmm.rdc.rt ..."
+R version 3.5.1 (2018-07-02)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: CentOS Linux 7 (Core)
+
+Matrix products: default
+BLAS/LAPACK: /scale_wlg_persistent/filesets/opt_nesi/CS400_centos7_bdw/imkl/2017.6.256-gimpi-2017a/linux/mkl/lib/intel64_lin/libmkl_gf_lp64.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] bindrcpp_0.2.2  lmerTest_3.0-1  lme4_1.1-20     Matrix_1.2-14  
+ [5] forcats_0.3.0   stringr_1.3.1   dplyr_0.7.8     purrr_0.2.5    
+ [9] readr_1.1.1     tidyr_0.8.0     tibble_1.4.2    ggplot2_2.2.1  
+[13] tidyverse_1.2.1
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.0        nloptr_1.0.4      cellranger_1.1.0  pillar_1.2.2     
+ [5] compiler_3.5.1    plyr_1.8.4        bindr_0.1.1       tools_3.5.1      
+ [9] jsonlite_1.5      lubridate_1.7.4   gtable_0.2.0      nlme_3.1-137     
+[13] lattice_0.20-35   pkgconfig_2.0.1   rlang_0.3.1       cli_1.0.0        
+[17] rstudioapi_0.7    haven_1.1.1       xml2_1.2.0        httr_1.3.1       
+[21] generics_0.0.2    hms_0.4.2         grid_3.5.1        tidyselect_0.2.4 
+[25] glue_1.2.0        R6_2.2.2          readxl_1.1.0      minqa_1.2.4      
+[29] modelr_0.1.2      magrittr_1.5      MASS_7.3-50       splines_3.5.1    
+[33] backports_1.1.2   scales_0.5.0      rvest_0.3.2       assertthat_0.2.0 
+[37] colorspace_1.3-2  numDeriv_2016.8-1 stringi_1.2.2     lazyeval_0.2.1   
+[41] munsell_0.4.3     broom_0.5.1       crayon_1.3.4     

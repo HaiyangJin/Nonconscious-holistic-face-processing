@@ -1,5 +1,5 @@
 Fitting model for P101_DataAnalysis.Rmd...
-The corresponding *.out file is 2962638.out
+The corresponding *.out file is 2979355.out
 Setting the current working directory...
 
 Loading the libraries...
@@ -35,9 +35,9 @@ Loading the data file...
 
 ################################################################################
 Fitting the lmm.etd.rt model...
-start par. =  1 0 0 0 1 0 0 1 0 1 fn =  23672.87 
+start par. =  1 1 0 0 0 1 0 0 1 0 1 fn =  24739.88 
 At return
-eval: 391 fn:      22816.481 par: 0.402210 -0.133070 0.0189748 0.0245237 0.297360 0.0148920 -0.0273007 0.0637880 -0.0553980  0.00000
+eval: 469 fn:      22804.943 par: 0.0597077 0.402147 -0.133664 0.0206750 0.0244630 0.297851 0.0159790 -0.0272894 0.0641309 -0.0556971 3.62771e-07
 singular fit
 [1] "Saving the lmm.etd.rt ..."
 R version 3.5.1 (2018-07-02)

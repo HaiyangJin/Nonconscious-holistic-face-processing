@@ -1,5 +1,5 @@
 Fitting model for P101_DataAnalysis.Rmd...
-The corresponding *.out file is 2949193.out
+The corresponding *.out file is 2976615.out
 Setting the current working directory...
 
 Loading the libraries...
@@ -34,12 +34,12 @@ The following object is masked from ‘package:stats’:
 Loading the data file...
 
 ################################################################################
-Fitting the lmm.zcp.rt model...
-start par. =  1 1 1 1 1 1 1 1 fn =  24356.13 
+Fitting the lmm.max.rt model...
+start par. =  1 0 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0 0 1 0 1 fn =  26077.02 
 At return
-eval: 253 fn:      22846.201 par: 0.409444 0.319224 0.0572182 0.0532195 0.0700674 0.0602938  0.00000 1.24897e-07
+eval: 5197 fn:      22738.308 par: 0.106849 -0.0872842 0.0213077 0.391952 -0.133677 0.0553183 0.0502644 -0.0351099 -0.0145610 -0.0837239 0.0813194 0.283442 0.0144704 -0.0194331 0.0572969 0.0492000 0.0302863 -0.171867 0.141045 0.00323973 -0.134223 0.0193330 -0.0765863 0.0898787 0.0543473 -0.0609703 -0.0216689 -0.0498931 0.135745 0.157564 -0.0301015 -0.0378764 -0.0660425 5.09250e-08 -1.52574e-06 3.28629e-06 2.34315e-07 -1.15941e-06 6.42226e-07
 singular fit
-[1] "Saving the lmm.zcp.rt ..."
+[1] "Saving the lmm.max.rt ..."
 R version 3.5.1 (2018-07-02)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: CentOS Linux 7 (Core)

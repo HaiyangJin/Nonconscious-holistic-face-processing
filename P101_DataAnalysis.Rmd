@@ -121,8 +121,8 @@ df.clean.E1 <- {
       RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
       RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
     ) %>%  # if the Z values are between -3 and 3, will be marked as 1. 
-    # mutate(Stimuli = paste(StudyUpper, StudyLower, TargetUpper, TargetLower, sep = "-")) %>%
-    ungroup()  # ungroup the data
+    ungroup() %>%  # ungroup the data
+    mutate(Stimuli = paste(StudyUpper, StudyLower, TargetUpper, TargetLower, sep = "-"))
 }
 
 # head(df.clean.E1)
@@ -450,7 +450,8 @@ df.clean.E2 <- {
       RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
       RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
     ) %>%  # if the Z values are between -3 and 3, will be marked as 1. 
-    ungroup()  # ungroup the data
+    ungroup() %>%  # ungroup the data 
+    mutate(Stimuli = paste(StudyUpper, StudyLower, TargetLower1, TargetLower2, sep = "-"))
 }
 
 # head(df.clean.E2)
@@ -978,7 +979,8 @@ df.clean.E3 <- {
       RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
       RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
     ) %>%  # if the Z values are between -3 and 3, will be marked as 1. 
-    ungroup()  # ungroup the data
+    ungroup() %>%  # ungroup the data
+    mutate(Stimuli = paste(StudyUpper, StudyLower, TargetUpper, TargetLower, sep = "-"))
 }
 
 # head(df.clean.E3)
@@ -1295,7 +1297,8 @@ df.clean.E4 <- {
       RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
       RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
     ) %>%  # if the Z values are between -3 and 3, will be marked as 1. 
-    ungroup()  # ungroup the data
+    ungroup() %>%  # ungroup the data
+    mutate(Stimuli = paste(StudyUpper, StudyLower, TargetUpper, TargetLower, sep = "-"))
 }
 
 # head(df.clean.E4)
@@ -1800,7 +1803,7 @@ df.cf.all <- {
            SameDifferent = recode_factor(SameDifferent, "S" = sameDifferent.levels[1], "D" = sameDifferent.levels[2]),
            FaceGroup = as.factor(FaceGroup)) %>% 
     filter(SameDifferent == "same") %>% # only keep the data for trials
-    select(Viewing, Participant, Congruency, Alignment, FaceGroup, WithCatch, isCorrect, reactionTime, ExpCode, RT.Z)
+    select(Viewing, Participant, Congruency, Alignment, FaceGroup, WithCatch, isCorrect, reactionTime, ExpCode, Stimuli, RT.Z)
 }
 
 head(df.cf.all)
@@ -1903,40 +1906,39 @@ file.max.resp <- file.path(folder.nesi, "P101_resp_glmm_max.RData")
 if (!file.exists(file.max.resp)) {
 
   glmm.max.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant), 
+                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+                           (1 + Ali_D | Stimuli), 
                         data = df.cf.all,
-                        family = "binomial",
+                        family = binomial(link = "logit"),
                         # verbose = TRUE,
                         control = glmerControl(optCtrl = list(maxfun = 1e6)))
 
-  glmm.max1.resp <- re_fit(glmm.max.resp)
-  
 } else {
   load(file.max.resp)
 }
 
-print(summary(glmm.max1.resp), corr = FALSE)
+print(summary(glmm.max.resp), corr = FALSE)
 ```
 
 
 ##### Zero-correlation-parameter model
 ```{r zcp model for responses}
-# # zero-correlation-parameter model for responses
-# file.zcp.resp <- file.path(folder.nesi, "P101_resp_glmm_zcp.RData")
-# 
-# if (!file.exists(file.zcp.resp)) {
-#   glmm.zcp.resp <- update(glmm.max.resp,
-#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant),
-#                          verbose = FALSE)
-#   
-#   glmm.zcp1.resp <- re_fit(glmm.zcp.resp)
-# 
-# } else {
-#   load(file.zcp.resp)
-# }
-# 
-# print(summary(glmm.zcp1.resp), corr = FALSE)
+# zero-correlation-parameter model for responses
+file.zcp.resp <- file.path(folder.nesi, "P101_resp_glmm_zcp.RData")
+
+if (!file.exists(file.zcp.resp)) {
+  glmm.zcp.resp <- update(glmm.max.resp,
+                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant),
+                         verbose = FALSE)
+
+  glmm.zcp1.resp <- re_fit(glmm.zcp.resp)
+
+} else {
+  load(file.zcp.resp)
+}
+
+print(summary(glmm.zcp1.resp), corr = FALSE)
 ```
 
 ```{r}
@@ -2070,12 +2072,12 @@ d.R.all <- dummy_coding_P101(d.R.all)
 #### The maximal model
 ```{r}
 lmm.max.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode + 
-                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + View_Con_Ali | Participant), 
+                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali | Participant), 
                   data = d.R.all,
                   REML = FALSE,
                   control = lmerControl(optimizer = "bobyqa"))
 
-lmm.max1.d <- re_fit(lmm.max.d)
+# lmm.max1.d <- re_fit(lmm.max.d)
 
 print(summary(lmm.max.d), corr = TRUE)
 ```
@@ -2099,6 +2101,17 @@ print(summary(lmm.zcp.d), corr = FALSE)
 ```{r}
 summary(rePCA(lmm.zcp.d))
 ```
+
+
+```{r}
+lmm.zcp1.d <- update(lmm.max.d,
+                    formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
+                    (1 + View_D + Con_D + View_Con + Con_Ali || Participant))
+
+print(summary(lmm.zcp1.d), corr = FALSE)
+```
+
+
 
 ```{r}
 lmm.rdc.d <- update(lmm.zcp.d,
@@ -2186,11 +2199,13 @@ file.max.rt <- file.path(folder.nesi, "P101_rt_lmm_max.RData")
 
 if (!file.exists(file.max.rt)) {
   lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                       (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant),
+                       (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+                       (1 + Ali_D | Stimuli),
                      data = df.cf.rt,
                      REML = FALSE,
                      # verbose = TRUE,
-                     control = lmerControl(optCtrl = list(maxfun = 1e6))
+                     control = lmerControl(optimizer = "bobyqa",
+                                           optCtrl = list(maxfun = 1e6))
   )
     save(lmm.max.rt, file = file.max.rt)
 } else {
@@ -2247,7 +2262,8 @@ file.etd.rt <- file.path(folder.nesi, "P101_rt_lmm_etd.RData")
 if (!file.exists(file.etd.rt)) {
   lmm.etd.rt <- update(lmm.zcp.rt,
                        formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                         (1 + View_D + Con_D + Ali_D | Participant),
+                         (1 + View_D + Con_D + Ali_D | Participant) +
+                         (1 | Stimuli),
                        verbose = FALSE)
 } else {
     load(file.etd.rt)
@@ -2263,9 +2279,10 @@ One of the random effects did not contribute to the variances of the whole model
 
 ```{r}
 lmm.etd1.rt <- update(lmm.etd.rt,
-                       formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                         (1 + View_D + Con_D | Participant),
-                       verbose = FALSE)
+                      formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
+                        (1 + View_D + Con_D | Participant) +
+                        (1 | Stimuli),
+                      verbose = FALSE)
 ```
 
 
@@ -2306,7 +2323,8 @@ file.max.rt <- file.path(folder.nesi, "P101_rt_glmm_max.RData")
 
 if (!file.exists(file.max.rt)) {
   glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                         (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant),
+                         (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) + 
+                         (1 + Ali_D | Stimuli),
                        data = df.cf.rt,
                        family = "poisson",
                        # verbose = TRUE,
