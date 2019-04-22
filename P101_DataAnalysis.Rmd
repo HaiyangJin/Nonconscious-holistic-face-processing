@@ -1825,78 +1825,6 @@ Participants `r rmParticipant` were removed due to distinctive reasons.
 
 ### Responses
 #### Logit mixed model
-##### Build up
-```{r}
-# 
-# glmm.rsp1 <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-#                         (1 | Participant), 
-#                       data = df.cf.all,
-#                       family = "binomial",
-#                       # verbose = TRUE,
-#                       control = glmerControl(optCtrl = list(maxfun = 1e6)))
-# 
-# glmm.rsp2 <- re_fit(glmm.rsp1)
-# 
-# print(summary(glmm.rsp2), corr = FALSE)
-
-```
-
-```{r}
-# glmm.rsp3 <- update(glmm.rsp2,
-#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-#                         (1 + View_D | Participant),
-#                     start = NULL)
-# 
-# glmm.rsp4 <- re_fit(glmm.rsp3)
-# 
-# anova(glmm.rsp4, glmm.rsp2)
-```
-
-```{r}
-# glmm.rsp5 <- update(glmm.rsp4,
-#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-#                         (1 + View_D + Con_D | Participant),
-#                     start = NULL)
-# 
-# glmm.rsp6 <- re_fit(glmm.rsp5)
-# 
-# anova(glmm.rsp6, glmm.rsp4)
-```
-
-```{r}
-# glmm.rsp7 <- update(glmm.rsp4,
-#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-#                         (1 + View_D + Ali_D | Participant),
-#                     start = NULL)
-# 
-# glmm.rsp8 <- re_fit(glmm.rsp7)
-# 
-# anova(glmm.rsp6, glmm.rsp4)
-```
-
-```{r}
-# glmm.rsp9 <- update(glmm.rsp4,
-#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-#                         (1 + Con_D + Ali_D | Participant),
-#                     start = NULL)
-# 
-# glmm.rsp10 <- re_fit(glmm.rsp9)
-# 
-# anova(glmm.rsp10, glmm.rsp4)
-```
-
-
-```{r}
-# glmm.rsp11 <- update(glmm.rsp4,
-#                     formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-#                         (1 + View_D + Con_D + Ali_D | Participant),
-#                     start = NULL)
-# 
-# glmm.rsp12 <- re_fit(glmm.rsp11)
-# 
-# anova(glmm.rsp10, glmm.rsp4)
-```
-
 
 ##### Maximal model
 ```{r maximal model for responses}
@@ -1928,10 +1856,11 @@ file.zcp.resp <- file.path(folder.nesi, "P101_resp_glmm_zcp.RData")
 
 if (!file.exists(file.zcp.resp)) {
   glmm.zcp.resp <- update(glmm.max.resp,
-                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant),
-                         verbose = FALSE)
-
+                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
+                            (1 + Ali_D || Stimuli),
+                          verbose = FALSE)
+  
   glmm.zcp1.resp <- re_fit(glmm.zcp.resp)
 
 } else {
@@ -1942,78 +1871,85 @@ print(summary(glmm.zcp1.resp), corr = FALSE)
 ```
 
 ```{r}
-# summary(rePCA(glmm.zcp1.resp))
+summary(rePCA(glmm.zcp1.resp))
 ```
 
 
 ##### Reduced model
 ```{r reduced model for responses}
-# # reduced model for responses
-# file.rdc.resp <- file.path(folder.nesi, "P101_resp_glmm_rdc.RData")
-# 
-# if (!file.exists(file.rdc.resp)) {
-#   glmm.rdc.resp <- update(glmm.zcp.resp,
-#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                            (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali || Participant),
-#                          verbose = FALSE)
-# 
-#   save(glmm.rdc.resp, file = file.rdc.resp)
-# } else {
-#   load(file.rdc.resp)
-# }
-# 
-# print(summary(glmm.rdc.resp), corr = FALSE)
+# reduced model for responses
+file.rdc.resp <- file.path(folder.nesi, "P101_resp_glmm_rdc.RData")
+
+if (!file.exists(file.rdc.resp)) {
+  glmm.rdc.resp <- update(glmm.zcp.resp,
+                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali || Participant) +
+                            (1 | Stimuli),
+                          verbose = FALSE)
+
+  save(glmm.rdc.resp, file = file.rdc.resp)
+} else {
+  load(file.rdc.resp)
+}
+
+print(summary(glmm.rdc1.resp), corr = FALSE)
 
 ```
 
 ```{r}
-# anova(glmm.rdc.resp, glmm.zcp1.resp)
+anova(glmm.rdc1.resp, glmm.zcp1.resp)
 ```
 
 
 ##### Extended model
-```{r extended model for respuarcy}
-# # extended model for respuarcy
-# file.etd.resp <- file.path(folder.nesi, "P101_resp_glmm_etd.RData")
-# 
-# if (!file.exists(file.etd.resp)) {
-#   glmm.etd.resp <- update(glmm.rdc.resp,
-#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                            (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
-#                          verbose = FALSE,
-#                          control = glmerControl(optCtrl = list(maxfun = 1e6)))
-# 
-# } else {
-#   load(file.etd.resp)
-# }
-# 
-# print(summary(glmm.etd.resp), corr = FALSE)
-```
+```{r extended model for response}
+# extended model for response
+file.etd.resp <- file.path(folder.nesi, "P101_resp_glmm_etd.RData")
 
+if (!file.exists(file.etd.resp)) {
+  glmm.etd.resp <- update(glmm.rdc.resp,
+                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali | Participant) +
+                           (1 | Stimuli),
+                         verbose = FALSE,
+                         control = glmerControl(optCtrl = list(maxfun = 1e6)))
+  
+  glmm.etd1.resp <- re_fit(glmm.etd.resp)
+
+} else {
+  load(file.etd.resp)
+}
+
+print(summary(glmm.etd1.resp), corr = FALSE)
+```
 
 ```{r}
-# file.etd.resp.allFit <- file.path(folder.nesi, "P101_resp_glmm_etd_allFit.RData")
-# 
-# if (!file.exists(file.etd.resp.allFit)) {
-#   glmm.etd0.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                             (1 + View_D + Con_D + View_Con + View_Ali + Con_Ali | Participant),
-#                           data = df.cf.all,
-#                           family = "binomial",
-#                           verbose = TRUE
-#   )
-#   
-#   glmm.etd.resp.allFit <- allFit(glmm.etd0.resp,
-#                                  maxfun = 1e6)
-#   
-# } else {
-#   load(file.etd.resp.allFit)
-# }
-# 
-# allFit.etd.resp <- summary(glmm.etd.resp.allFit)
-# 
-# allFit.etd.resp
-
+summary(rePCA(glmm.etd1.resp))
 ```
+
+```{r extended model3 for response}
+# extended model for response
+file.etd2.resp <- file.path(folder.nesi, "P101_resp_glmm_etd2.RData")
+
+if (!file.exists(file.etd2.resp)) {
+  glmm.etd2.resp <- update(glmm.etd.resp,
+                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+                           (1 + View_D + Ali_D + View_Con + View_Ali + Con_Ali | Participant) +
+                           (1 | Stimuli),
+                         verbose = FALSE,
+                         control = glmerControl(optCtrl = list(maxfun = 1e6)))
+  
+  glmm.etd3.resp <- re_fit(glmm.etd2.resp)
+
+} else {
+  load(file.etd2.resp)
+}
+
+print(summary(glmm.etd3.resp), corr = FALSE)
+```
+
+
+
 
 
 ##### Optimal model

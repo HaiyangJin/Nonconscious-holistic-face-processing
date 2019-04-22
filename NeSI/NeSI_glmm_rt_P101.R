@@ -32,12 +32,12 @@ message(paste0(strrep("#", 80)))
 message("Fitting the glmm.max.rt model...")
 
 glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant),
-                      data = df.cf.rt,
-                      family = "poisson",
-                      verbose = TRUE,
-                      control = glmerControl(optimizer = "bobyqa" , optCtrl = list(maxfun = 1e6))
-                      )
+                       (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+                       (1 + Ali_D | Stimuli),
+                     data = df.cf.rt,
+                     family = poisson(link = "log"),
+                     verbose = TRUE,
+                     control = glmerControl(optCtrl = list(maxfun = 1e6)))
 
 # Save the glmm.max.rt model
 print("Saving the glmm.max.rt ...")
