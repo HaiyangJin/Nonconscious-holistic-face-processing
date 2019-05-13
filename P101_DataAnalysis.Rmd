@@ -25,9 +25,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ## load libraries
 library(magrittr)
 library(tidyverse)
-library(lme4)
-library(lmerTest)
-library(emmeans)
 
 # folder names
 folder.data <- "data"
@@ -37,8 +34,8 @@ folder.R <- "R"
 folder.uti <- "Utilities"
 
 # do you want save the data into *.csv files
-saveData = TRUE
-# saveData = FALSE
+# saveData = TRUE
+saveData = FALSE
 
 rm.Count.rate <- 0.8
 rm.RT <- 0.2
@@ -118,6 +115,7 @@ df.clean.E1 <- {
     ) %>% 
     group_by(Viewing, Participant, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
     mutate(
+      reactionTime = reactionTime + .3, # reaction times starts at the onset of test faces
       RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
       RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
     ) %>%  # if the Z values are between -3 and 3, will be marked as 1. 
@@ -458,7 +456,7 @@ acc.ColuPlot.E1 = {
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     labs(title = "Accuracy (Standard Design) for Experiment 1", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns
-    geom_text(label = c("", "", "***", ""), color = "red", size = 6, nudge_y = 0.15, nudge_x = 0.5) + # add starts to the significant columns
+    geom_text(label = c("", "", "**", ""), color = "red", size = 6, nudge_y = 0.15, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
     plot_theme
 }
@@ -546,7 +544,7 @@ df.clean.E2 <- {
 
 # head(df.clean.E2)
 ```
-
+`r nrow(df.raw.E2)-nrow(df.clean.E2)` trials were removed due to shorter than `r rm.RT` ms. 
 
 ## The composite face task
 ```{r data frame for CF in E2}
@@ -1155,7 +1153,7 @@ df.clean.E3 <- {
       thisResponse = as.character(thisResponse)
     ) %>% 
     group_by(Viewing, Participant, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
-    filter(reactionTime > rm.RT) %>% 
+    filter(reactionTime > rm.RT) %>% # only keep response longer than 200ms
     mutate(
       RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
       RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
@@ -1166,7 +1164,7 @@ df.clean.E3 <- {
 
 # head(df.clean.E3)
 ```
-
+`r nrow(df.raw.E3)-nrow(df.clean.E3)` trials were removed due to shorter than `r rm.RT` ms. 
 
 ## The composite face task
 ```{r data frame for CF in E3}
@@ -1498,7 +1496,7 @@ acc.ColuPlot.E3 = {
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     labs(title = "Accuracy (Standard Design) for Experiment 1", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns
-    geom_text(label = c("", "", "***", ""), color = "red", size = 6, nudge_y = 0.15, nudge_x = 0.5) + # add starts to the significant columns
+    geom_text(label = c("", "", "**", ""), color = "red", size = 6, nudge_y = 0.15, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
     plot_theme
 }
@@ -1564,7 +1562,7 @@ df.clean.E4 <- {
       thisResponse = as.character(thisResponse)
     ) %>% 
     group_by(Viewing, Participant, TrialType, Congruency, Alignment, SameDifferent, isCorrect) %>% # divide into groups 
-    filter(reactionTime > rm.RT) %>% 
+    filter(reactionTime > rm.RT) %>% # only keep response longer than 200ms
     mutate(
       RT.Z = scale(reactionTime), # calculate the Z value for response times within each group
       RT.Within3Z = if_else(RT.Z <= 3 & RT.Z >= -3, 1, if_else(RT.Z < -3 | RT.Z > 3, 0, NaN))
@@ -1575,7 +1573,7 @@ df.clean.E4 <- {
 
 # head(df.clean.E4)
 ```
-
+`r nrow(df.raw.E4)-nrow(df.clean.E4)` trials were removed due to shorter than `r rm.RT` ms. 
 
 ## The composite face task
 ```{r data frame for CF in E4}
@@ -1909,7 +1907,7 @@ acc.ColuPlot.E4 = {
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     labs(title = "Accuracy (Standard Design) for Experiment 1", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns
-    geom_text(label = c("", "", "***", ""), color = "red", size = 6, nudge_y = 0.15, nudge_x = 0.5) + # add starts to the significant columns
+    geom_text(label = c(".064", "", "***", ""), color = c("blue", "red", "red", "red"), size = 6, nudge_y = 0.15, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
     plot_theme
 }
@@ -2122,7 +2120,7 @@ catch.acc.ColuPlot.E4 = {
     geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
                   show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     facet_grid(. ~ Viewing, switch = "both") +
-    coord_cartesian(ylim = c(0, 3200)) +  # set the limit for y axis
+    coord_cartesian(ylim = c(0, 4600)) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     labs(title = "Accuracy of Catch Trials in Experiment 4", x = "Viewing Conditions", y = "Response Times (ms)") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns
@@ -2141,8 +2139,8 @@ catch.acc.ColuPlot.E4
 # load libraries for lmm
 library(lme4)
 library(lmerTest)
+library(emmeans)
 
-source(file.path(folder.R, "get_pars.R"))
 ```
 
 ```{r combine the data from the four experiments}
@@ -2164,9 +2162,11 @@ df.cf.all <- {
            Congruency = recode_factor(Congruency, "C" = congruency.levels[1], "I" = congruency.levels[2]), # rename the levels for Congruency
            Alignment = recode_factor(Alignment, "A" = alignment.levels[1], "M" = alignment.levels[2]),
            SameDifferent = recode_factor(SameDifferent, "S" = sameDifferent.levels[1], "D" = sameDifferent.levels[2]),
-           FaceGroup = as.factor(FaceGroup)) %>% 
-    filter(SameDifferent == "same") %>% # only keep the data for trials
-    select(Viewing, Participant, Congruency, Alignment, FaceGroup, WithCatch, isCorrect, reactionTime, ExpCode, Stimuli, RT.Z)
+           FaceGroup = as.factor(FaceGroup),
+           CFS_Cover = as.factor(if_else(ExpCode %in% c("E1", "E2"), "both", "test")),
+           ExpCode = as.factor(ExpCode)) %>% 
+    # filter(SameDifferent == "same") %>% # only keep the same trials of the data
+    select(Viewing, Participant, Congruency, Alignment, FaceGroup, CFS_Cover, WithCatch, isCorrect, reactionTime, ExpCode, Stimuli, RT.Z)
 }
 
 head(df.cf.all)
@@ -2176,7 +2176,7 @@ head(df.cf.all)
 
 ```{r manually set the dummy coding for random effects}
 # manually set the dummy coding for random effects
-df.cf.all %<>% dummy_coding_P101()
+df.cf.all %<>% sdif_coding_P101()  # dummy_coding_P101()
 
 if (saveData) {
   save(df.cf.all, file = file.path(folder.nesi, "P101_cf_clean.RData"))
@@ -2196,13 +2196,13 @@ file.max.resp <- file.path(folder.nesi, "P101_resp_glmm_max.RData")
 
 if (!file.exists(file.max.resp)) {
 
-  glmm.max.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode + 
-                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
-                           (1 + Ali_D | Stimuli), 
-                        data = df.cf.all,
-                        family = binomial(link = "logit"),
-                        # verbose = TRUE,
-                        control = glmerControl(optCtrl = list(maxfun = 1e6)))
+  glmm.max.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+                           (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+                           (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover | Stimuli), 
+                         data = df.cf.all,
+                         family = binomial(link = "logit"),
+                         # verbose = TRUE,
+                         control = glmerControl(optCtrl = list(maxfun = 1e6)))
 
 } else {
   load(file.max.resp)
