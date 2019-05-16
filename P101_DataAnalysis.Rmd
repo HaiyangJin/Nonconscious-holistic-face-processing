@@ -2141,6 +2141,8 @@ library(lme4)
 library(lmerTest)
 library(emmeans)
 
+emm_options(pbkrtest.limit = 1e6, lmerTest.limit = 1e6)
+
 ```
 
 ```{r combine the data from the four experiments}
@@ -2203,12 +2205,14 @@ if (!file.exists(file.max.resp)) {
                          family = binomial(link = "logit"),
                          # verbose = TRUE,
                          control = glmerControl(optCtrl = list(maxfun = 1e6)))
+  
+  glmm.max1.resp <- re_fit(glmm.max.resp)
 
 } else {
   load(file.max.resp)
 }
 
-print(summary(glmm.max.resp), corr = FALSE)
+print(summary(glmm.max1.resp), corr = FALSE)
 ```
 
 
@@ -2219,9 +2223,9 @@ file.zcp.resp <- file.path(folder.nesi, "P101_resp_glmm_zcp.RData")
 
 if (!file.exists(file.zcp.resp)) {
   glmm.zcp.resp <- update(glmm.max.resp,
-                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                            (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
-                            (1 + Ali_D || Stimuli),
+                          formula = isCorrect ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+                           (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
+                           (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover || Stimuli),
                           verbose = FALSE)
   
   glmm.zcp1.resp <- re_fit(glmm.zcp.resp)
@@ -2355,28 +2359,29 @@ print(summary(glmm.etd3.resp), corr = FALSE)
 ### Sensitivity d'
 ```{r}
 # combine d' data
-d.R.E1 %<>% mutate(ExpCode = "E1", isCatch = 0, Participant = as.character(Participant))
-d.R.E2 %<>% mutate(ExpCode = "E2", isCatch = 1, Participant = as.character(Participant))
-d.R.E3 %<>% mutate(ExpCode = "E3", isCatch = 0, Participant = as.character(Participant))
-d.R.E4 %<>% mutate(ExpCode = "E4", isCatch = 1, Participant = as.character(Participant))
+d.R.E1 %<>% mutate(ExpCode = "E1", WithCatch = 0, Participant = as.character(Participant))
+d.R.E2 %<>% mutate(ExpCode = "E2", WithCatch = 1, Participant = as.character(Participant))
+d.R.E3 %<>% mutate(ExpCode = "E3", WithCatch = 0, Participant = as.character(Participant))
+d.R.E4 %<>% mutate(ExpCode = "E4", WithCatch = 1, Participant = as.character(Participant))
 
 d.R.all <- {
-    bind_rows(d.R.E1, d.R.E2, d.R.E3, d.R.E4)
+  bind_rows(d.R.E1, d.R.E2, d.R.E3, d.R.E4) %>% 
+    mutate(
+      CFS_Cover = as.factor(if_else(ExpCode %in% c("E1", "E2"), "both", "test"))
+    )
 }
 
-d.R.all <- dummy_coding_P101(d.R.all)
+d.R.all <- sdif_coding_P101(d.R.all)
 
 ```
 
 #### The maximal model
 ```{r}
-lmm.max.d <- lmer(dprime ~ Viewing * Congruency * Alignment + ExpCode + 
-                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali | Participant), 
+lmm.max.d <- lmer(dprime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+                    (1 + View_C + Con_C + Ali_C + View_Ali + Con_Ali + View_Con_Ali | Participant), # View_Con
                   data = d.R.all,
                   REML = FALSE,
                   control = lmerControl(optimizer = "bobyqa"))
-
-# lmm.max1.d <- re_fit(lmm.max.d)
 
 print(summary(lmm.max.d), corr = TRUE)
 ```
@@ -2389,8 +2394,8 @@ summary(rePCA(lmm.max.d))
 #### The zero-correlation-parameter model
 ```{r}
 lmm.zcp.d <- update(lmm.max.d,
-                    formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                    (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali || Participant))
+                    formula = dprime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+                    (1 + View_C + Con_C + Ali_C + View_Ali + Con_Ali + View_Con_Ali || Participant))
 
 print(summary(lmm.zcp.d), corr = FALSE)
 ```
@@ -2403,21 +2408,21 @@ summary(rePCA(lmm.zcp.d))
 
 
 ```{r}
-lmm.zcp1.d <- update(lmm.max.d,
-                    formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                    (1 + View_D + Con_D + View_Con + Con_Ali || Participant))
+lmm.rdc.d <- update(lmm.max.d,
+                    formula = dprime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+                    (1 + View_C + Con_C + Ali_C + View_Ali + Con_Ali || Participant))
 
-print(summary(lmm.zcp1.d), corr = FALSE)
+print(summary(lmm.zcp.d), corr = FALSE)
 ```
 
 
 
 ```{r}
-lmm.rdc.d <- update(lmm.zcp.d,
-                    formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                      (1 + View_D + Con_D + Con_Ali || Participant))
+lmm.rdc1.d <- update(lmm.zcp.d,
+                    formula = dprime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+                    (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali || Participant))
 
-print(summary(lmm.rdc.d), corr = FALSE)
+print(summary(lmm.rdc1.d), corr = FALSE)
 ```
 
 ```{r}
@@ -2428,22 +2433,32 @@ anova(lmm.rdc.d, lmm.zcp.d)
 #### The extended model
 ```{r}
 lmm.etd.d <- update(lmm.rdc.d,
-                    formula = dprime ~ Viewing * Congruency * Alignment + ExpCode +
-                    (1 + View_D + Con_D + Con_Ali  | Participant))
+                    formula = dprime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch +
+                    (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali | Participant))
 
 print(summary(lmm.etd.d), corr = FALSE)
 ```
 
 ```{r}
-anova(lmm.etd.d, lmm.rdc.d)
+summary(rePCA(lmm.etd.d))
+
+lmm.etd.d.step <- step(lmm.etd.d, reduce.fixed = FALSE)
 ```
+
+
+```{r}
+lmm.etd1.d <- update(lmm.etd.d,
+                    formula = dprime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch +
+                    (1 + View_C + Con_C + Con_Ali | Participant))
+
+print(summary(lmm.etd1.d), corr = FALSE)
+```
+
 
 #### The optimal model
 ```{r}
-lmm.opt.d <- update(lmm.etd.d,
+lmm.opt.d <- update(lmm.etd1.d,
                     REML = TRUE)
-
-lmm.opt.d <- refit(lmm.opt.d)
 
 summary(lmm.opt.d)
 ```
@@ -2457,24 +2472,25 @@ qqplot_lmer(lmm.opt.d)
 #### Estimated marginal means
 
 ```{r}
-emm.d.all <- emmeans(lmm.opt.d, ~ Alignment | c(Congruency, Viewing))
+emm.d.all <- emmeans(lmm.opt.d, ~ Alignment | c(Congruency, Viewing, CFS_Cover))
 data.frame(summary(emm.d.all)) %>% 
   select(Viewing, Congruency, Alignment, everything())
 ```
 
 
 ```{r}
-emmip(emm.d.all, Congruency ~ Alignment | Viewing, CIs = TRUE)
+emmip(emm.d.all, Congruency ~ Alignment | c(CFS_Cover, Viewing), CIs = TRUE)
 
 ```
 
 
 ```{r}
-contrast(emm.d.all, "pairwise", simple = "each", combine = TRUE, adjust = "bonferroni")
+contrast(emm.d.all, "pairwise", simple = "each", combine = TRUE, adjust = "none")
 ```
 
 ```{r}
-contrast(emm.d.all, interaction = "pairwise", by = "Viewing")
+contrast(emm.d.all, interaction = "pairwise", by = c("Viewing", "CFS_Cover"), adjust = "bonferroni")
+
 ```
 
 
@@ -2483,8 +2499,7 @@ contrast(emm.d.all, interaction = "pairwise", by = "Viewing")
 ```{r}
 df.cf.rt <- {
   df.cf.all %>% 
-    filter(isCorrect == 1) %>% 
-    mutate(RT = if_else(ExpCode == "E1", reactionTime * 1000 + 300, reactionTime * 1000))
+    filter(isCorrect == 1)
 }
 
 ```
@@ -2497,9 +2512,9 @@ df.cf.rt <- {
 file.max.rt <- file.path(folder.nesi, "P101_rt_lmm_max.RData")
 
 if (!file.exists(file.max.rt)) {
-  lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                       (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
-                       (1 + Ali_D | Stimuli),
+  lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+                           (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+                           (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover | Stimuli),
                      data = df.cf.rt,
                      REML = FALSE,
                      # verbose = TRUE,
@@ -2521,8 +2536,9 @@ file.zcp.rt <- file.path(folder.nesi, "P101_rt_lmm_zcp.RData")
 
 if (!file.exists(file.zcp.rt)) {
   lmm.zcp.rt <- update(lmm.max.rt,
-                       formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                         (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant))
+                       formula = reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+                           (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
+                           (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover || Stimuli))
 } else {
     load(file.zcp.rt)
 }
@@ -2560,9 +2576,9 @@ file.etd.rt <- file.path(folder.nesi, "P101_rt_lmm_etd.RData")
 
 if (!file.exists(file.etd.rt)) {
   lmm.etd.rt <- update(lmm.zcp.rt,
-                       formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                         (1 + View_D + Con_D + Ali_D | Participant) +
-                         (1 | Stimuli),
+                       formula = reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch +
+                         (1 + View_C | Participant) +
+                         (1 + View_Cover | Stimuli),
                        verbose = FALSE)
 } else {
     load(file.etd.rt)
@@ -2571,30 +2587,14 @@ if (!file.exists(file.etd.rt)) {
 print(summary(lmm.etd.rt), corr = FALSE)
 ```
 
-```{r}
-summary(rePCA(lmm.etd.rt))
-```
-One of the random effects did not contribute to the variances of the whole model. The variance of `Ali_D` was the smallest and its corresponding fixed effect was not significant. Therefore, the random effect of `Ali_D` was removed from the model.
 
 ```{r}
-lmm.etd1.rt <- update(lmm.etd.rt,
-                      formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                        (1 + View_D + Con_D | Participant) +
-                        (1 | Stimuli),
-                      verbose = FALSE)
-```
-
-
-
-
-
-```{r}
-anova(lmm.etd1.rt, lmm.rdc.rt)
+anova(lmm.etd.rt, lmm.rdc.rt)
 ```
 
 ##### The optimal model
 ```{r}
-lmm.opt.rt <- update(lmm.etd1.rt,
+lmm.opt.rt <- update(lmm.etd.rt,
                      REML = TRUE,
                      verbose = FALSE)
 
@@ -2603,7 +2603,7 @@ summary(lmm.opt.rt)
 ```
 
 
-##### Check the residuals
+##### Diagnostic plots
 ```{r}
 qqnorm(residuals(lmm.opt.rt))
 ```
@@ -2613,6 +2613,36 @@ qqplot_lmer(lmm.opt.rt)
 ```
 Generalized linear mixed (log) model has to be used for RT. 
 
+##### Estimated marginal means
+
+```{r}
+emm.rt.lmm <- emmeans(lmm.opt.rt, ~ Alignment | c(Congruency, Viewing, CFS_Cover))
+data.frame(summary(emm.rt.lmm)) %>% 
+  select(Viewing, Congruency, Alignment, everything())
+
+```
+
+
+```{r}
+emmip(emm.rt.lmm, Congruency ~ Alignment | c(CFS_Cover, Viewing), CIs = TRUE)
+
+```
+
+
+```{r}
+contrast(emm.rt.lmm, "pairwise", simple = "Congruency", adjust = "none")
+
+# contrast(emm.rt.lmm, "pairwise", simple = "each", combine = TRUE, adjust = "bonferroni")
+
+```
+
+```{r}
+contrast(emm.rt.lmm, interaction = "pairwise", by = c("Viewing", "CFS_Cover"), adjust = "bonferroni")
+
+```
+
+
+
 
 #### Log mixed model
 ##### Maximal model
@@ -2621,9 +2651,9 @@ Generalized linear mixed (log) model has to be used for RT.
 file.max.rt <- file.path(folder.nesi, "P101_rt_glmm_max.RData")
 
 if (!file.exists(file.max.rt)) {
-  glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                         (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) + 
-                         (1 + Ali_D | Stimuli),
+  glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+                           (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+                           (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover | Stimuli),
                        data = df.cf.rt,
                        family = "poisson",
                        # verbose = TRUE,
