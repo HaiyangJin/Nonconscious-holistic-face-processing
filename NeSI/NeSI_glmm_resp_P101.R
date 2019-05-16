@@ -27,17 +27,19 @@ source("get_pars.R")
 # message(paste0(strrep("#", 80)))
 # message("Fitting the glmm.max.resp model...")
 # 
-# glmm.max.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                          (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
-#                          (1 + Ali_D | Stimuli),
-#                       data = df.cf.all,
-#                       family = binomial(link = "logit"),
-#                       verbose = TRUE,
-#                       control = glmerControl(optCtrl = list(maxfun = 1e6)))
+# glmm.max.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+#                          (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+#                          (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover | Stimuli),
+#                        data = df.cf.all,
+#                        family = binomial(link = "logit"),
+#                        verbose = TRUE,
+#                        control = glmerControl(optCtrl = list(maxfun = 1e6)))
+# 
+# glmm.max1.resp <- re_fit(glmm.max.resp)
 # 
 # # Save the maximal model
 # print("Saving the glmm.max.resp ...")
-# save(glmm.max.resp, file = "P101_resp_glmm_max.RData")
+# save(glmm.max.resp, glmm.max1.resp, file = "P101_resp_glmm_max.RData")
 
 
 #############################  Fitting the zcp glmm model for response ##############################
@@ -48,15 +50,15 @@ source("get_pars.R")
 # 
 # load("P101_resp_glmm_max.RData")
 # glmm.zcp.resp <- update(glmm.max.resp,
-#                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-#                           (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
-#                           (1 + Ali_D || Stimuli))
+#                         formula = isCorrect ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+#                           (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
+#                           (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover || Stimuli))
 # 
-# glmm.zcp1.resp <- re_fit(glmm.zcp.resp)
+# # glmm.zcp1.resp <- re_fit(glmm.zcp.resp) glmm.zcp1.resp,
 # 
 # # Save the zcp model
 # print("Saving the glmm.zcp.resp ...")
-# save(glmm.zcp.resp, glmm.zcp1.resp, file = "P101_resp_glmm_zcp.RData")
+# save(glmm.zcp.resp, file = "P101_resp_glmm_zcp.RData")
 
 
 #############################  Fitting the reduced glmm model for response ##############################
@@ -99,23 +101,23 @@ source("get_pars.R")
 
 
 #############################  Fitting the extended2 glmm model for response ##############################
-# fit the model for response
-message("")
-message(paste0(strrep("#", 80)))
-message("Fitting the extended2 model...")
-
-load("P101_resp_glmm_etd.RData")
-glmm.etd2.resp <- update(glmm.etd.resp,
-                         formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
-                           (1 + View_D + Ali_D + View_Con + View_Ali + Con_Ali | Participant) +
-                           (1 | Stimuli),
-                         control = glmerControl(optCtrl = list(maxfun = 1e6)))
-
-glmm.etd3.resp <- re_fit(glmm.etd2.resp)
-
-# Save the etd model
-print("Saving the glmm.etd2.resp ...")
-save(glmm.etd2.resp, glmm.etd3.resp, file = "P101_resp_glmm_etd2.RData")
+# # fit the model for response
+# message("")
+# message(paste0(strrep("#", 80)))
+# message("Fitting the extended2 model...")
+# 
+# load("P101_resp_glmm_etd.RData")
+# glmm.etd2.resp <- update(glmm.etd.resp,
+#                          formula = isCorrect ~ Viewing * Congruency * Alignment + ExpCode +
+#                            (1 + View_D + Ali_D + View_Con + View_Ali + Con_Ali | Participant) +
+#                            (1 | Stimuli),
+#                          control = glmerControl(optCtrl = list(maxfun = 1e6)))
+# 
+# glmm.etd3.resp <- re_fit(glmm.etd2.resp)
+# 
+# # Save the etd model
+# print("Saving the glmm.etd2.resp ...")
+# save(glmm.etd2.resp, glmm.etd3.resp, file = "P101_resp_glmm_etd2.RData")
 
 
 #############################  Fitting the extended glmm model for (allFit) response ##############################

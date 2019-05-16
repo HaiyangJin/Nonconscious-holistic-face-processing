@@ -21,8 +21,7 @@ message("Loading the data file...")
 load("P101_cf_clean.RData")
 df.cf.rt <- {
     df.cf.all %>% 
-        filter(isCorrect == 1) %>% 
-        mutate(RT = if_else(ExpCode == "E1", reactionTime * 1000 + 300, reactionTime * 1000))
+        filter(isCorrect == 1)
 }
 
 #############################  Fitting the maximal lmm model for RT ##############################
@@ -31,9 +30,9 @@ df.cf.rt <- {
 # message(paste0(strrep("#", 80)))
 # message("Fitting the lmm.max.rt model...")
 # 
-# lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-#                      (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
-#                      (1 + Ali_D | Stimuli),
+# lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+#                      (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+#                      (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover | Stimuli),
 #                    data = df.cf.rt,
 #                    REML = FALSE,
 #                    verbose = TRUE,
@@ -53,9 +52,9 @@ df.cf.rt <- {
 # 
 # load("P101_rt_lmm_max.RData")
 # lmm.zcp.rt <- update(lmm.max.rt,
-#                      formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-#                        (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
-#                        (1 + Ali_D || Stimuli))
+#                      formula = reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+#                        (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
+#                        (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover || Stimuli))
 # 
 # # Save the zcp model
 # print("Saving the lmm.zcp.rt ...")
@@ -85,9 +84,9 @@ df.cf.rt <- {
 # load("P101_rt_lmm_zcp.RData")
 # 
 # lmm.etd.rt <- update(lmm.zcp.rt,
-#                        formula = reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-#                        (1 + View_D + Con_D + Ali_D | Participant) +
-#                        (1 | Stimuli))
+#                      formula = reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch +
+#                        (1 + View_C | Participant) +
+#                        (1 + View_Cover | Stimuli))
 # 
 # # Save the etd model
 # print("Saving the lmm.etd.rt ...")

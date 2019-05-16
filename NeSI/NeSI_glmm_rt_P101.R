@@ -21,27 +21,26 @@ message("Loading the data file...")
 load("P101_cf_clean.RData")
 df.cf.rt <- {
     df.cf.all %>% 
-        filter(isCorrect == 1) %>% 
-        mutate(RT = if_else(ExpCode == "E1", reactionTime * 1000 + 300, reactionTime * 1000))
+        filter(isCorrect == 1)
 }
 
 #############################  Fitting the maximal glmm model for RT ##############################
-# fit the model for RT
-message("")
-message(paste0(strrep("#", 80)))
-message("Fitting the glmm.max.rt model...")
-
-glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment + ExpCode +
-                       (1 + View_D + Con_D + Ali_D + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
-                       (1 + Ali_D | Stimuli),
-                     data = df.cf.rt,
-                     family = poisson(link = "log"),
-                     verbose = TRUE,
-                     control = glmerControl(optCtrl = list(maxfun = 1e6)))
-
-# Save the glmm.max.rt model
-print("Saving the glmm.max.rt ...")
-save(glmm.max.rt, file = "P101_rt_glmm_max.RData")
+# # fit the model for RT
+# message("")
+# message(paste0(strrep("#", 80)))
+# message("Fitting the glmm.max.rt model...")
+# 
+# glmm.max.rt <- glmer(reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+#                        (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+#                        (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover | Stimuli),
+#                      data = df.cf.rt,
+#                      family = poisson(link = "log"),
+#                      verbose = TRUE,
+#                      control = glmerControl(optCtrl = list(maxfun = 1e6)))
+# 
+# # Save the glmm.max.rt model
+# print("Saving the glmm.max.rt ...")
+# save(glmm.max.rt, file = "P101_rt_glmm_max.RData")
 
 ########### restart glmm.max from the current parameters ##########
 # load("P101_glmm_max_rt.RData")
