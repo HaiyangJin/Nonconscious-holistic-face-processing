@@ -22,24 +22,24 @@ load("P101_cf_clean.RData")
 source("get_pars.R")
 
 #############################  Fitting the maximal glmm model for response ##############################
-# # fit the model for response
-# message("")
-# message(paste0(strrep("#", 80)))
-# message("Fitting the glmm.max.resp model...")
-# 
-# glmm.max.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
-#                          (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
-#                          (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover | Stimuli),
-#                        data = df.cf.all,
-#                        family = binomial(link = "logit"),
-#                        verbose = TRUE,
-#                        control = glmerControl(optCtrl = list(maxfun = 1e6)))
-# 
-# glmm.max1.resp <- re_fit(glmm.max.resp)
-# 
-# # Save the maximal model
-# print("Saving the glmm.max.resp ...")
-# save(glmm.max.resp, glmm.max1.resp, file = "P101_resp_glmm_max.RData")
+# fit the model for response
+message("")
+message(paste0(strrep("#", 80)))
+message("Fitting the glmm.max.resp model...")
+
+glmm.max.resp <- glmer(isCorrect ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch +
+                         (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
+                         (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover | Stimuli),
+                       data = df.cf.all,
+                       family = binomial(link = "logit"),
+                       verbose = TRUE,
+                       control = glmerControl(optCtrl = list(maxfun = 1e6)))
+
+glmm.max1.resp <- re_fit(glmm.max.resp)
+
+# Save the maximal model
+print("Saving the glmm.max.resp ...")
+save(glmm.max.resp, glmm.max1.resp, file = "P101_resp_glmm_max.RData")
 
 
 #############################  Fitting the zcp glmm model for response ##############################

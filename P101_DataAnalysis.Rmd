@@ -32,6 +32,8 @@ folder.nesi <- "NeSI"
 folder.output <- "output"
 folder.R <- "R"
 folder.uti <- "Utilities"
+folder.standard <- "standard_design_analysis" 
+folder.multiple <- "multiple_data"
 
 # do you want save the data into *.csv files
 # saveData = TRUE
@@ -46,10 +48,6 @@ This is the data analysis for all the four experiments. At first, the data analy
 
 ```{r include=FALSE}
 # load R files in the R folder
-# source(file.path(folder.R, "geom_flat_violin.R"))
-# source(file.path(folder.R, "plot_theme.R"))
-# source(file.path(folder.R, "dummy_coding_P101.R"))
-
 sapply(list.files(folder.R, "*.R", full.names = TRUE, recursive = TRUE), source)
 
 ```
@@ -80,9 +78,7 @@ output.name <- "E1_104_106"
 
 # set the filenames for R and SPSS data format
 if (saveData) {
-  # output.d.R <- file.path(folder.output, paste0(output.name, "_d_R.csv"))
   output.d.SPSS <- file.path(folder.output, paste0(output.name, "_d_SPSS.csv"))
-  # output.rt.R <- file.path(folder.output, paste0(output.name, "_rt_R.csv"))
   output.rt.SPSS <- file.path(folder.output, paste0(output.name, "_rt_SPSS.csv"))
 }
 
@@ -312,7 +308,6 @@ rt.SPSS.E1 <- {
 ```{r # save the RT for R analysis for jamovi E1}
 # save the RT for R analysis
 if (saveData) {
-  # write.csv(rt.R.E1, output.rt.R, row.names = FALSE)
   write.csv(rt.SPSS.E1, output.rt.SPSS, row.names = FALSE)
 }
 ```
@@ -405,15 +400,14 @@ acc.SPSS.E1 <- {
 }
 
 if (saveData) {
-  output.acc.SPSS <- gsub("d", "acc", output.d.SPSS)
-  # write.csv(d.R.E1, output.d.R, row.names = FALSE)
+  output.acc.SPSS <- file.path(folder.output, folder.standard, paste0(output.name, "_acc_SPSS.csv"))
   write.csv(acc.SPSS.E1, output.acc.SPSS, row.names = FALSE)
 }
 
 ```
 
 #### RainClound plots of Accuracy
-```{r rainclound plot of correct response times E1, warning = FALSE}
+```{r rainclound plot of accuracy E1, warning = FALSE}
 knitr::kable(desc.acc.R.E1, digits = 4)
 
 acc.RainPlot.E1 <- {
@@ -826,16 +820,21 @@ acc.SPSS.E2 <- {
     spread(Conditions, Accuracy)
 }
 
+
+
 if (saveData) {
-  output.acc.SPSS <- gsub("d", "acc", output.d.SPSS)
-  # write.csv(d.R.E2, output.d.R, row.names = FALSE)
+  output.acc.SPSS <- file.path(folder.output, folder.standard, paste0(output.name, "_acc_SPSS.csv"))
   write.csv(acc.SPSS.E2, output.acc.SPSS, row.names = FALSE)
+  
+  acc.E1.E2 <- rbind(acc.SPSS.E1, acc.SPSS.E2)
+  output.acc.SPSS <- file.path(folder.output, folder.multiple, "E1_E2_acc_SPSS.csv")
+  write.csv(acc.E1.E2, output.acc.SPSS, row.names = FALSE)
 }
 
 ```
 
 #### RainClound plots of Accuracy
-```{r rainclound plot of correct response times E2, warning = FALSE}
+```{r rainclound plot of accuracy E2, warning = FALSE}
 knitr::kable(desc.acc.R.E2, digits = 4)
 
 acc.RainPlot.E2 <- {
@@ -1445,15 +1444,14 @@ acc.SPSS.E3 <- {
 }
 
 if (saveData) {
-  output.acc.SPSS <- gsub("d", "acc", output.d.SPSS)
-  # write.csv(d.R.E3, output.d.R, row.names = FALSE)
+  output.acc.SPSS <- file.path(folder.output, folder.standard, paste0(output.name, "_acc_SPSS.csv"))
   write.csv(acc.SPSS.E3, output.acc.SPSS, row.names = FALSE)
 }
 
 ```
 
 #### RainClound plots of Accuracy
-```{r rainclound plot of correct response times E3, warning = FALSE}
+```{r rainclound plot of accuracy E3, warning = FALSE}
 knitr::kable(desc.acc.R.E3, digits = 4)
 
 acc.RainPlot.E3 <- {
@@ -1856,15 +1854,18 @@ acc.SPSS.E4 <- {
 }
 
 if (saveData) {
-  output.acc.SPSS <- gsub("d", "acc", output.d.SPSS)
-  # write.csv(d.R.E4, output.d.R, row.names = FALSE)
+  output.acc.SPSS <- file.path(folder.output, folder.standard, paste0(output.name, "_acc_SPSS.csv"))
   write.csv(acc.SPSS.E4, output.acc.SPSS, row.names = FALSE)
+  
+  acc.E3.E4 <- rbind(acc.SPSS.E3, acc.SPSS.E4)
+  output.acc.SPSS <- file.path(folder.output, folder.multiple, "E3_E4_acc_SPSS.csv")
+  write.csv(acc.E3.E4, output.acc.SPSS, row.names = FALSE)
 }
 
 ```
 
 #### RainClound plots of Accuracy
-```{r rainclound plot of correct response times E4, warning = FALSE}
+```{r rainclound plot of accuracy E4, warning = FALSE}
 knitr::kable(desc.acc.R.E4, digits = 4)
 
 acc.RainPlot.E4 <- {
@@ -1979,7 +1980,7 @@ catch.acc.SPSS.E4 <- {
 ```{r save the acc of catch trials in jamovi E4}
 # save the acc of catch trials in jamovi E4
 if (saveData) {
-  # write.csv(catch.acc.R.E4, output.catch.acc.R, row.names = FALSE)
+  output.acc.SPSS <- file.path(folder.output, folder.standard, paste0(output.name, "_acc_SPSS.csv"))
   write.csv(catch.acc.SPSS.E4, output.catch.acc.SPSS, row.names = FALSE)
 }
 ```
@@ -2152,6 +2153,7 @@ head(df.all)
 ```
 
 ## The composite face task
+### Behavioral response
 ```{r tidy up the dataframe for the composite face task}
 rmParticipant <- c(as.character(rm.E1), as.character(rm.E2), as.character(rm.E3), as.character(rm.E4))
 

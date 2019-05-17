@@ -30,14 +30,13 @@ df.cf.rt <- {
 # message(paste0(strrep("#", 80)))
 # message("Fitting the lmm.max.rt model...")
 # 
-# lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
+# lmm.max.rt <- lmer(reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch +
 #                      (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali | Participant) +
 #                      (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover | Stimuli),
 #                    data = df.cf.rt,
 #                    REML = FALSE,
 #                    verbose = TRUE,
-#                    control = lmerControl(optimizer = "bobyqa",
-#                                          optCtrl = list(maxfun = 1e6)))
+#                    control = lmerControl(optCtrl = list(maxfun = 1e6)))
 # 
 # # Save the maximal model
 # print("Saving the lmm.max.rt ...")
@@ -45,20 +44,20 @@ df.cf.rt <- {
 
 
 #############################  Fitting the zcp lmm model for RT ##############################
-# # fit the model for RT
-# message("")
-# message(paste0(strrep("#", 80)))
-# message("Fitting the lmm.zcp.rt model...")
-# 
-# load("P101_rt_lmm_max.RData")
-# lmm.zcp.rt <- update(lmm.max.rt,
-#                      formula = reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch + 
-#                        (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
-#                        (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover || Stimuli))
-# 
-# # Save the zcp model
-# print("Saving the lmm.zcp.rt ...")
-# save(lmm.zcp.rt, file = "P101_rt_lmm_zcp.RData")
+# fit the model for RT
+message("")
+message(paste0(strrep("#", 80)))
+message("Fitting the lmm.zcp.rt model...")
+
+load("P101_rt_lmm_max.RData")
+lmm.zcp.rt <- update(lmm.max.rt,
+                     formula = reactionTime ~ Viewing * Congruency * Alignment * CFS_Cover + WithCatch +
+                       (1 + View_C + Con_C + Ali_C + View_Con + View_Ali + Con_Ali + View_Con_Ali || Participant) +
+                       (1 + View_C + Ali_C + Cover_C + View_Ali + View_Cover + Ali_Cover + View_Ali_Cover || Stimuli))
+
+# Save the zcp model
+print("Saving the lmm.zcp.rt ...")
+save(lmm.zcp.rt, file = "P101_rt_lmm_zcp.RData")
 
 
 #############################  Fitting the reduced lmm model for RT ##############################
