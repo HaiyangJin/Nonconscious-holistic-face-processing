@@ -2143,32 +2143,6 @@ head(df.all)
 ```
 
 ## The composite face task
-### Behavioral response
-```{r tidy up the dataframe for the composite face task}
-rmParticipant <- c(as.character(rm.E1), as.character(rm.E2), as.character(rm.E3), as.character(rm.E4))
-
-df.cf.all <- {
-  df.all %>% 
-    filter(TrialType == "CF") %>% 
-    filter(!(Participant %in% rmParticipant)) %>% 
-    mutate(Participant = as.factor(Participant),
-           Viewing = recode_factor(Viewing, "CFS" = viewing.levels[1], "monocular" = viewing.levels[2]),
-           Congruency = recode_factor(Congruency, "C" = congruency.levels[1], "I" = congruency.levels[2]), # rename the levels for Congruency
-           Alignment = recode_factor(Alignment, "A" = alignment.levels[1], "M" = alignment.levels[2]),
-           SameDifferent = recode_factor(SameDifferent, "S" = sameDifferent.levels[1], "D" = sameDifferent.levels[2]),
-           FaceGroup = as.factor(FaceGroup),
-           CFS_Cover = as.factor(if_else(ExpCode %in% c("E1", "E2"), "both", "test")),
-           ExpCode = as.factor(ExpCode)) %>% 
-    # filter(SameDifferent == "same") %>% # only keep the same trials of the data
-    select(Viewing, Participant, Congruency, Alignment, FaceGroup, CFS_Cover, WithCatch, isCorrect, reactionTime, ExpCode, RT.Z)
-}
-
-head(df.cf.all)
-
-```
-
-
-Participants `r rmParticipant` were removed due to distinctive reasons.
 
 ### Sensitivity d'
 ```{r}
