@@ -2136,16 +2136,6 @@ catch.acc.ColuPlot.E4
 
 
 # Analysis for all the four experiemnts
-```{r load libraries for lmm}
-# load libraries for lmm
-library(lme4)
-library(lmerTest)
-library(emmeans)
-
-emm_options(pbkrtest.limit = 1e6, lmerTest.limit = 1e6)
-
-```
-
 ```{r combine the data from the four experiments}
 
 df.all <- bind_rows(list(df.clean.E1, df.clean.E2, df.clean.E3, df.clean.E4))
@@ -2170,22 +2160,13 @@ df.cf.all <- {
            CFS_Cover = as.factor(if_else(ExpCode %in% c("E1", "E2"), "both", "test")),
            ExpCode = as.factor(ExpCode)) %>% 
     # filter(SameDifferent == "same") %>% # only keep the same trials of the data
-    select(Viewing, Participant, Congruency, Alignment, FaceGroup, CFS_Cover, WithCatch, isCorrect, reactionTime, ExpCode, Stimuli, RT.Z)
+    select(Viewing, Participant, Congruency, Alignment, FaceGroup, CFS_Cover, WithCatch, isCorrect, reactionTime, ExpCode, RT.Z)
 }
 
 head(df.cf.all)
 
 ```
 
-
-```{r manually set the dummy coding for random effects}
-# manually set the dummy coding for random effects
-df.cf.all %<>% sdif_coding_P101()  # dummy_coding_P101()
-
-if (saveData) {
-  save(df.cf.all, file = file.path(folder.nesi, "P101_cf_clean.RData"))
-}
-```
 
 Participants `r rmParticipant` were removed due to distinctive reasons.
 
@@ -2217,7 +2198,11 @@ d.SPSS.all <- {
   d.R.all %>% 
     mutate(Conditions = paste(Viewing, Congruency, Alignment, sep = ".")) %>% 
     select(ExpCode, Participant, CFS_Cover, WithCatch, Conditions, dprime) %>% 
-    spread(Conditions, dprime)
+    spread(Conditions, dprime) %>% 
+    mutate(
+      CFS.inter = (CFS.congruent.aligned - CFS.incongruent.aligned - (CFS.congruent.misaligned - CFS.incongruent.misaligned)),
+      monocular.inter = (monocular.congruent.aligned - monocular.incongruent.aligned - (monocular.congruent.misaligned - monocular.incongruent.misaligned))
+    )
 }
 
 
@@ -2231,7 +2216,7 @@ if (saveData) {
 
 # Versions of Packages Used
 ```{r versions}
-rstudioapi::versionInfo()
+# rstudioapi::versionInfo()
 sessionInfo()
 ```
 
