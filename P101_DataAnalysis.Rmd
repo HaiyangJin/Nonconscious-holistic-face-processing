@@ -277,7 +277,7 @@ d.ColuPlot.E1
 
 ### Correct response times
 ```{r calculate the correct response times for R analysis E1}
-rt.R.E1 <- {
+cf.rt.R.E1 <- {
   df.clean.cf.E1 %>%
     filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
     filter(isCorrect == 1)  %>%  # only keep the correct correct
@@ -288,7 +288,7 @@ rt.R.E1 <- {
 
 # descriptive statistics of RT for plotting
 desc.rt.R.E1 <- {
-  rt.R.E1 %>% 
+  cf.rt.R.E1 %>% 
     select(-Count) %>% 
     group_by(Viewing, Congruency, Alignment) %>% 
     summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
@@ -296,8 +296,8 @@ desc.rt.R.E1 <- {
 }
 
 # RT for SPSS sytle analysis
-rt.SPSS.E1 <- {
-  rt.R.E1 %>%
+cf.rt.SPSS.E1 <- {
+  cf.rt.R.E1 %>%
     mutate(Conditions = paste(Viewing, Congruency, Alignment, sep = ".")) %>%
     select(Participant, Conditions, RT) %>% 
     spread(Conditions, RT)
@@ -308,7 +308,7 @@ rt.SPSS.E1 <- {
 ```{r # save the RT for R analysis for jamovi E1}
 # save the RT for R analysis
 if (saveData) {
-  write.csv(rt.SPSS.E1, output.rt.SPSS, row.names = FALSE)
+  write.csv(cf.rt.SPSS.E1, output.rt.SPSS, row.names = FALSE)
 }
 ```
 
@@ -318,7 +318,7 @@ if (saveData) {
 knitr::kable(desc.rt.R.E1, digits = 4)
 
 rt.RainPlot.E1 <- {
-  ggplot(data = rt.R.E1, aes(y = RT, x = Alignment, fill = Congruency)) + 
+  ggplot(data = cf.rt.R.E1, aes(y = RT, x = Alignment, fill = Congruency)) + 
     geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
     geom_point(aes(y = RT, color = Congruency), position = position_jitter(width = .15), size = .5, alpha = .8) +
     geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
@@ -2184,6 +2184,51 @@ if (saveData) {
   write_csv(d.SPSS.all, file.path(folder.output, folder.multiple, "P101_d_SPSS.csv"))
   write_csv(filter(d.SPSS.all, ExpCode %in% c("E1", "E2")), file.path(folder.output, folder.multiple, "E1_E2_d_SPSS.csv"))
   write_csv(filter(d.SPSS.all, ExpCode %in% c("E3", "E4")), file.path(folder.output, folder.multiple, "E3_E4_d_SPSS.csv"))
+}
+
+```
+
+
+### Correct response times
+```{r}
+# combine d' data
+cf.rt.R.E1 %<>% mutate(ExpCode = "E1", WithCatch = 0, Participant = as.character(Participant))
+cf.rt.R.E2 %<>% mutate(ExpCode = "E2", WithCatch = 1, Participant = as.character(Participant))
+cf.rt.R.E3 %<>% mutate(ExpCode = "E3", WithCatch = 0, Participant = as.character(Participant))
+cf.rt.R.E4 %<>% mutate(ExpCode = "E4", WithCatch = 1, Participant = as.character(Participant))
+
+cf.rt.R.all <- {
+  bind_rows(cf.rt.R.E1, cf.rt.R.E2, cf.rt.R.E3, cf.rt.R.E4) %>% 
+    mutate(
+      CFS_Cover = as.factor(if_else(ExpCode %in% c("E1", "E2"), "both", "test"))
+    )
+}
+
+if (saveData) {
+  save(cf.rt.R.all, file = file.path(folder.nesi, "P101_cf_rt_R.RData"))
+}
+
+```
+
+
+```{r}
+
+cf.rt.SPSS.all <- {
+  cf.rt.R.all %>% 
+    mutate(Conditions = paste(Viewing, Congruency, Alignment, sep = ".")) %>% 
+    select(ExpCode, Participant, CFS_Cover, WithCatch, Conditions, RT) %>% 
+    spread(Conditions, RT) %>% 
+    mutate(
+      CFS.inter = (CFS.congruent.aligned - CFS.incongruent.aligned - (CFS.congruent.misaligned - CFS.incongruent.misaligned)),
+      monocular.inter = (monocular.congruent.aligned - monocular.incongruent.aligned - (monocular.congruent.misaligned - monocular.incongruent.misaligned))
+    )
+}
+
+
+if (saveData) {
+  write_csv(cf.rt.SPSS.all, file.path(folder.output, folder.multiple, "P101_cf_rt_SPSS.csv"))
+  write_csv(filter(cf.rt.SPSS.all, ExpCode %in% c("E1", "E2")), file.path(folder.output, folder.multiple, "E1_E2_cf_rt_SPSS.csv"))
+  write_csv(filter(cf.rt.SPSS.all, ExpCode %in% c("E3", "E4")), file.path(folder.output, folder.multiple, "E3_E4_cf_rt_SPSS.csv"))
 }
 
 ```
