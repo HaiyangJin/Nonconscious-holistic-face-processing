@@ -458,6 +458,103 @@ acc.ColuPlot.E1 = {
 acc.ColuPlot.E1
 ```
 
+
+### Correct response times (the standard design)
+```{r calculate the correct response times for R analysis E1 standard}
+scf.rt.R.E1 <- {
+  df.clean.cf.E1 %>%
+    filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
+    filter(isCorrect == 1)  %>%  # only keep the correct trials
+    filter(Congruency == "incongruent" & SameDifferent == "same") %>%  # only keep the same incongruent ones
+    group_by(Viewing, Participant, Alignment) %>%  # divide the data into serveral groups 
+    summarize(RT = mean(reactionTime) * 1000 + 300, Count = n()) %>% # get RT and count for each condition
+    ungroup()
+}
+
+# descriptive statistics of RT for plotting
+desc.scf.rt.R.E1 <- {
+  scf.rt.R.E1 %>% 
+    select(-Count) %>% 
+    group_by(Viewing, Alignment) %>% 
+    summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# RT for SPSS sytle analysis
+scf.rt.SPSS.E1 <- {
+  scf.rt.R.E1 %>%
+    mutate(Conditions = paste(Viewing, Alignment, sep = ".")) %>%
+    select(Participant, Conditions, RT) %>% 
+    spread(Conditions, RT)
+}
+
+```
+
+```{r # save the RT for R analysis for jamovi E1 scf}
+# save the RT for R analysis
+if (saveData) {
+  output.scf.rt.SPSS <- file.path(folder.output, folder.standard, paste0(output.name, "_scf_rt_SPSS.csv"))
+  write.csv(scf.rt.SPSS.E1, output.scf.rt.SPSS, row.names = FALSE)
+}
+```
+
+
+#### RainClound plots of RT
+```{r rainclound plot of correct response times E1 scf, warning = FALSE}
+knitr::kable(desc.scf.rt.R.E1, digits = 4)
+
+rt.RainPlot.E1 <- {
+  ggplot(data = scf.rt.R.E1, aes(y = RT, x = Alignment)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = RT), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = desc.scf.rt.R.E1, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = desc.scf.rt.R.E1, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Viewing, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Experiment 1 (standard design)", x = "Alignment", y = "Response Times (ms)", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand = c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+
+&nbsp;
+
+```{r display the RainCloud plot for response times E1 scf}
+rt.RainPlot.E1
+```
+
+
+#### Columns plots of RT
+```{r Plot of correct response times E1 scf}
+
+rt.ColuPlot.E1 = {
+  ggplot(data = desc.scf.rt.R.E1, aes(y = Mean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
+    scale_fill_manual(values=c("grey40", "grey60")) +
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  position = position_dodge(width=0.9), show.legend = FALSE, width = 0.15, alpha = .5) + # ,                   
+    coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    # facet_grid(. ~ Viewing, switch = "both") +
+    labs(title = "Experiment 1 (Standard design)", x = "Viewing Conditions", y = "Correct Response Times (ms)") +  # set the names for main, x and y axises
+    # geom_text(label = c("*", "", "", ""), color = "red", size = 6, nudge_y = 50) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+rt.ColuPlot.E1
+```
+
+
 ## Demographic information
 ```{r}
 # demographic information for E1
@@ -883,6 +980,103 @@ acc.ColuPlot.E2 = {
 }
 
 acc.ColuPlot.E2
+```
+
+
+### Correct response times (the standard design)
+```{r calculate the correct response times for R analysis E2 standard}
+scf.rt.R.E2 <- {
+  df.clean.cf.E2 %>%
+    filter(!(Participant %in% rm.E2)) %>%  # remove participants
+    filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
+    filter(isCorrect == 1)  %>%  # only keep the correct trials
+    filter(Congruency == "incongruent" & SameDifferent == "same") %>%  # only keep the same incongruent ones
+    group_by(Viewing, Participant, Alignment) %>%  # divide the data into serveral groups 
+    summarize(RT = mean(reactionTime) * 1000, Count = n()) %>% # get RT and count for each condition
+    ungroup()
+}
+
+# descriptive statistics of RT for plotting
+desc.scf.rt.R.E2 <- {
+  scf.rt.R.E2 %>% 
+    select(-Count) %>% 
+    group_by(Viewing, Alignment) %>% 
+    summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# RT for SPSS sytle analysis
+scf.rt.SPSS.E2 <- {
+  scf.rt.R.E2 %>%
+    mutate(Conditions = paste(Viewing, Alignment, sep = ".")) %>%
+    select(Participant, Conditions, RT) %>% 
+    spread(Conditions, RT)
+}
+
+```
+
+```{r # save the RT for R analysis for jamovi E2 scf}
+# save the RT for R analysis
+if (saveData) {
+  output.scf.rt.SPSS <- file.path(folder.output, folder.standard, paste0(output.name, "_scf_rt_SPSS.csv"))
+  write.csv(scf.rt.SPSS.E2, output.scf.rt.SPSS, row.names = FALSE)
+}
+```
+
+
+#### RainClound plots of RT
+```{r rainclound plot of correct response times E2 scf, warning = FALSE}
+knitr::kable(desc.scf.rt.R.E2, digits = 4)
+
+rt.RainPlot.E2 <- {
+  ggplot(data = scf.rt.R.E2, aes(y = RT, x = Alignment)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = RT), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = desc.scf.rt.R.E2, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = desc.scf.rt.R.E2, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Viewing, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Experiment 2 (standard design)", x = "Alignment", y = "Response Times (ms)", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand = c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+
+&nbsp;
+
+```{r display the RainCloud plot for response times E2 scf}
+rt.RainPlot.E2
+```
+
+
+#### Columns plots of RT
+```{r Plot of correct response times E2 scf}
+
+rt.ColuPlot.E2 = {
+  ggplot(data = desc.scf.rt.R.E2, aes(y = Mean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
+    scale_fill_manual(values=c("grey40", "grey60")) +
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  position = position_dodge(width=0.9), show.legend = FALSE, width = 0.15, alpha = .5) + # ,                   
+    coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    # facet_grid(. ~ Viewing, switch = "both") +
+    labs(title = "Experiment 2 (Standard design)", x = "Viewing Conditions", y = "Correct Response Times (ms)") +  # set the names for main, x and y axises
+    geom_text(label = c("*", "", "***", ""), color = "red", size = 6, nudge_y = 50) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+rt.ColuPlot.E2
 ```
 
 
@@ -1502,6 +1696,102 @@ acc.ColuPlot.E3 = {
 acc.ColuPlot.E3
 ```
 
+### Correct response times (the standard design)
+```{r calculate the correct response times for R analysis E3 standard}
+scf.rt.R.E3 <- {
+  df.clean.cf.E3 %>%
+    filter(!(Participant %in% rm.E3)) %>%  # remove participants
+    filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
+    filter(isCorrect == 1)  %>%  # only keep the correct trials
+    filter(Congruency == "incongruent" & SameDifferent == "same") %>%  # only keep the same incongruent ones
+    group_by(Viewing, Participant, Alignment) %>%  # divide the data into serveral groups 
+    summarize(RT = mean(reactionTime) * 1000, Count = n()) %>% # get RT and count for each condition
+    ungroup()
+}
+
+# descriptive statistics of RT for plotting
+desc.scf.rt.R.E3 <- {
+  scf.rt.R.E3 %>% 
+    select(-Count) %>% 
+    group_by(Viewing, Alignment) %>% 
+    summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# RT for SPSS sytle analysis
+scf.rt.SPSS.E3 <- {
+  scf.rt.R.E3 %>%
+    mutate(Conditions = paste(Viewing, Alignment, sep = ".")) %>%
+    select(Participant, Conditions, RT) %>% 
+    spread(Conditions, RT)
+}
+
+```
+
+```{r # save the RT for R analysis for jamovi E3 scf}
+# save the RT for R analysis
+if (saveData) {
+  output.scf.rt.SPSS <- file.path(folder.output, folder.standard, paste0(output.name, "_scf_rt_SPSS.csv"))
+  write.csv(scf.rt.SPSS.E3, output.scf.rt.SPSS, row.names = FALSE)
+}
+```
+
+
+#### RainClound plots of RT
+```{r rainclound plot of correct response times E3 scf, warning = FALSE}
+knitr::kable(desc.scf.rt.R.E3, digits = 4)
+
+rt.RainPlot.E3 <- {
+  ggplot(data = scf.rt.R.E3, aes(y = RT, x = Alignment)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = RT), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = desc.scf.rt.R.E3, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = desc.scf.rt.R.E3, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Viewing, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Experiment 3 (standard design)", x = "Alignment", y = "Response Times (ms)", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand = c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+
+&nbsp;
+
+```{r display the RainCloud plot for response times E3 scf}
+rt.RainPlot.E3
+```
+
+
+#### Columns plots of RT
+```{r Plot of correct response times E3 scf}
+
+rt.ColuPlot.E3 = {
+  ggplot(data = desc.scf.rt.R.E3, aes(y = Mean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
+    scale_fill_manual(values=c("grey40", "grey60")) +
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  position = position_dodge(width=0.9), show.legend = FALSE, width = 0.15, alpha = .5) + # ,                   
+    coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    # facet_grid(. ~ Viewing, switch = "both") +
+    labs(title = "Experiment 3 (Standard design)", x = "Viewing Conditions", y = "Correct Response Times (ms)") +  # set the names for main, x and y axises
+    geom_text(label = c("*", "", "", ""), color = "red", size = 6, nudge_y = 50) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+rt.ColuPlot.E3
+```
+
 
 # Experiment 4
 ```{r information about the data set in E4}
@@ -1908,13 +2198,111 @@ acc.ColuPlot.E4 = {
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     labs(title = "Accuracy (Standard Design) for Experiment 1", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns
-    geom_text(label = c(".064", "", "***", ""), color = c("blue", "red", "red", "red"), size = 6, nudge_y = 0.15, nudge_x = 0.5) + # add starts to the significant columns
+    geom_text(label = c("", "", "***", ""), color = c("blue", "red", "red", "red"), size = 6, nudge_y = 0.15, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
     plot_theme
 }
 
 acc.ColuPlot.E4
 ```
+
+### Correct response times (the standard design)
+```{r calculate the correct response times for R analysis E4 standard}
+scf.rt.R.E4 <- {
+  df.clean.cf.E4 %>%
+    filter(!(Participant %in% rm.E4)) %>%  # remove participants
+    filter(RT.Within3Z == 1)  %>%  # only keep the RT within 3 Z
+    filter(isCorrect == 1)  %>%  # only keep the correct trials
+    filter(Congruency == "incongruent" & SameDifferent == "same") %>%  # only keep the same incongruent ones
+    group_by(Viewing, Participant, Alignment) %>%  # divide the data into serveral groups 
+    summarize(RT = mean(reactionTime) * 1000, Count = n()) %>% # get RT and count for each condition
+    ungroup()
+}
+
+# descriptive statistics of RT for plotting
+desc.scf.rt.R.E4 <- {
+  scf.rt.R.E4 %>% 
+    select(-Count) %>% 
+    group_by(Viewing, Alignment) %>% 
+    summarize(Mean = mean(RT), N = n(), SD = sd(RT), SE = SD/sqrt(N), SE.hi = Mean + SE, SE.lo = Mean - SE, CI = SE * qt(0.975,N), Median = median(RT), Lower = Mean - SD, Upper = Mean + SD) %>% 
+    ungroup()
+}
+
+# RT for SPSS sytle analysis
+scf.rt.SPSS.E4 <- {
+  scf.rt.R.E4 %>%
+    mutate(Conditions = paste(Viewing, Alignment, sep = ".")) %>%
+    select(Participant, Conditions, RT) %>% 
+    spread(Conditions, RT)
+}
+
+```
+
+```{r # save the RT for R analysis for jamovi E4 scf}
+# save the RT for R analysis
+if (saveData) {
+  output.scf.rt.SPSS <- file.path(folder.output, folder.standard, paste0(output.name, "_scf_rt_SPSS.csv"))
+  write.csv(scf.rt.SPSS.E4, output.scf.rt.SPSS, row.names = FALSE)
+}
+```
+
+
+#### RainClound plots of RT
+```{r rainclound plot of correct response times E4 scf, warning = FALSE}
+knitr::kable(desc.scf.rt.R.E4, digits = 4)
+
+rt.RainPlot.E4 <- {
+  ggplot(data = scf.rt.R.E4, aes(y = RT, x = Alignment)) + 
+    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .7) +
+    geom_point(aes(y = RT), position = position_jitter(width = .15), size = .5, alpha = .8) +
+    geom_boxplot(aes(y = RT), width = .2, outlier.shape = NA, alpha = .7) +
+    geom_point(data = desc.scf.rt.R.E4, aes(y = Mean, x = Alignment), position = position_nudge(x = 0.3), size = 2.5) +
+    geom_errorbar(data = desc.scf.rt.R.E4, aes(y = Mean, ymin = Lower, ymax = Upper), position = position_nudge(x = 0.3), width = 0) +
+    facet_grid(. ~ Viewing, switch = "both") +
+    # scale_colour_grey() + # start = .1, end = .6, color for the contour
+    # scale_fill_grey() + # start = .3, end = .6, color for the fill
+    # scale_color_brewer(palette = "Set1") +
+    # scale_fill_brewer(palette = "Set1") +
+    labs(title = "Experiment 4 (standard design)", x = "Alignment", y = "Response Times (ms)", fill = "Congruency", color = "Congruency") +  # set the names for main, x and y axises and the legend
+    # coord_cartesian(ylim = c(0, 6)) +  # set the limit for y axis
+    # scale_y_continuous(expand = c(0, 0)) +  # remove the space between columns and x axis
+    # geom_hline(yintercept = 0, linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+    theme_bw() + # the backgroud color
+    plot_theme
+}
+
+```
+
+
+&nbsp;
+
+```{r display the RainCloud plot for response times E4 scf}
+rt.RainPlot.E4
+```
+
+
+#### Columns plots of RT
+```{r Plot of correct response times E4 scf}
+
+rt.ColuPlot.E4 = {
+  ggplot(data = desc.scf.rt.R.E4, aes(y = Mean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
+    scale_fill_manual(values=c("grey40", "grey60")) +
+    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+                  position = position_dodge(width=0.9), show.legend = FALSE, width = 0.15, alpha = .5) + # ,                   
+    coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    # facet_grid(. ~ Viewing, switch = "both") +
+    labs(title = "Experiment 4 (Standard design)", x = "Viewing Conditions", y = "Correct Response Times (ms)") +  # set the names for main, x and y axises
+    geom_text(label = c("", "", "**", ""), color = "red", size = 6, nudge_y = 50) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+rt.ColuPlot.E4
+```
+
+
 
 
 ## Catch trials
@@ -2159,9 +2547,9 @@ d.R.all <- {
     )
 }
 
-if (saveData) {
-  save(d.R.all, file = file.path(folder.nesi, "P101_d_R.RData"))
-}
+# if (saveData) {
+#   save(d.R.all, file = file.path(folder.nesi, "P101_d_R.RData"))
+# }
 
 ```
 
@@ -2204,9 +2592,9 @@ cf.rt.R.all <- {
     )
 }
 
-if (saveData) {
-  save(cf.rt.R.all, file = file.path(folder.nesi, "P101_cf_rt_R.RData"))
-}
+# if (saveData) {
+#   save(cf.rt.R.all, file = file.path(folder.nesi, "P101_cf_rt_R.RData"))
+# }
 
 ```
 
@@ -2232,6 +2620,90 @@ if (saveData) {
 }
 
 ```
+
+
+### Accuracy (the standard design)
+```{r}
+# combine d' data
+acc.R.E1 %<>% mutate(ExpCode = "E1", WithCatch = 0, Participant = as.character(Participant))
+acc.R.E2 %<>% mutate(ExpCode = "E2", WithCatch = 1, Participant = as.character(Participant))
+acc.R.E3 %<>% mutate(ExpCode = "E3", WithCatch = 0, Participant = as.character(Participant))
+acc.R.E4 %<>% mutate(ExpCode = "E4", WithCatch = 1, Participant = as.character(Participant))
+
+acc.R.all <- {
+  bind_rows(acc.R.E1, acc.R.E2, acc.R.E3, acc.R.E4) %>% 
+    mutate(
+      CFS_Cover = as.factor(if_else(ExpCode %in% c("E1", "E2"), "both", "test"))
+    )
+}
+
+# if (saveData) {
+#   save(acc.R.all, file = file.path(folder.nesi, "P101_scf_acc_R.RData"))
+# }
+
+```
+
+
+```{r}
+
+acc.SPSS.all <- {
+  acc.R.all %>% 
+    mutate(Conditions = paste(Viewing, Alignment, sep = ".")) %>% 
+    select(ExpCode, Participant, CFS_Cover, WithCatch, Conditions, Accuracy) %>% 
+    spread(Conditions, Accuracy)
+}
+
+
+if (saveData) {
+  write_csv(acc.SPSS.all, file.path(folder.output, folder.multiple, "P101_scf_acc_SPSS.csv"))
+  write_csv(filter(acc.SPSS.all, ExpCode %in% c("E1", "E2")), file.path(folder.output, folder.multiple, "E1_E2_scf_acc_SPSS.csv"))
+  write_csv(filter(acc.SPSS.all, ExpCode %in% c("E3", "E4")), file.path(folder.output, folder.multiple, "E3_E4_scf_acc_SPSS.csv"))
+}
+
+```
+
+
+### Correct response times (the standard design)
+```{r}
+# combine RT data for standard design
+scf.rt.R.E1 %<>% mutate(ExpCode = "E1", WithCatch = 0, Participant = as.character(Participant))
+scf.rt.R.E2 %<>% mutate(ExpCode = "E2", WithCatch = 1, Participant = as.character(Participant))
+scf.rt.R.E3 %<>% mutate(ExpCode = "E3", WithCatch = 0, Participant = as.character(Participant))
+scf.rt.R.E4 %<>% mutate(ExpCode = "E4", WithCatch = 1, Participant = as.character(Participant))
+
+scf.rt.R.all <- {
+  bind_rows(scf.rt.R.E1, scf.rt.R.E2, scf.rt.R.E3, scf.rt.R.E4) %>% 
+    mutate(
+      CFS_Cover = as.factor(if_else(ExpCode %in% c("E1", "E2"), "both", "test"))
+    )
+}
+
+# if (saveData) {
+#   save(cf.rt.R.all, file = file.path(folder.nesi, "P101_cf_rt_R.RData"))
+# }
+
+```
+
+
+```{r}
+
+scf.rt.SPSS.all <- {
+  scf.rt.R.all %>% 
+    mutate(Conditions = paste(Viewing, Alignment, sep = ".")) %>% 
+    select(ExpCode, Participant, CFS_Cover, WithCatch, Conditions, RT) %>% 
+    spread(Conditions, RT)
+}
+
+
+if (saveData) {
+  write_csv(scf.rt.SPSS.all, file.path(folder.output, folder.multiple, "P101_scf_rt_SPSS.csv"))
+  write_csv(filter(scf.rt.SPSS.all, ExpCode %in% c("E1", "E2")), file.path(folder.output, folder.multiple, "E1_E2_scf_rt_SPSS.csv"))
+  write_csv(filter(scf.rt.SPSS.all, ExpCode %in% c("E3", "E4")), file.path(folder.output, folder.multiple, "E3_E4_scf_rt_SPSS.csv"))
+}
+
+```
+
+
 
 # Versions of Packages Used
 ```{r versions}
