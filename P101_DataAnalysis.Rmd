@@ -56,6 +56,12 @@ This is the data analysis for all the four experiments. At first, the data analy
 # load R files in the R folder
 sapply(list.files(folder.R, "*.R", full.names = TRUE, recursive = TRUE), source)
 
+# png.ali.CFS <- image_read(file.path(folder.uti, "ali-CFS.png"))
+# png.mis.CFS <- image_read(file.path(folder.uti, "mis-CFS.png"))
+# png.ali.mono <- image_read(file.path(folder.uti, "ali-mono.png"))
+# png.mis.mono <- image_read(file.path(folder.uti, "mis-mono.png"))
+
+
 ```
 
 ```{r name the levels of variables}
@@ -275,7 +281,7 @@ emm.d.E1 <- {
 
 ```{r Plot of d E1}
 
-d.ColuPlot.E1 = {
+d.LinePlot.E1 = {
   ggplot(data = emm.d.E1, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_point(size = 2) +
     geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
@@ -285,7 +291,7 @@ d.ColuPlot.E1 = {
     facet_grid(. ~ Viewing, switch = "both") +
     coord_cartesian(ylim = ylimit.d) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = expression("Sensitivity"~italic("d'")), fill = "Congruency") +  # set the names for main, x and y axises
+    labs(title = "Experiment 1", x = "Viewing Conditions", y = expression("Sensitivity"~italic("d'")), fill = "Congruency") +  # set the names for main, x and y axises
     geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
     plot_theme
@@ -293,7 +299,6 @@ d.ColuPlot.E1 = {
 
 d.LinePlot.E1
 ```
-
 
 
 ### Correct response times
@@ -388,12 +393,13 @@ rt.LinePlot.E1 = {
   ggplot(data = emm.cf.rt.E1, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_point(size = 2) +
     geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
     geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
                   show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     facet_grid(. ~ Viewing, switch = "both") +
-    labs(title = "", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    labs(title = "Experiment 1", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
     geom_text(label = c("*", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
@@ -494,7 +500,7 @@ acc.ColuPlot.E1 = {
                   position = position_dodge(width=0.9), show.legend = FALSE, width = 0.25, alpha = .5) + # 
     coord_cartesian(ylim = ylimit.acc) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
+    labs(title = "Experiment 1 (standard design)", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
     geom_text(label = c("", "", "**", ""), color = "red", size = 6, nudge_y = 0.15) + # add starts to the significant columns
     theme_bw() +
     plot_theme
@@ -611,18 +617,6 @@ rt.ColuPlot.E1 = {
 rt.ColuPlot.E1
 ```
 
-
-## Demographic information
-```{r}
-# demographic information for E1
-demo.E1 <- {
-  df.clean.E1 %>% 
-    filter(!(Participant %in% rm.E1)) %>% 
-    select()
-             
-  
-}
-```
 
 # Experiment 2
 ```{r information about the data set in E2}
@@ -845,12 +839,13 @@ d.LinePlot.E2 = {
   ggplot(data = emm.d.E2, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_point(size = 2) +
     geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
     geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
                   show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     facet_grid(. ~ Viewing, switch = "both") +
     coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    labs(title = "Experiment 2", x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
     scale_fill_grey() +  # set the color for columns
     geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
@@ -954,12 +949,13 @@ rt.LinePlot.E2 = {
   ggplot(data = emm.cf.rt.E2, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_point(size = 2) +
     geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
     geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
                   show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     facet_grid(. ~ Viewing, switch = "both") +
-    labs(title = "", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    labs(title = "Experiment 2", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
     geom_text(label = c("", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
@@ -1066,7 +1062,7 @@ acc.ColuPlot.E2 = {
                   position = position_dodge(width=0.9), show.legend = FALSE, width = 0.25, alpha = .5) + # 
     coord_cartesian(ylim = ylimit.acc) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
+    labs(title = "Experiment 2 (standard design)", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
     geom_text(label = c("", "", "***", ""), color = "red", size = 6, nudge_y = 0.15) + # add starts to the significant columns
     theme_bw() +
     plot_theme
@@ -1164,7 +1160,7 @@ emm.scf.rt.E2 <- {
 
 ```
 
-```{r Plot of correct response times E2 scf}
+```{r emm Plot of correct response times E2 scf}
 
 rt.ColuPlot.E2 = {
   ggplot(data = emm.scf.rt.E2, aes(y = emmean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
@@ -1175,7 +1171,7 @@ rt.ColuPlot.E2 = {
     coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     # facet_grid(. ~ Viewing, switch = "both") +
-    labs(title = "", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Experiment 1 (Standard design)
+    labs(title = "Experiment 2 (standard design)", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Experiment 1 (Standard design)
     geom_text(label = c("*", "", "***", ""), color = "red", size = 6, nudge_y = 50) + # add starts to the significant columns
     theme_bw() +
     plot_theme
@@ -1184,24 +1180,24 @@ rt.ColuPlot.E2 = {
 rt.ColuPlot.E2
 ```
 
-```{r Plot of correct response times E2 scf}
+```{r Plot of correct response times E2 scf, eval=FALSE, include=FALSE}
 
-rt.ColuPlot.E2 = {
-  ggplot(data = desc.scf.rt.R.E2, aes(y = Mean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
-    geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
-    scale_fill_manual(values=c("grey40", "grey60")) +
-    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
-                  position = position_dodge(width=0.9), show.legend = FALSE, width = 0.15, alpha = .5) + # ,                   
-    coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
-    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    # facet_grid(. ~ Viewing, switch = "both") +
-    labs(title = "Experiment 2 (Standard design)", x = "Viewing Conditions", y = "Correct Response Times (ms)") +  # set the names for main, x and y axises
-    geom_text(label = c("*", "", "***", ""), color = "red", size = 6, nudge_y = 50) + # add starts to the significant columns
-    theme_bw() +
-    plot_theme
-}
-
-rt.ColuPlot.E2
+# rt.ColuPlot.E2 = {
+#   ggplot(data = desc.scf.rt.R.E2, aes(y = Mean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+#     geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
+#     scale_fill_manual(values=c("grey40", "grey60")) +
+#     geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+#                   position = position_dodge(width=0.9), show.legend = FALSE, width = 0.15, alpha = .5) + # ,                   
+#     coord_cartesian(ylim = c(0, 1100)) +  # set the limit for y axis
+#     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+#     # facet_grid(. ~ Viewing, switch = "both") +
+#     labs(title = "Experiment 2 (Standard design)", x = "Viewing Conditions", y = "Correct Response Times (ms)") +  # set the names for main, x and y axises
+#     geom_text(label = c("*", "", "***", ""), color = "red", size = 6, nudge_y = 50) + # add starts to the significant columns
+#     theme_bw() +
+#     plot_theme
+# }
+# 
+# rt.ColuPlot.E2
 ```
 
 
@@ -1329,7 +1325,7 @@ catch.acc.ColuPlot.E2 = {
     # facet_grid(. ~ Viewing, switch = "both") +
     coord_cartesian(ylim = c(0, 1.05)) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2
+    labs(title = "Experiment 2", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2
     geom_hline(yintercept = c(0.5, 1), linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
     geom_text(label = c("", "", "", "", "***", ""), color = "red", size = 6, nudge_y = 0.1, nudge_x = -0.22) + # add starts to the significant columns
     geom_text(label = c("", "", "", "", "", "***"), color = "red", size = 6, nudge_y = 0.1, nudge_x = 0.23) + # add starts to the significant columns
@@ -1431,15 +1427,15 @@ emm.catch.rt.E2 <- {
 ```{r Plot of response times for catch trials E2}
 
 catch.acc.ColuPlot.E2 = {
-  ggplot(data = catch.desc.rt.R.E2, aes(y = Mean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+  ggplot(data = emm.catch.rt.E2, aes(y = emmean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
     scale_fill_manual(values=c("grey40", "grey60")) +
-    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
                   position = position_dodge(width=0.9), show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     # facet_grid(. ~ Viewing, switch = "both") +
-    # coord_cartesian(ylim = c(0, 3200)) +  # set the limit for y axis
+    coord_cartesian(ylim = c(0, 5400)) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2
+    labs(title = "Experiment 2", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2
     # geom_hline(yintercept = c(0.5, 1), linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
     geom_text(label = c("", "", "", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0) + # add starts to the significant columns
     theme_bw() +
@@ -1659,12 +1655,13 @@ d.LinePlot.E3 = {
   ggplot(data = emm.d.E3, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_point(size = 2) +
     geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
     geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
                   show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     facet_grid(. ~ Viewing, switch = "both") +
     coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    labs(title = "Experiment 3", x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
     scale_fill_grey() +  # set the color for columns
     geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
@@ -1766,14 +1763,15 @@ rt.LinePlot.E3 = {
   ggplot(data = emm.cf.rt.E3, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_point(size = 2) +
     geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
     geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
                   show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     facet_grid(. ~ Viewing, switch = "both") +
-    labs(title = "", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    labs(title = "Experiment 3", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
-    geom_text(label = c("", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
+    geom_text(label = c("+", "", "", "", "", "", "", ""), color = "blue", size = 6, nudge_y = 50, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
     plot_theme
 }
@@ -1873,7 +1871,7 @@ acc.ColuPlot.E3 = {
                   position = position_dodge(width=0.9), show.legend = FALSE, width = 0.25, alpha = .5) + # 
     coord_cartesian(ylim = ylimit.acc) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
+    labs(title = "Experiment 3 (standard design)", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
     geom_text(label = c("", "", "**", ""), color = "red", size = 6, nudge_y = 0.15) + # add starts to the significant columns
     theme_bw() +
     plot_theme
@@ -1982,7 +1980,7 @@ rt.ColuPlot.E3 = {
     coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     # facet_grid(. ~ Viewing, switch = "both") +
-    labs(title = "", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Experiment 1 (Standard design)
+    labs(title = "Experiment 3 (standard design)", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Experiment 1 (Standard design)
     geom_text(label = c("*", "", "", ""), color = "red", size = 6, nudge_y = 50) + # add starts to the significant columns
     theme_bw() +
     plot_theme
@@ -2213,12 +2211,13 @@ d.LinePlot.E4 = {
   ggplot(data = emm.d.E4, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_point(size = 2) +
     geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
     geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
                   show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     facet_grid(. ~ Viewing, switch = "both") +
     coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    labs(title = "Experiment 4", x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
     scale_fill_grey() +  # set the color for columns
     geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
@@ -2321,14 +2320,15 @@ rt.LinePlot.E4 = {
   ggplot(data = emm.cf.rt.E4, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_point(size = 2) +
     geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
     geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
                   show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     facet_grid(. ~ Viewing, switch = "both") +
-    labs(title = "", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    labs(title = "Experiment 4", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
     scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
-    geom_text(label = c("", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
+    geom_text(label = c("", "", "", "", "*", "", "", ""), color = "red", size = 6, nudge_y = 50, nudge_x = 0.5) + # add starts to the significant columns
     theme_bw() +
     plot_theme
 }
@@ -2432,7 +2432,7 @@ acc.ColuPlot.E4 = {
                   position = position_dodge(width=0.9), show.legend = FALSE, width = 0.25, alpha = .5) + # 
     coord_cartesian(ylim = ylimit.acc) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
+    labs(title = "Experiment 4 (standard design)", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
     geom_text(label = c("", "", "***", ""), color = "red", size = 6, nudge_y = 0.15) + # add starts to the significant columns
     theme_bw() +
     plot_theme
@@ -2541,7 +2541,7 @@ rt.ColuPlot.E4 = {
     coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
     # facet_grid(. ~ Viewing, switch = "both") +
-    labs(title = "", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Experiment 1 (Standard design)
+    labs(title = "Experiment 4 (standard design)", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Experiment 1 (Standard design)
     geom_text(label = c("", "", "**", ""), color = "red", size = 6, nudge_y = 50) + # add starts to the significant columns
     theme_bw() +
     plot_theme
@@ -2664,7 +2664,7 @@ emm.catch.acc.E4 <- {
 
 ```
 
-```{r Plot of accuracy for catch trials E4}
+```{r emm Plot of accuracy for catch trials E4}
 
 catch.acc.ColuPlot.E4 = {
   ggplot(data = emm.catch.acc.E4, aes(y = emmean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
@@ -2675,9 +2675,9 @@ catch.acc.ColuPlot.E4 = {
     # facet_grid(. ~ Viewing, switch = "both") +
     coord_cartesian(ylim = c(0, 1.05)) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2
+    labs(title = "Experiment 4", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2
     geom_hline(yintercept = c(0.5, 1), linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
-    geom_text(label = c("", "", "", "", "***", ""), color = "red", size = 6, nudge_y = 0.1, nudge_x = -0.22) + # add starts to the significant columns
+    geom_text(label = c("**", "", "**", "", "***", ""), color = "red", size = 6, nudge_y = 0.1, nudge_x = -0.22) + # add starts to the significant columns
     geom_text(label = c("", "", "", "", "", "***"), color = "red", size = 6, nudge_y = 0.1, nudge_x = 0.23) + # add starts to the significant columns
     theme_bw() +
     plot_theme
@@ -2686,25 +2686,25 @@ catch.acc.ColuPlot.E4 = {
 catch.acc.ColuPlot.E4
 ```
 
-```{r Plot of accuracy for catch trials E4}
+```{r Plot of accuracy for catch trials E4, eval=FALSE, include=FALSE}
 
-catch.acc.ColuPlot.E4 = {
-  ggplot(data = catch.desc.acc.R.E4, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
-    geom_col() +  # position = "dodge", alpha = .7
-    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
-                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
-    facet_grid(. ~ Viewing, switch = "both") +
-    coord_cartesian(ylim = c(0, 1.05)) +  # set the limit for y axis
-    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "Accuracy of Catch Trials in Experiment 4", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
-    scale_fill_grey() +  # set the color for columns
-    geom_hline(yintercept = c(0.5, 1), linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
-    geom_text(label = c("", "", "", "", "***", "***"), color = "red", size = 6, nudge_y = 0.1, nudge_x = 0) + # add starts to the significant columns
-    theme_bw() +
-    plot_theme
-}
-
-catch.acc.ColuPlot.E4
+# catch.acc.ColuPlot.E4 = {
+#   ggplot(data = catch.desc.acc.R.E4, aes(y = Mean, x = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+#     geom_col() +  # position = "dodge", alpha = .7
+#     geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+#                   show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+#     facet_grid(. ~ Viewing, switch = "both") +
+#     coord_cartesian(ylim = c(0, 1.05)) +  # set the limit for y axis
+#     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+#     labs(title = "Accuracy of Catch Trials in Experiment 4", x = "Viewing Conditions", y = "Accuracy") +  # set the names for main, x and y axises
+#     scale_fill_grey() +  # set the color for columns
+#     geom_hline(yintercept = c(0.5, 1), linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
+#     geom_text(label = c("", "", "", "", "***", "***"), color = "red", size = 6, nudge_y = 0.1, nudge_x = 0) + # add starts to the significant columns
+#     theme_bw() +
+#     plot_theme
+# }
+# 
+# catch.acc.ColuPlot.E4
 ```
 
 ### Response Times
@@ -2797,15 +2797,15 @@ emm.catch.rt.E4 <- {
 ```{r Plot of response times for catch trials E4}
 
 catch.acc.ColuPlot.E4 = {
-  ggplot(data = catch.desc.rt.R.E4, aes(y = Mean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+  ggplot(data = emm.catch.rt.E4, aes(y = emmean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
     scale_fill_manual(values=c("grey40", "grey60")) +
-    geom_errorbar(mapping = aes(ymin = SE.lo, ymax = SE.hi), linetype = 1,  # set the error bar
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
                   position = position_dodge(width=0.9), show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
     # facet_grid(. ~ Viewing, switch = "both") +
-    # coord_cartesian(ylim = c(0, 3200)) +  # set the limit for y axis
+    coord_cartesian(ylim = c(0, 5400)) +  # set the limit for y axis
     scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
-    labs(title = "", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2
+    labs(title = "Experiment 4", x = "Viewing Conditions", y = "Correct RTs (ms)") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2
     # geom_hline(yintercept = c(0.5, 1), linetype = 5, alpha = 0.5) + # add the line for 0.5 and 1 (y)
     geom_text(label = c("", "", "", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0) + # add starts to the significant columns
     theme_bw() +
@@ -2870,6 +2870,77 @@ if (saveData) {
 ```
 
 
+#### Line plots of d' (E1 E2)
+```{r rmanova d E12}
+rmanova.d.E12 <- aov_4(dprime ~ Viewing * Congruency * Alignment + (Viewing * Congruency * Alignment | Participant),
+                      filter(d.R.all, ExpCode %in% c("E1", "E2")))
+
+emm.d.E12 <- {
+  emmeans(rmanova.d.E12, ~ Alignment + Congruency + Viewing ) %>% 
+    as.data.frame() %>% 
+    select(Viewing, Congruency, Alignment, everything())
+}
+
+```
+
+```{r Plot of d E12}
+
+d.LinePlot.E12 = {
+  ggplot(data = emm.d.E12, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Viewing, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(title = "Experiment 1 and 2", x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+d.LinePlot.E12
+```
+
+
+#### Line plots of d' (E3 E4)
+```{r rmanova d E34}
+rmanova.d.E34 <- aov_4(dprime ~ Viewing * Congruency * Alignment + (Viewing * Congruency * Alignment | Participant),
+                      filter(d.R.all, ExpCode %in% c("E3", "E4")))
+
+emm.d.E34 <- {
+  emmeans(rmanova.d.E34, ~ Alignment + Congruency + Viewing ) %>% 
+    as.data.frame() %>% 
+    select(Viewing, Congruency, Alignment, everything())
+}
+
+```
+
+```{r Plot of d E34}
+
+d.LinePlot.E34 = {
+  ggplot(data = emm.d.E34, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Viewing, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(title = "Experiment 3 and 4", x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("+", "", "", "", "***", "", "", ""), color = c("blue", "red", "red", "red", "red", "red", "red", "red"), size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+d.LinePlot.E34
+```
+
 ### Correct response times
 ```{r}
 # combine d' data
@@ -2914,6 +2985,79 @@ if (saveData) {
 
 ```
 
+
+#### Line plots of RT (E1 E2)
+```{r rmanova rt E12}
+rmanova.rt.E12 <- aov_4(RT ~ Viewing * Congruency * Alignment + (Viewing * Congruency * Alignment | Participant),
+                      filter(cf.rt.R.all, ExpCode %in% c("E1", "E2")))
+
+emm.cf.rt.E12 <- {
+  emmeans(rmanova.rt.E12, ~ Alignment + Congruency + Viewing ) %>% 
+    as.data.frame() %>% 
+    select(Viewing, Congruency, Alignment, everything())
+}
+
+```
+
+
+```{r Plot of correct response times E12}
+
+rt.LinePlot.E12 = {
+  ggplot(data = emm.cf.rt.E12, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Viewing, switch = "both") +
+    labs(title = "Experiment 1 and 2", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
+    geom_text(label = c("*", "", "", "", "*", "", "", ""), color = "red", size = 6, nudge_y = 40, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+rt.LinePlot.E12
+```
+
+
+#### Line plots of RT (E3 E4)
+```{r rmanova rt E34}
+rmanova.rt.E34 <- aov_4(RT ~ Viewing * Congruency * Alignment + (Viewing * Congruency * Alignment | Participant),
+                      filter(cf.rt.R.all, ExpCode %in% c("E3", "E4")))
+
+emm.cf.rt.E34 <- {
+  emmeans(rmanova.rt.E34, ~ Alignment + Congruency + Viewing ) %>% 
+    as.data.frame() %>% 
+    select(Viewing, Congruency, Alignment, everything())
+}
+
+```
+
+
+```{r Plot of correct response times E34}
+
+rt.LinePlot.E34 = {
+  ggplot(data = emm.cf.rt.E34, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Viewing, switch = "both") +
+    labs(title = "Experiment 3 and 4", x = "Viewing Conditions", y = "Correct RTs (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
+    geom_text(label = c("*", "", "", "", "**", "", "", ""), color = "red", size = 6, nudge_y = 40, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+
+rt.LinePlot.E34
+```
 
 ### Accuracy (the standard design)
 ```{r}
@@ -2995,7 +3139,6 @@ if (saveData) {
 }
 
 ```
-
 
 
 # Versions of Packages Used
