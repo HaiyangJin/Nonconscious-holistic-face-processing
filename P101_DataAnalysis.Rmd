@@ -2905,6 +2905,22 @@ d.LinePlot.E12 = {
 d.LinePlot.E12
 ```
 
+#### Correlations between CF effects of d' (E1 E2)
+```{r}
+
+d.scaPlot.E12 = {
+  ggplot(data = filter(d.SPSS.all, ExpCode %in% c("E1", "E2")), aes(y = monocular.inter, x = CFS.inter)) +
+    geom_point(size = 2, aes(color = ExpCode)) +
+    geom_smooth(method = lm, se=TRUE, fullrange = FALSE, level = 0.95, color = "black") +
+    # coord_cartesian(ylim = c(-1.6, 2.6), xlim = c(-1.4, 1.6)) +  # set the limit for y axis
+    labs(title = "Correlations between composite effects in Experiment 1 and 2", x = "CFS", y = "Monocular", color = "Experiment") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    theme_bw() +
+    plot_theme
+}
+
+d.scaPlot.E12
+```
+
 
 #### Line plots of d' (E3 E4)
 ```{r rmanova d E34}
@@ -2939,6 +2955,22 @@ d.LinePlot.E34 = {
 }
 
 d.LinePlot.E34
+```
+
+#### Correlations between CF effects of d' (E3 E4)
+```{r}
+
+d.scaPlot.E34 = {
+  ggplot(data = filter(d.SPSS.all, ExpCode %in% c("E3", "E4")), aes(y = monocular.inter, x = CFS.inter)) +
+    geom_point(size = 2, aes(color = ExpCode)) +
+    geom_smooth(method = lm, se=TRUE, fullrange = FALSE, level = 0.95, color = "black") +
+    # coord_cartesian(ylim = c(-1.6, 2.6), xlim = c(-1.4, 1.6)) +  # set the limit for y axis
+    labs(title = "Correlations between composite effects in Experiment 3 and 4", x = "CFS", y = "Monocular", color = "Experiment") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    theme_bw() +
+    plot_theme
+}
+
+d.scaPlot.E34
 ```
 
 ### Correct response times
@@ -3022,6 +3054,21 @@ rt.LinePlot.E12 = {
 rt.LinePlot.E12
 ```
 
+#### Correlations between CF effects of RT (E1 E2)
+```{r}
+
+rt.scaPlot.E12 = {
+  ggplot(data = filter(cf.rt.SPSS.all, ExpCode %in% c("E1", "E2")), aes(y = monocular.inter, x = CFS.inter)) +
+    geom_point(size = 2, aes(color = ExpCode)) +
+    geom_smooth(method = lm, se=TRUE, fullrange = FALSE, level = 0.95, color = "black") +
+    # coord_cartesian(ylim = c(-1.6, 2.6), xlim = c(-1.4, 1.6)) +  # set the limit for y axis
+    labs(title = "Correlations between composite effects in Experiment 1 and 2", x = "CFS", y = "Monocular", color = "Experiment") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    theme_bw() +
+    plot_theme
+}
+
+rt.scaPlot.E12
+```
 
 #### Line plots of RT (E3 E4)
 ```{r rmanova rt E34}
@@ -3057,6 +3104,22 @@ rt.LinePlot.E34 = {
 }
 
 rt.LinePlot.E34
+```
+
+#### Correlations between CF effects of RT (E3 E4)
+```{r}
+
+rt.scaPlot.E34 = {
+  ggplot(data = filter(cf.rt.SPSS.all, ExpCode %in% c("E3", "E4")), aes(y = monocular.inter, x = CFS.inter)) +
+    geom_point(size = 2, aes(color = ExpCode)) +
+    geom_smooth(method = lm, se=TRUE, fullrange = FALSE, level = 0.95, color = "black") +
+    # coord_cartesian(ylim = c(-1.6, 2.6), xlim = c(-1.4, 1.6)) +  # set the limit for y axis
+    labs(title = "Correlations between composite effects in Experiment 3 and 4", x = "CFS", y = "Monocular", color = "Experiment") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    theme_bw() +
+    plot_theme
+}
+
+rt.scaPlot.E34
 ```
 
 ### Accuracy (the standard design)
