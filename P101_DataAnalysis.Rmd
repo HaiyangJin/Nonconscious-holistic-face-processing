@@ -3162,6 +3162,49 @@ if (saveData) {
 
 ```
 
+```{r rmanova scf acc all}
+
+scf.acc.R.all <- {
+  acc.R.all %>% 
+    mutate(Experiment = if_else(ExpCode %in% c("E1", "E2"), "E1&2", "E3&4"),
+           Experiment = as_factor(Experiment))
+} 
+
+rmanova.scf.acc.all <- aov_4(Accuracy ~ Viewing * Alignment * Experiment + 
+                              (Viewing * Alignment | Participant),
+                            data = scf.acc.R.all)
+
+emm.scf.acc.E4 <- {
+  emmeans(rmanova.scf.acc.all, ~ Alignment + Viewing + Experiment) %>% 
+    as.data.frame() %>% 
+    select(Viewing, Alignment, everything())
+}
+
+# contrast(emmeans(rmanova.scf.acc.all, ~ Alignment + Viewing + Experiment), ~ Alignment | Viewing + Experiment, "pairwise", simple = "each", combine = TRUE, adjust = "none")
+
+```
+
+
+```{r acc.colPlot.scf}
+
+acc.colPlot.scf <- {
+  ggplot(data = emm.scf.acc.E4, aes(y = emmean, x = Alignment, fill = Alignment)) +
+    geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
+    scale_fill_manual(values=c("grey40", "grey60")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  position = position_dodge(width=0.9), show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Experiment + Viewing) +
+    coord_cartesian(ylim = c(0.5, 1.05)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(y = "Accuracy") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2 title = "Standard Design Analyses", 
+    geom_text(label = c("", "", "***", "", "*", "", "***", ""), color = "red", size = 6, nudge_y = 0.1, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+  
+acc.colPlot.scf
+```
+
 
 ### Correct response times (the standard design)
 ```{r}
@@ -3203,6 +3246,48 @@ if (saveData) {
 
 ```
 
+```{r rmanova scf rt all}
+
+scf.rt.R.all <- {
+  scf.rt.R.all %>% 
+    mutate(Experiment = if_else(ExpCode %in% c("E1", "E2"), "E1&2", "E3&4"),
+           Experiment = as_factor(Experiment))
+} 
+
+rmanova.scf.rt.all <- aov_4(RT ~ Viewing * Alignment * Experiment + 
+                              (Viewing * Alignment | Participant),
+                            data = scf.rt.R.all)
+
+emm.scf.rt.E4 <- {
+  emmeans(rmanova.scf.rt.all, ~ Alignment + Viewing + Experiment) %>% 
+    as.data.frame() %>% 
+    select(Viewing, Alignment, everything())
+}
+
+# contrast(emmeans(rmanova.scf.rt.all, ~ Alignment + Viewing + Experiment), ~ Alignment | Viewing + Experiment, "pairwise", simple = "each", combine = TRUE, adjust = "none")
+
+```
+
+
+```{r rt.colPlot.scf}
+
+rt.colPlot.scf <- {
+  ggplot(data = emm.scf.rt.E4, aes(y = emmean, x = Alignment, fill = Alignment)) +
+    geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
+    scale_fill_manual(values=c("grey40", "grey60")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  position = position_dodge(width=0.9), show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Experiment + Viewing) +
+    coord_cartesian(ylim = c(550, 780)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(y = "Correct Response Times (ms)") +  # set the names for main, x and y axises Accuracy of Catch Trials in Experiment 2 title = "Standard Design Analyses", 
+    geom_text(label = c("*", "", "***", "", "*", "", "***", ""), color = "red", size = 6, nudge_y = 50, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme
+}
+  
+rt.colPlot.scf
+```
 
 # Versions of Packages Used
 ```{r versions}
