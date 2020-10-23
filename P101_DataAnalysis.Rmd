@@ -48,6 +48,11 @@ ylimit.d <- c(0, 4.5)
 ylimit.cf.rt <- c(400, 850)
 ylimit.acc <- c(0.5, 1.05)
 
+
+# size of images to be saved
+plotHeight = 4.5
+plotWidth = plotHeight * 1.7
+
 ```
 
 This is the data analysis for all the four experiments. At first, the data analysis were conducted separately for each experiment. Next, the data of four experiments were analyzed together.
@@ -3287,6 +3292,296 @@ rt.colPlot.scf <- {
 }
   
 rt.colPlot.scf
+```
+
+# Figures for publications
+## Experiment 1 & 2
+
+```{r, fig.width=4, fig.asp=0.5}
+
+d_LinePlot_E12 = {
+  ggplot(data = emm.d.E12, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Viewing, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position=c(0.7, 0.2))
+}
+
+rt_LinePlot_E12 = {
+  ggplot(data = emm.cf.rt.E12, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Viewing, switch = "both") +
+    labs(x = "Viewing Conditions", y = "Correct Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
+    geom_text(label = c("*", "", "", "", "*", "", "", ""), color = "red", size = 6, nudge_y = 40, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position = "none")
+}
+
+
+pub_cf_E12 <- ggpubr::ggarrange(d_LinePlot_E12, rt_LinePlot_E12, nrow = 1,
+                                 # widths = c(1, .7),
+                                 labels = c("a", "b"),
+                                 font.label = list(size = 24))  # ratio between the two subplots)
+
+# ggsave("E12_CF_pub.png", pub_cf_E12, height = 5, width = 10)
+
+```
+
+## Experiment 3 and 4
+
+```{r , fig.width=4, fig.asp=0.5}
+d_LinePlot_E34 = {
+  ggplot(data = emm.d.E34, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Viewing, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("+", "", "", "", "***", "", "", ""), color = c("blue", "red", "red", "red", "red", "red", "red", "red"), size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position=c(0.7, 0.2))
+}
+
+
+rt_LinePlot_E34 = {
+  ggplot(data = emm.cf.rt.E34, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Viewing, switch = "both") +
+    labs(x = "Viewing Conditions", y = "Correct Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
+    geom_text(label = c("*", "", "", "", "**", "", "", ""), color = "red", size = 6, nudge_y = 40, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position = "none")
+}
+
+
+pub_cf_E34 <- ggpubr::ggarrange(d_LinePlot_E34, rt_LinePlot_E34, nrow = 1,
+                                 # widths = c(1, .7),
+                                 labels = c("a", "b"),
+                                 font.label = list(size = 24))  # ratio between the two subplots)
+
+# ggsave("E34_CF_pub.png", pub_cf_E34, height = 5, width = 10)
+
+```
+
+
+## Experiment 1
+```{r, fig.width=4, fig.asp=0.5}
+d_LinePlot_E1 = {
+  ggplot(data = emm.d.E1, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Viewing, switch = "both") +
+    coord_cartesian(ylim = ylimit.d) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(x = "Viewing Conditions", y = expression("Sensitivity"~italic("d'")), fill = "Congruency") +  # set the names for main, x and y axisestitle = "Experiment 1", 
+    geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position=c(0.7, 0.2))
+}
+
+rt_LinePlot_E1 = {
+  ggplot(data = emm.cf.rt.E1, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Viewing, switch = "both") +
+    labs(x = "Viewing Conditions", y = "Correct Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
+    geom_text(label = c("*", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position = "none")
+}
+
+pub_cf_E1 <- ggpubr::ggarrange(d_LinePlot_E1, rt_LinePlot_E1, nrow = 1,
+                                 # widths = c(1, .7),
+                                 labels = c("a", "b"),
+                                 font.label = list(size = 24))  # ratio between the two subplots)
+
+# ggsave("E1_CF_pub.png", pub_cf_E1, height = 5, width = 10)
+
+```
+
+## Experiment 2
+```{r fig.width=4, fig.asp=0.5}
+d_LinePlot_E2 = {
+  ggplot(data = emm.d.E2, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Viewing, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position=c(0.7, 0.2))
+}
+
+rt_LinePlot_E2 = {
+  ggplot(data = emm.cf.rt.E2, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Viewing, switch = "both") +
+    labs(x = "Viewing Conditions", y = "Correct Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
+    geom_text(label = c("", "", "", "", "", "", "", ""), color = "red", size = 6, nudge_y = 30, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position = "none")
+}
+
+pub_cf_E2 <- ggpubr::ggarrange(d_LinePlot_E2, rt_LinePlot_E2, nrow = 1,
+                                 # widths = c(1, .7),
+                                 labels = c("a", "b"),
+                                 font.label = list(size = 24))  # ratio between the two subplots)
+
+# ggsave("E2_CF_pub.png", pub_cf_E2, height = 5, width = 10)
+
+```
+
+
+## Experiment 3
+```{r fig.width=4, fig.asp=0.5}
+d_LinePlot_E3 = {
+  ggplot(data = emm.d.E3, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Viewing, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position=c(0.7, 0.2))
+}
+
+rt_LinePlot_E3 = {
+  ggplot(data = emm.cf.rt.E3, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Viewing, switch = "both") +
+    labs(x = "Viewing Conditions", y = "Correct Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
+    geom_text(label = c("+", "", "", "", "", "", "", ""), color = "blue", size = 6, nudge_y = 50, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position = "none")
+}
+
+pub_cf_E3 <- ggpubr::ggarrange(d_LinePlot_E3, rt_LinePlot_E3, nrow = 1,
+                                 # widths = c(1, .7),
+                                 labels = c("a", "b"),
+                                 font.label = list(size = 24))  # ratio between the two subplots)
+
+# ggsave("E3_CF_pub.png", pub_cf_E3, height = 5, width = 10)
+
+```
+
+## Experiment 4
+```{r fig.width=4, fig.asp=0.5}
+d_LinePlot_E4 = {
+  ggplot(data = emm.d.E4, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    facet_grid(. ~ Viewing, switch = "both") +
+    coord_cartesian(ylim = c(0, 4.5)) +  # set the limit for y axis
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    labs(x = "Viewing Conditions", y = "Sensitivity"~italic("d'"), fill = "Congruency") +  # set the names for main, x and y axise sSensitivity for Experiment 2
+    scale_fill_grey() +  # set the color for columns
+    geom_text(label = c("", "", "", "", "***", "", "", ""), color = "red", size = 6, nudge_y = 0.5, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position=c(0.7, 0.2))
+}
+
+rt_LinePlot_E4 = {
+  ggplot(data = emm.cf.rt.E4, aes(y = emmean, x = Alignment, color = Congruency, group = Congruency)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
+    geom_point(size = 2) +
+    geom_line(aes(linetype = Congruency), size = .85) +  # position = "dodge", alpha = .7
+    scale_linetype_manual(values=c("solid", "dashed")) +
+    geom_errorbar(mapping = aes(ymin = lower.CL, ymax = upper.CL), linetype = 1,  # set the error bar
+                  show.legend = FALSE, width = 0.25, alpha = .5) + # ,                   position = position_dodge(width=0.9)
+    coord_cartesian(ylim = ylimit.cf.rt) +  # set the limit for y axis c(0, 1100)
+    scale_y_continuous(expand= c(0, 0)) +  # remove the space between columns and x axis
+    facet_grid(. ~ Viewing, switch = "both") +
+    labs(x = "Viewing Conditions", y = "Correct Response Times (ms)", fill = "Congruency") +  # set the names for main, x and y axises
+    scale_fill_grey() +  # set the color for columns Correct Response Times for Experiment 1
+    geom_text(label = c("", "", "", "", "*", "", "", ""), color = "red", size = 6, nudge_y = 50, nudge_x = 0.5) + # add starts to the significant columns
+    theme_bw() +
+    plot_theme +
+    theme(legend.position = "none")
+}
+
+pub_cf_E4 <- ggpubr::ggarrange(d_LinePlot_E4, rt_LinePlot_E4, nrow = 1,
+                                 # widths = c(1, .7),
+                                 labels = c("a", "b"),
+                                 font.label = list(size = 24))  # ratio between the two subplots)
+
+# ggsave("E4_CF_pub.png", pub_cf_E4, height = 5, width = 10)
+
 ```
 
 # Versions of Packages Used
