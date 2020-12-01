@@ -3341,7 +3341,7 @@ pub_cf_E12 <- ggpubr::ggarrange(d_LinePlot_E12, rt_LinePlot_E12, nrow = 1,
                                  labels = c("a", "b"),
                                  font.label = list(size = 24))  # ratio between the two subplots)
 
-# ggsave("E12_CF_pub.png", pub_cf_E12, height = 5, width = 10)
+# ggsave("E12_CF_pub.pdf", pub_cf_E12, height = 5, width = 10)
 
 ```
 
@@ -3391,7 +3391,7 @@ pub_cf_E34 <- ggpubr::ggarrange(d_LinePlot_E34, rt_LinePlot_E34, nrow = 1,
                                  labels = c("a", "b"),
                                  font.label = list(size = 24))  # ratio between the two subplots)
 
-# ggsave("E34_CF_pub.png", pub_cf_E34, height = 5, width = 10)
+# ggsave("E34_CF_pub.pdf", pub_cf_E34, height = 5, width = 10)
 
 ```
 
@@ -3438,7 +3438,7 @@ pub_cf_E1 <- ggpubr::ggarrange(d_LinePlot_E1, rt_LinePlot_E1, nrow = 1,
                                  labels = c("a", "b"),
                                  font.label = list(size = 24))  # ratio between the two subplots)
 
-# ggsave("E1_CF_pub.png", pub_cf_E1, height = 5, width = 10)
+# ggsave("E1_CF_pub.pdf", pub_cf_E1, height = 5, width = 10)
 
 ```
 
@@ -3485,7 +3485,7 @@ pub_cf_E2 <- ggpubr::ggarrange(d_LinePlot_E2, rt_LinePlot_E2, nrow = 1,
                                  labels = c("a", "b"),
                                  font.label = list(size = 24))  # ratio between the two subplots)
 
-# ggsave("E2_CF_pub.png", pub_cf_E2, height = 5, width = 10)
+# ggsave("E2_CF_pub.pdf", pub_cf_E2, height = 5, width = 10)
 
 ```
 
@@ -3533,7 +3533,7 @@ pub_cf_E3 <- ggpubr::ggarrange(d_LinePlot_E3, rt_LinePlot_E3, nrow = 1,
                                  labels = c("a", "b"),
                                  font.label = list(size = 24))  # ratio between the two subplots)
 
-# ggsave("E3_CF_pub.png", pub_cf_E3, height = 5, width = 10)
+# ggsave("E3_CF_pub.pdf", pub_cf_E3, height = 5, width = 10)
 
 ```
 
@@ -3580,7 +3580,7 @@ pub_cf_E4 <- ggpubr::ggarrange(d_LinePlot_E4, rt_LinePlot_E4, nrow = 1,
                                  labels = c("a", "b"),
                                  font.label = list(size = 24))  # ratio between the two subplots)
 
-# ggsave("E4_CF_pub.png", pub_cf_E4, height = 5, width = 10)
+# ggsave("E4_CF_pub.pdf", pub_cf_E4, height = 5, width = 10)
 
 ```
 
