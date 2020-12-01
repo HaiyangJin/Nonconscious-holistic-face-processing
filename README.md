@@ -1,2 +1,3 @@
-# Composite Face Task with Continous Flashing Suppresion
-Data analysis for the project of Composite Face Task with Continuous Flashing Suppression
+This study is one part of [my PhD thesis (Chapter 2)](https://researchspace.auckland.ac.nz/handle/2292/50468).
+
+Jin, H., Oxner, M., Corballis, P., & Hayward, W. G. (in submission). Subliminal Irrelevant Facial Halves Influence the Processing of Target Halves.
