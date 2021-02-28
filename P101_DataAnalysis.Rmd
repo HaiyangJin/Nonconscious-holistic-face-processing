@@ -1450,6 +1450,49 @@ catch.acc.ColuPlot.E2 = {
 catch.acc.ColuPlot.E2
 ```
 
+## Correlations between CF effects and catch trials
+
+```{r}
+# RT
+CFE_E2_rt <- cf.rt.SPSS.E2 %>% 
+  mutate(Con_Aligned = CFS.congruent.aligned - CFS.incongruent.aligned,
+         CFE_CFS = (CFS.congruent.aligned - CFS.incongruent.aligned) -
+           (CFS.congruent.misaligned - CFS.incongruent.misaligned),
+         CFE_mono = (monocular.congruent.aligned - monocular.incongruent.aligned) -
+           (monocular.congruent.misaligned - monocular.incongruent.misaligned)) %>% 
+  select(Participant, Con_Aligned, CFE_CFS, CFE_mono) 
+
+E2_cor_rt <- merge(CFE_E2_rt, catch.acc.SPSS.E2)
+
+# congruency
+cor.test(~ Con_Aligned + CFS.aligned, E2_cor_rt)
+
+# interaction
+cor.test(~ CFE_CFS + CFS.aligned, E2_cor_rt)
+plot(~ CFE_CFS + CFS.aligned, E2_cor_rt)
+
+
+# d'
+CFE_E2 <- d.SPSS.E2 %>% 
+  mutate(Con_Aligned = CFS.congruent.aligned - CFS.incongruent.aligned,
+         CFE_CFS = (CFS.congruent.aligned - CFS.incongruent.aligned) -
+           (CFS.congruent.misaligned - CFS.incongruent.misaligned),
+         CFE_mono = (monocular.congruent.aligned - monocular.incongruent.aligned) -
+           (monocular.congruent.misaligned - monocular.incongruent.misaligned)) %>% 
+  select(Participant, Con_Aligned, CFE_CFS, CFE_mono) 
+
+catch.acc.SPSS.E2
+
+E2_cor <- merge(CFE_E2, catch.acc.SPSS.E2)
+
+# congruency
+cor.test(~ Con_Aligned + CFS.aligned, E2_cor)
+
+# interaction
+cor.test(~ CFE_CFS + CFS.aligned, E2_cor)
+plot(~ CFE_CFS + CFS.aligned, E2_cor)
+```
+
 # Experiment 3
 ```{r information about the data set in E3}
 ## the filename of the raw data file 
@@ -2818,6 +2861,103 @@ catch.acc.ColuPlot.E4 = {
 }
 
 catch.acc.ColuPlot.E4
+```
+
+## Correlations between CF effects and catch trials
+
+```{r}
+# RT
+CFE_E4_rt <- cf.rt.SPSS.E4 %>% 
+  mutate(Con_Aligned = CFS.congruent.aligned - CFS.incongruent.aligned,
+         CFE_CFS = (CFS.congruent.aligned - CFS.incongruent.aligned) -
+           (CFS.congruent.misaligned - CFS.incongruent.misaligned),
+         CFE_mono = (monocular.congruent.aligned - monocular.incongruent.aligned) -
+           (monocular.congruent.misaligned - monocular.incongruent.misaligned)) %>% 
+  select(Participant, Con_Aligned, CFE_CFS, CFE_mono) 
+
+E4_cor_rt <- merge(CFE_E4_rt, catch.acc.SPSS.E4)
+
+# congruency
+cor.test(~ Con_Aligned + CFS.aligned, E4_cor_rt)
+
+# interaction
+cor.test(~ CFE_CFS + CFS.aligned, E4_cor_rt)
+
+
+# d'
+CFE_E4 <- d.SPSS.E4 %>% 
+  mutate(Con_Aligned = CFS.congruent.aligned - CFS.incongruent.aligned,
+         CFE_CFS = (CFS.congruent.aligned - CFS.incongruent.aligned) -
+           (CFS.congruent.misaligned - CFS.incongruent.misaligned),
+         CFE_mono = (monocular.congruent.aligned - monocular.incongruent.aligned) -
+           (monocular.congruent.misaligned - monocular.incongruent.misaligned)) %>% 
+  select(Participant, Con_Aligned, CFE_CFS, CFE_mono) 
+
+catch.acc.SPSS.E4
+
+E4_cor <- merge(CFE_E4, catch.acc.SPSS.E4) %>% 
+  mutate(CFS.aligned.50 = CFS.aligned - 0.5)
+write_csv(E4_cor, file.path(folder.output, "E4_Corr_CFE_Catch.csv"))
+
+# congruency
+cor.test(~ Con_Aligned + CFS.aligned, E4_cor)
+
+# interaction
+cor.test(~ CFE_CFS + CFS.aligned, E4_cor)
+# plot(~ CFE_CFS + CFS.aligned, E4_cor)
+
+```
+
+```{r message=FALSE, warning=FALSE}
+ggplot(E4_cor, aes(x=CFS.aligned, y=CFE_CFS)) +
+  geom_point(color="black", stroke=0, size = 3, alpha=.4) +
+  geom_smooth(method=lm, color="black", size=1.25) +
+  geom_vline(xintercept=0.5, linetype="dashed", alpha=.5) +
+  geom_hline(yintercept=0, linetype="dashed", alpha=.5) +
+  # xlim(c(0, 1)) +
+  ylim(c(-2.5, 2.2)) +
+  labs(x = "Accuracy of aligned catch trials in the CFS condition", y = "Composite effects of sensitivity"~italic("d'")) +  # set the names for main, x and y axises Experiment 1 (Standard design)
+  theme_bw() +
+  plot_theme +
+  NULL
+  
+ggsave("corr_CFS_E4.png", width=8, height=5)
+```
+
+
+## Compare with study bottom halves
+```{r message=FALSE}
+
+df_catch_E4 <- read_csv(file.path(folder.data, "catch_trials_E4.csv")) %>% 
+  mutate(
+    Participant = as.factor(Participant),
+    Viewing = case_when(  # rename the levels for Experiment
+        Experiment == "112_CF_CFS_catch_test" ~ viewing.levels[1],
+        Experiment == "112_CF_monocular_catch_test" ~ viewing.levels[2],
+        Experiment == "112_catch_test" ~ viewing.levels[3]
+      ), 
+    Viewing = recode_factor(Viewing, "CFS" = viewing.levels[1], "monocular" = viewing.levels[2], "CatchOnly" = viewing.levels[3]),
+    Alignment = recode_factor(Alignment, "A" = alignment.levels[1], "M" = alignment.levels[2]),
+    lowerSTSame = StudyLower == TargetLower
+  ) %>% 
+  filter(!(Participant %in% rm.E4)) %>%  # remove participants
+  group_by(Participant, Viewing, Alignment) %>%  # , lowerSame
+  summarize(meanStudyBottom = mean(MatchStudy),
+            # meanStudy = mean(lowerSame),
+            count = n()) %>% 
+  ungroup() %>% 
+  mutate(Condition = factor(paste(Viewing, Alignment, sep = "."), levels = c("CFS.aligned", "CFS.misaligned", "monocular.aligned", "monocular.misaligned", "CatchOnly.aligned", "CatchOnly.misaligned"))) %>% 
+  select(Participant, Condition, meanStudyBottom) %>%
+  spread(Condition, meanStudyBottom)
+
+
+# %>% 
+#   filter(meanStudyBottom==1)
+  # ungroup() %>% 
+  # pivot_wider(id_cols = Participant, names_from = c(Experiment, Alignment), values_from = meanStudyBottom)
+
+t.test(df_catch_E4$CFS.aligned, mu = 0.5)
+
 ```
 
 
