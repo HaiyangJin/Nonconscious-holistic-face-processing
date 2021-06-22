@@ -1339,6 +1339,8 @@ catch.acc.ColuPlot.E2 = {
 }
 
 catch.acc.ColuPlot.E2
+
+# ggsave("E2_catch_trail_acc.pdf", catch.acc.ColuPlot.E2, height = 5, width = 8)
 ```
 
 ### Correct response times
@@ -2732,6 +2734,8 @@ catch.acc.ColuPlot.E4 = {
 }
 
 catch.acc.ColuPlot.E4
+
+# ggsave("E4_catch_trail_acc.pdf", catch.acc.ColuPlot.E4, height = 5, width = 8)
 ```
 
 ```{r Plot of accuracy for catch trials E4, eval=FALSE, include=FALSE}
@@ -2844,7 +2848,7 @@ emm.catch.rt.E4 <- {
 
 ```{r Plot of response times for catch trials E4}
 
-catch.acc.ColuPlot.E4 = {
+catch.rt.ColuPlot.E4 = {
   ggplot(data = emm.catch.rt.E4, aes(y = emmean, x = Viewing, fill = Alignment)) +  # set the data, varialbes for x and y axises, and the variable for dividing data
     geom_col(position = "dodge", color = "#000000") + # width = .5, position = position_dodge(width = -0.5),
     scale_fill_manual(values=c("grey40", "grey60")) +
@@ -2860,7 +2864,7 @@ catch.acc.ColuPlot.E4 = {
     plot_theme
 }
 
-catch.acc.ColuPlot.E4
+catch.rt.ColuPlot.E4
 ```
 
 ## Correlations between CF effects and catch trials
