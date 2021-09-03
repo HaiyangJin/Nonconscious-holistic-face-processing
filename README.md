@@ -1,7 +1,7 @@
 
 # Holistic face processing is influenced by non-conscious visual information
 
-**Jin, H.**, Oxner, M., Corballis, P., & Hayward, W. G. (accepted). Holistic face processing is influenced by non-conscious visual information. *British Journal of Psychology*. 
+**Jin, H.**, Oxner, M., Corballis, P., & Hayward, W. G. (2021). Holistic face processing is influenced by non-conscious visual information. *British Journal of Psychology*. https://doi.org/10.1111/bjop.12521
 
 Preprint: https://psyarxiv.com/j8g6z/. (Its content may be different from the final published version.)
 
